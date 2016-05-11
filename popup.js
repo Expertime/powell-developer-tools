@@ -72,7 +72,7 @@
                             type: "basic",
                             iconUrl: "icon128.png",
                             title: "Powell Dev Tools",
-                            message: "Local storage and browser cache cleared successfully"
+                            message: "Local storage, local session and browser cache cleared successfully"
                         });
                     });
                 });

@@ -11,39 +11,40 @@
     
     var _onBeforeJsRequestListener = function (request) {
         var originalJsUrl = request.url,
-            debugJsUrl = request.url; 
-        if (originalJsUrl.indexOf('cdn.powell-365.com/scripts/powell') > -1 &&
-            originalJsUrl.indexOf('siteCollectionUrl=') > -1 &&
-            originalJsUrl.indexOf('#powellDevTools=1') == -1) {
+            debugJsUrl = request.url,
+            regIsOriginalUrl = /cdn.powell-365.com\/scripts\/(?:powell(?:\/debug)?\?siteCollectionUrl=|Premium)/i,
+            regIsReplacedUrl = /#powellDevTools=1/;
+        
+        var isOriginalUrl = !regIsReplacedUrl.exec(originalJsUrl) && regIsOriginalUrl.exec(originalJsUrl);
+        
+        if (isOriginalUrl) {
             debugJsUrl = DatacontextConfig.utility.get_jsSourceUrl() + '#powellDevTools=1';
+            console.log('Redirecting original request [' + originalJsUrl + '] to [' + debugJsUrl + ']');
         }
-        console.log('Trying to replace ' + originalJsUrl + ' by ' + debugJsUrl);
-        var url = debugJsUrl;
-        (url != debugJsUrl) && console.log('Redirecting request to ' + url);
         return {
-            redirectUrl: url
+            redirectUrl: debugJsUrl
         };
     };
     
     var _onBeforeCssRequestListener = function (request) {
         var originalCssUrl = request.url,
-            debugCssUrl = request.url;
-        if (originalCssUrl.indexOf('cdn.powell-365.com/styles/') > -1) {
-            var cssFileName = originalCssUrl.match(/[^/\\&\?]+\.\w{3,4}(?=([\?&].*$|$))/)[0];
+            debugCssUrl = request.url,
+            regIsOriginalUrl = /cdn.powell-365.com\/styles\//i,
+            regFileName = /[^/\\&\?]+\.\w{3,4}(?=([\?&].*$|$))/;
+        if (regIsOriginalUrl.exec(originalCssUrl) !== null) {
+            var cssFileName = originalCssUrl.match(regFileName)[0];
             debugCssUrl = DatacontextConfig.utility.get_cssSourceUrl(cssFileName);
+            console.log('Redirecting original request [' + originalCssUrl + '] to [' + debugCssUrl + ']');
         }
-        console.log('Trying to replace ' + originalCssUrl + ' by ' + debugCssUrl);
-        var url = debugCssUrl;
-        (url != debugCssUrl) && console.log('Redirecting request to ' + url);
         return {
-            redirectUrl: url
+            redirectUrl: debugCssUrl
         };
     };
     
     var _setEnabled = function (enabled, sourceKind) {
         if (enabled) {
-            var powR7Cdn = "*://r7-cdn.powell\-365.com/*";
-            var powCdn = "*://cdn.powell\-365.com/*";
+            var powR7Cdn = "*://r7-cdn.powell-365.com/*";
+            var powCdn = "*://cdn.powell-365.com/*";
             var filters = {
                 urls: [powR7Cdn, powCdn],
                 types: [sourceKind]
@@ -111,7 +112,7 @@
         chrome.extension.onRequest.addListener(_onRequest);
         
         _updateIcon();
-    }
+    };
     
     angular.module('powellDevTools').run(['datacontextConfig', _init]);
 

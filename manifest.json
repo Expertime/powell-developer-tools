@@ -3,7 +3,7 @@
     "name": "Powell Developer Tools",
     "short_name": "Powell DevTools",
     "description": "This extension gives access to the developer-specific-version of the Powell JavaScript & CSS files",
-    "version": "2.4",
+    "version": "2.8",
     "browser_action": {
         "default_icon": "icon19_disabled.png",
         "default_popup": "popup.html"
