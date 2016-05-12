@@ -2,6 +2,7 @@
     'use strict';
     
     var CONTROLLER_ID = 'ConfigController';
+    
     angular.module('powellDevTools').controller(CONTROLLER_ID,
         ['$scope', '$element', '$q', '$sce', '$timeout', '$interval', 'datacontextUtility',
             configControllerModule]);

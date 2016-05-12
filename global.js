@@ -3,7 +3,15 @@
 
     var powellDevTools = angular.module('powellDevTools', [
         'ngSanitize'   // Fixes HTML issues in data binding
-    ]);
+    ]).config(function($sceDelegateProvider) {
+      // Add some trusted resource origins
+      $sceDelegateProvider.resourceUrlWhitelist([
+        // Allow same origin resource loads.
+        'self',
+        // Allow loading from our assets domain.  Notice the difference between * and **.
+        'https://rawgit.com/**'
+      ]);
+    });
 
     var SERVICE_ID = 'datacontextUtility';
     angular.module('powellDevTools').factory(SERVICE_ID, ['$q',
