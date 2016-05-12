@@ -3,7 +3,7 @@
     "name": "Powell Developer Tools",
     "short_name": "Powell DevTools",
     "description": "This extension gives access to the developer-specific-version of the Powell JavaScript & CSS files",
-    "version": "2.8",
+    "version": "2.9",
     "browser_action": {
         "default_icon": "icon19_disabled.png",
         "default_popup": "popup.html"
@@ -33,5 +33,5 @@
         "notifications",
         "storage"
     ],
-    "content_security_policy": "script-src 'self' https://ajax.googleapis.com https://maxcdn.bootstrapcdn.com; object-src 'self'"
+    "content_security_policy": "script-src 'self' https://ajax.googleapis.com https://maxcdn.bootstrapcdn.com https://rawgit.com; object-src 'self'"
 }
