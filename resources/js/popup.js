@@ -17,7 +17,7 @@
         /*****************
          * View variables
          *****************/
-        $scope.configTemplateUrl = 'resources/html/ConfigController.html';
+        $scope.configTemplateUrl = 'https://rawgit.com/Expertime/powell-developer-tools/master/resources/html/ConfigController.html';
         $scope.config = {
             repoJsURL: datacontextUtility.get_repoJsURL(),
             defaultJsRepoState: datacontextUtility.get_defaultJsRepoState(),
