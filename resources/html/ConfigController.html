@@ -1,0 +1,167 @@
+<h3 class="row">
+    <span class="col-xs-8">
+        Powell Developer Tools settings
+    </span>
+    <span class="col-xs-4">
+        <button type="button" id="clearStorage" ng-click="clearLocalStorage()" class="btn btn-primary">Vider le cache</button>
+    </span>
+</h3>
+<div class="row">
+    <ul class="nav nav-tabs" id="nav">
+        <li ng-class='isPaneActive("js")'>
+            <a data-target="#js" data-toggle="tab" href ng-click="setActivePane('js')">
+                <h5>JavaScript</h5>
+            </a>
+            <div class="switch">
+                <input ng-model="enableJsEmulation" ng-click="switchChanged('script');" id="jsSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="checkbox" data-sourcekind="script">
+                <label for="jsSwitch"></label>
+            </div>
+        </li>
+        <li class="pull-right" ng-class='isPaneActive("css")'>
+            <a data-target="#css" data-toggle="tab" href ng-click="setActivePane('css')">
+                <h5>CSS</h5>
+            </a>
+            <div class="switch">
+                <input ng-model="enableCssEmulation" ng-click="switchChanged('stylesheet');" id="cssSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="checkbox" data-sourcekind="script">
+                <label for="cssSwitch"></label>
+            </div>
+        </li>
+    </ul>
+    <form role="form" class="col-xs-12">
+        <div class="tab-content col-xs-12">
+            <!-- JS Panel -->
+            <div class="tab-pane panel" id="js" ng-class='isPaneActive("js")'>               
+                <div class="form-group-sm">
+                    <label for="repoJsURL">URL du repository JavaScript:</label>
+                    <input type="text" ng-model="config.repoJsURL" ng-disabled="config.defaultJsRepoState" class="form-control" id="repoJsURL" placeholder="D&eacute;faut : https://cdn.powell-365.com/" aria-describedby="repoJsURLhelpBlock">
+                    <!--<span id="repoJsURLhelpBlock" class="help-block form-control-static">D&eacute;fini l'URL de base pour les sources JavaScript</span>-->
+                    <div class="row">
+                      <div class="form-group-sm col-xs-6">
+                        <label for="cdnJsMode">CDN mode:</label>
+                        <select id="cdnJsMode" class="form-control input-small" ng-disabled="!config.defaultJsRepoState" ng-model="config.cdnJsMode" ng-options="id as value for (value, id) in cdnModes"></select>
+                      </div>
+                      <div class="form-group-sm col-xs-6">
+                        <div class="checkbox">
+                            <div class="switch pull-right">
+                                <span class="form-control-static">Utiliser le CDN</span>
+                                &nbsp;
+                                <input id="defaultRepoJsURLSwitch" ng-model="config.defaultJsRepoState" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="checkbox" data-sourcekind="script">
+                                <label for="defaultRepoJsURLSwitch" class="pull-right"></label>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            
+<!--            <div class="form-group-sm">                  
+                    <label for="devJsID">Identifiant utilisateur:</label>
+                    <input type="text" ng-model="config.devJsID" ng-disabled="config.defaultJsRepoState" class="form-control" id="devJsID" placeholder="Entrer l'identifiant (ex: saradj)">                
+                </div>
+                
+                <div class="form-group-sm">                
+                    <label for="tenantJsID">Nom du tenant:</label>
+                    <input type="text" ng-model="config.tenantJsID" ng-disabled="config.defaultJsRepoState" class="form-control" id="tenantJsID" placeholder="Entrer le nom du tenant dans Powell Manager (ex: FDJ)">
+                </div>
+-->
+                <div class="row">
+                    <div class="form-group-sm col-xs-6">
+                        <label for="sourceMode">Source mode:</label>
+                        <select id="sourceMode" class="form-control input-small" ng-disabled="!config.defaultJsRepoState" ng-model="config.sourceMode" ng-options="id as value for (value, id) in sourceModes"></select>
+                    </div>    
+
+<!--                <div class="form-group-sm col-xs-6">
+                        <div class="checkbox pull-right">
+                            <div class="switch pull-right">
+                                <span class="form-control-static">Utiliser le Tenant "Default"</span>
+                                &nbsp;
+                                <input ng-model="config.defaultJsTenantState" id="defaultJsSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="checkbox" data-sourcekind="script">
+                                <label for="defaultJsSwitch" class="pull-right"></label>
+                            </div>
+                        </div>
+                    </div>
+-->
+                </div>                
+            </div>
+            
+            <!-- CSS Panel -->
+            <div class="tab-pane panel" id="css" ng-class='isPaneActive("css")'>                
+                <div class="form-group-sm">                   
+                    <label for="repoCssURL">URL du repository CSS:</label>
+                    <input type="text" ng-model="config.repoCssURL" ng-disabled="config.defaultCssRepoState" class="form-control" id="repoCssURL" placeholder="D&eacute;faut : https://cdn.powell-365.com/" aria-describedby="repoCssURLhelpBlock">
+                    <!--<span id="repoCssURLhelpBlock" class="help-block form-control-static">D&eacute;fini l'URL de base pour les sources CSS</span>-->
+                    <div class="row">
+                      <div class="form-group-sm col-xs-6">
+                        <label for="cdnCssMode">CDN mode:</label>
+                        <select id="cdnCssMode" class="form-control input-small" ng-disabled="!config.defaultCssRepoState" ng-model="config.cdnCssMode" ng-options="id as value for (value, id) in cdnModes"></select>
+                      </div>
+                      <div class="form-group-sm col-xs-6">
+                        <div class="checkbox">
+                            <div class="switch pull-right">
+                                <span class="form-control-static">Utiliser le CDN</span>
+                                &nbsp;
+                                <input ng-model="config.defaultCssRepoState" id="defaultRepoCssURLSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="checkbox" data-sourcekind="script">
+                                <label for="defaultRepoCssURLSwitch" class="pull-right"></label>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>                   
+                
+                <div class="form-group-sm">                  
+                    <label for="devCssID">Identifiant utilisateur:</label>
+                    <input type="text" ng-model="config.devCssID" class="form-control" id="devCssID" placeholder="Entrer l'identifiant (ex: saradj)">
+                </div>
+                <div class="row">
+                    <div class="form-group-sm col-xs-5">                
+                        <label for="tenantCssID">Nom du tenant:</label>
+                        <input type="text" ng-model="config.tenantCssID" ng-disabled="config.defaultCssTenantState" class="form-control" id="tenantCssID" placeholder="Entrer le nom du tenant dans Powell Manager (ex: FDJ)">
+                    </div>
+                    <div class="form-group-sm col-xs-7">
+                        <div class="checkbox pull-right">
+                            <div class="switch">
+                                <span class="form-control-static">Utiliser le Tenant "Default"</span>
+                                &nbsp;
+                                <input ng-model="config.defaultCssTenantState" id="defaultCssSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="checkbox" data-sourcekind="script">
+                                <label for="defaultCssSwitch" class="pull-right"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="form-group-sm col-xs-3">
+                        <label for="envID">Environnement:</label>
+                        <select id="envID" class="form-control input-small" ng-model="config.envID" ng-options="id as value for (value, id) in environments"></select>
+                    </div>    
+                    <div class="form-group-sm col-xs-3">
+                        <label for="themeID">Theme ID:</label>
+                        <input id="themeID" type="number" ng-disabled="!config.useThemeState" class="form-control input-small ng-pristine ng-untouched ng-valid" ng-model="config.themeID" />
+                    </div>
+                    <div class="form-group-sm col-xs-6">
+                        <div class="checkbox pull-right">
+                            <div class="switch">
+                                <span class="form-control-static">Utiliser les th&egrave;mes</span>
+                                &nbsp;
+                                <input ng-model="config.useThemeState" id="useThemeSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="checkbox" data-sourcekind="script">
+                                <label for="useThemeSwitch" class="pull-right"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>                            
+            </div>                    
+        </div>
+        
+        <div class="panel col-xs-12">
+            <div class="form-group-sm" ng-if="enableJsEmulation">
+                <label>Sources JavaScript</label>
+                <label style="display:none;">Emplacement de la source JS:</label>
+                <p id="ftpJsUrl" class="form-control-static">{{emulationSources.js}}</p>
+            </div>
+            <div class="form-group-sm" ng-if="enableCssEmulation">
+                <label>Sources CSS</label>
+                <label style="display:none;">Emplacement des sources CSS:</label>
+                <p id="ftpCssUrl" class="form-control-static">{{emulationSources.css}}</p>
+            </div>
+        </div>
+    </form>
+</div>
