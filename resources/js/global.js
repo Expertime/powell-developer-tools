@@ -265,11 +265,9 @@
         var useTheme = _this.get_useThemeState();
         
         if (envID) {
+            debugCssUrl += '?env=' + _this.get_envID();
             if (useTheme) {
-                debugCssUrl += '?themeId=' + _this.get_themeID() + '&env=' + _this.get_envID();            
-            }
-            else {
-                debugCssUrl += '?environmentId=' + _this.get_envID();
+                debugCssUrl += '&themeId=' + _this.get_themeID();            
             }
         }
         
