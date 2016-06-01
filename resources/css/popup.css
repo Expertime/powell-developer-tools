@@ -11,8 +11,8 @@
     overflow: hidden;
     max-height: 600px;
 }
-.tab-content, .tab-pane {
-    height: 100%;
+.tab-pane {
+    height: 50%;
 }
  .cmn-toggle {
  	position: absolute;
