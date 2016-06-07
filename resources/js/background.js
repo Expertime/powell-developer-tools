@@ -40,13 +40,28 @@
             redirectUrl: debugCssUrl
         };
     };
+
+    var _onBeforeLogoRequestListener = function (request) {
+        var originalLogoUrl = request.url,
+            debugLogoUrl = request.url,
+            regIsOriginalUrl = /cdn.powell-365.com\/styles.*\/logo-my-portal\.png/i,
+            logoFileName = 'logo-my-portal.png';
+        if (regIsOriginalUrl.exec(originalLogoUrl) !== null) {
+            debugLogoUrl = DatacontextConfig.utility.get_logoSourceUrl(logoFileName);
+            console.log('Redirecting original request [' + originalLogoUrl + '] to [' + debugLogoUrl + ']');
+        }
+        return {
+            redirectUrl: debugLogoUrl
+        };
+    };
     
     var _setEnabled = function (enabled, sourceKind) {
         if (enabled) {
             var powR7Cdn = "*://r7-cdn.powell-365.com/*";
             var powCdn = "*://cdn.powell-365.com/*";
+            var logoUrl = "*://cdn.powell-365.com/styles/Premium/*/*/*/images/logo-my-portal.png";
             var filters = {
-                urls: [powR7Cdn, powCdn],
+                urls: [powR7Cdn, powCdn, logoUrl],
                 types: [sourceKind]
             };
             var opt_extraInfoSpec = ['blocking'];
@@ -56,6 +71,8 @@
                     break;
                 case 'stylesheet':
                     chrome.webRequest.onBeforeRequest.addListener(_onBeforeCssRequestListener, filters, opt_extraInfoSpec);
+                    filters.types=['image'];
+                    chrome.webRequest.onBeforeRequest.addListener(_onBeforeLogoRequestListener, filters, opt_extraInfoSpec);
                     break;
             }
         } else {
@@ -65,6 +82,7 @@
                     break;
                 case 'stylesheet':
                     chrome.webRequest.onBeforeRequest.removeListener(_onBeforeCssRequestListener);
+                    chrome.webRequest.onBeforeRequest.removeListener(_onBeforeLogoRequestListener);
                     break;
             }
         }

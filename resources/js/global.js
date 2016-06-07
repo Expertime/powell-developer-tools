@@ -273,6 +273,46 @@
         
         return debugCssUrl.replace(/([^:]\/)\/+/g, "$1");
     };
+
+    DatacontextUtility.prototype.get_logoSourceUrl = function (logoFileName) {
+        var _this = this;
+        var debugLogoUrl = [];
+        if (_this.get_defaultCssRepoState()) {
+            debugLogoUrl.push(_this.CDN_BASE_URL.replace('[CDNMODE]', _this.get_cdnCssMode()));
+        } else {
+            debugLogoUrl.push(_this.get_repoCssURL());
+        }
+        
+        debugLogoUrl.push('styles');
+        
+//        if(_this.get_defaultCssTenantState()) {
+            debugLogoUrl.push(_this.DEFAULT_TENANT);
+        // } else {
+        //     debugLogoUrl.push(_this.get_tenantCssID());
+        // }
+        
+        // var userUrl = _this.get_devCssID();
+        
+        // if(userUrl) {
+        //     debugLogoUrl.push('user');
+        //     debugLogoUrl.push(userUrl);
+        // }
+        debugLogoUrl.push('images')
+        debugLogoUrl.push(logoFileName);
+        debugLogoUrl = debugLogoUrl.join('/');
+        
+        var envID = _this.get_envID();
+        var useTheme = _this.get_useThemeState();
+        
+        if (envID) {
+            debugLogoUrl += '?env=' + _this.get_envID();
+            if (useTheme) {
+                debugLogoUrl += '&themeId=' + _this.get_themeID();            
+            }
+        }
+        
+        return debugLogoUrl.replace(/([^:]\/)\/+/g, "$1");
+    };
     
 })(window, window.angular, window.localStorage);
 
