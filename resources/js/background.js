@@ -95,7 +95,7 @@
     var _checkScriptFreshness = function (globalMD5) {
         if (globalMD5 != window.GLOBAL) {
             // Background scripts are obsolete. Plugin need refresh.
-            chrome.runtime.reload();            
+            chrome.runtime.reload();         
         }
     }
 
@@ -149,26 +149,7 @@
         type: "basic",
         iconUrl: "resources/img/icon128.png",
         title: "Powell Dev Tools",
-        message: "The plugin has been reloaded."
+        message: "The plugin has been reloaded to ensure JavaScript freshness."
     });
 
 })(window, window.angular, window.chrome, window.localStorage);
-
-/* Commented since CDN does not allow requests from other origins than the original Tenant
-function sendRequest(url) {
-	var request = new XMLHttpRequest();
-	request.open('GET', url, false); // `false` makes the request synchronous
-	request.send(null);
-	
-	if (request.status === 200) {
-		console.info('\tJS Debug file ' + url + ' does exist');
-	} else {
-		console.warn('\tJS Debug file ' + url + ' does not exist');
-	}
-	return request.status === 200;
-}
-function checkDebugSourceExists(url) {
-    console.log('\tChecking if ' + url + ' exists');
-    return sendRequest(url);
-}
-*/

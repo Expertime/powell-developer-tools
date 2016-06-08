@@ -9,19 +9,7 @@
     
     function configControllerModule($scope, $element, $q, $sce, $timeout, $interval, datacontextUtility) {
         // Check background scripts freshness 
-       /* var deferred = $q.defer();
-        chrome.runtime.sendMessage({ 'action': 'checkScriptFreshness', 'globalMD5': window.GLOBAL },
-            function(response){
-                if(!response && chrome.runtime.lastError != null) {
-                    deferred.reject(chrome.runtime.lastError);
-                } else {
-                    deferred.resolve(response);
-                }
-            });
-        deferred.promise.catch(function(response) {
-            // Error while communicating with background scripts. Reloading plugin.
-            chrome.runtime.reload();
-        });*/
+        chrome.runtime.sendMessage({ 'action': 'checkScriptFreshness', 'globalMD5': window.GLOBAL });
         
         return new ConfigController($scope, $element, $q, $sce, $timeout, $interval, datacontextUtility);
     }
