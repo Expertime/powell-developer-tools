@@ -1,16 +1,31 @@
 (function (window, angular, $, chrome, undefined) {
     'use strict';
-    
+
     var CONTROLLER_ID = 'ConfigController';
     
     angular.module('powellDevTools').controller(CONTROLLER_ID,
         ['$scope', '$element', '$q', '$sce', '$timeout', '$interval', 'datacontextUtility',
             configControllerModule]);
-            
+    
     function configControllerModule($scope, $element, $q, $sce, $timeout, $interval, datacontextUtility) {
+        // Check background scripts freshness 
+        var deferred = $q.defer();
+            chrome.runtime.sendMessage({ 'action': 'checkScriptFreshness', 'globalMD5': window.GLOBAL },
+                function(response){
+                    if(!response && chrome.runtime.lastError != null) {
+                        deferred.reject(chrome.runtime.lastError);
+                    } else {
+                        deferred.resolve(response);
+                    }
+                });
+            deferred.promise.catch(function(response) {
+                // Error while communicating with background scripts. Reloading plugin.
+                chrome.runtime.reload();
+            })
+        
         return new ConfigController($scope, $element, $q, $sce, $timeout, $interval, datacontextUtility);
     }
-    
+
     var ConfigController = function ($scope, $element, $q, $sce, $timeout, $interval, datacontextUtility) {
         var _this = this;
         
@@ -62,7 +77,19 @@
         };
         
         $scope.switchChanged = function (sourceKind) {
-            chrome.extension.sendRequest({ 'action': 'setEnabled', 'enabled': !datacontextUtility.isEnabled(sourceKind), 'sourceKind': sourceKind });
+            var deferred = $q.defer();
+            chrome.runtime.sendMessage({ 'action': 'setEnabled', 'enabled': !datacontextUtility.isEnabled(sourceKind), 'sourceKind': sourceKind }, 
+                function(response){
+                    if(!response && chrome.runtime.lastError != null) {
+                        deferred.reject(chrome.runtime.lastError);
+                    } else {
+                        deferred.resolve(response);
+                    }
+                });
+            deferred.promise.catch(function(response) {
+                // Error while communicating with background scripts. Reloading plugin.
+                chrome.runtime.reload();
+            })
         };
         
         $scope.clearLocalStorage = function() {
@@ -72,7 +99,7 @@
                         console.log(storageResponse, refreshResponse);
                         chrome.notifications.create(null, {
                             type: "basic",
-                            iconUrl: "icon128.png",
+                            iconUrl: "resources/img/icon128.png",
                             title: "Powell Dev Tools",
                             message: "Local storage, local session and browser cache cleared successfully"
                         });
@@ -81,5 +108,7 @@
             });
         };
     };
+
+
 
 })(window, window.angular, window.jQuery, window.chrome);

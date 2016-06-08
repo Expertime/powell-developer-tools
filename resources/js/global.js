@@ -1,4 +1,4 @@
-(function (window, angular, localStorage, undefined) {
+(function GLOBAL (window, angular, localStorage, undefined) {
     'use strict';
 
     var powellDevTools = angular.module('powellDevTools', [
@@ -11,7 +11,11 @@
         // Allow loading from our assets domain.  Notice the difference between * and **.
         'https://rawgit.com/**'
       ]);
-    });
+    });/*.factory('$exceptionHandler', function() {
+        return function (exception, cause) {
+            chrome.runtime.reload()
+        }
+    });*/
 
     var SERVICE_ID = 'datacontextUtility';
     angular.module('powellDevTools').factory(SERVICE_ID, ['$q',
@@ -284,19 +288,7 @@
         }
         
         debugLogoUrl.push('styles');
-        
-//        if(_this.get_defaultCssTenantState()) {
-            debugLogoUrl.push(_this.DEFAULT_TENANT);
-        // } else {
-        //     debugLogoUrl.push(_this.get_tenantCssID());
-        // }
-        
-        // var userUrl = _this.get_devCssID();
-        
-        // if(userUrl) {
-        //     debugLogoUrl.push('user');
-        //     debugLogoUrl.push(userUrl);
-        // }
+        debugLogoUrl.push(_this.DEFAULT_TENANT);
         debugLogoUrl.push('images')
         debugLogoUrl.push(logoFileName);
         debugLogoUrl = debugLogoUrl.join('/');
@@ -313,6 +305,19 @@
         
         return debugLogoUrl.replace(/([^:]\/)\/+/g, "$1");
     };
-    
+
+    var _hashCodeFor = function(string) {
+        var hash = 0, i, chr, len;
+        if (string.length === 0) return hash;
+        for (i = 0, len = string.length; i < len; i++) {
+            chr   = string.charCodeAt(i);
+            hash  = ((hash << 5) - hash) + chr;
+            hash |= 0; // Convert to 32bit integer
+        }
+        return hash;
+    };
+
+    window.GLOBAL = _hashCodeFor(GLOBAL.toString());
+
 })(window, window.angular, window.localStorage);
 

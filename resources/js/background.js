@@ -92,6 +92,13 @@
         _updateIcon();
     };
     
+    var _checkScriptFreshness = function (globalMD5) {
+        if (globalMD5 != window.GLOBAL) {
+            // Background scripts are obsolete. Plugin need refresh.
+            chrome.runtime.reload();            
+        }
+    }
+
     var _updateIcon = function () {
         chrome.browserAction.setBadgeBackgroundColor({
             color: DatacontextConfig.icons[DatacontextConfig.utility.enabledFourState()].color 
@@ -108,6 +115,10 @@
         if (request.action == 'setEnabled') {
             _setEnabled(request.enabled, request.sourceKind);
         }
+        if (request.action == 'checkScriptFreshness') {
+            _checkScriptFreshness(request.globalMD5);
+        }
+        return true;
     };
     
     var DatacontextConfig = function ($q, datacontextUtility) {
@@ -127,12 +138,19 @@
 
         chrome.browserAction.setBadgeText({ text: '' });
 
-        chrome.extension.onRequest.addListener(_onRequest);
+        chrome.runtime.onMessage.addListener(_onRequest);
         
         _updateIcon();
     };
     
     angular.module('powellDevTools').run(['datacontextConfig', _init]);
+
+    chrome.notifications.create(null, {
+        type: "basic",
+        iconUrl: "resources/img/icon128.png",
+        title: "Powell Dev Tools",
+        message: "The plugin has been reloaded."
+    });
 
 })(window, window.angular, window.chrome, window.localStorage);
 
