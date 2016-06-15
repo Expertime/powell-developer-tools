@@ -27,7 +27,7 @@
             </div>
         </li>
     </ul>
-    <form role="form" class="col-xs-12">
+    <form role="form" class="col-xs-12" ng-submit="clearLocalStorage()">
         <div class="tab-content col-xs-12">
             <!-- JS Panel -->
             <div class="tab-pane panel" id="js" ng-class='isPaneActive("js")'>               
@@ -163,5 +163,6 @@
                 <p id="ftpCssUrl" class="form-control-static">{{emulationSources.css}}</p>
             </div>
         </div>
+        <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
     </form>
 </div>
