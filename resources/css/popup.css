@@ -107,3 +107,11 @@
 #nav a[data-toggle=tab-disabled], .cmn-toggle[disabled] + label {
     cursor: no-drop
 }
+.picto {
+	height: 50px;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+.warning {
+	background-image: url("../img/warning.png");
+}
