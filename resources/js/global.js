@@ -43,6 +43,11 @@
             'PROD' : 'cdn',
             'REC' : 'r7-cdn'
         };
+        _this.ENABLEDSTATES = [
+            'js',
+            'css',
+            'xhr'
+        ];
     };
     
     var _getLocalStorageValue = function (key) {
@@ -84,15 +89,7 @@
     DatacontextUtility.prototype.set_defaultCssRepoState = function (useDefault) {
         _setLocalStorageValue('defaultCssRepoState', useDefault);
     };
-/*    
-    DatacontextUtility.prototype.get_devJsID = function() {
-        return _getLocalStorageValue('devJsID') || '';
-    }
-    
-    DatacontextUtility.prototype.set_devJsID = function (id) {
-        _setLocalStorageValue('devJsID', id);
-    }
-*/
+
     DatacontextUtility.prototype.get_devCssID = function() {
         return _getLocalStorageValue('devCssID') || '';
     };
@@ -100,15 +97,7 @@
     DatacontextUtility.prototype.set_devCssID = function (id) {
         _setLocalStorageValue('devCssID', id);
     };
-/*    
-    DatacontextUtility.prototype.get_tenantJsID = function() {
-        return _getLocalStorageValue('tenantJsID') || '';
-    }
-    
-    DatacontextUtility.prototype.set_tenantJsID = function (id) {
-        _setLocalStorageValue('tenantJsID', id);
-    }
-*/    
+
     DatacontextUtility.prototype.get_defaultJsTenantState = function () {
         return _getLocalStorageValue('defaultJsTenantState') === "true";
     };
@@ -180,6 +169,14 @@
     DatacontextUtility.prototype.set_useThemeState = function (useTheme) {
         _setLocalStorageValue('useThemeState', useTheme);
     };
+
+    DatacontextUtility.prototype.get_xhrOrigin = function () {
+        return _getLocalStorageValue('xhrOrigin') || '';
+    };
+
+    DatacontextUtility.prototype.set_xhrOrigin = function (xhrOrigin) {
+        _setLocalStorageValue('xhrOrigin', xhrOrigin);
+    };
     
     DatacontextUtility.prototype.isEnabled = function (sourceKind) {
         return _getLocalStorageValue(sourceKind + '_enabled') === "true";
@@ -191,18 +188,33 @@
 
     DatacontextUtility.prototype.shouldShowEnabled = function () {
         var _this = this;
-        return _this.isEnabled('script') || _this.isEnabled('stylesheet');
+        return _this.isEnabled('js') || _this.isEnabled('css') || _this.isEnabled('xhr');
     };
 
     DatacontextUtility.prototype.enabledFourState = function () {
         var _this = this;
-        return _this.isEnabled('stylesheet') && _this.isEnabled('script') 
-            ? 'all' 
-            : _this.isEnabled('stylesheet') 
-                ? 'stylesheet' 
-                : _this.isEnabled('script') 
-                    ? 'script' 
-                    : 'none';
+        var enabledState = _this.ENABLEDSTATES.map(function(state) {
+            return {
+                    kind: state,
+                    enabled: _this.isEnabled(state)  
+                };
+        });
+
+        enabledState = enabledState.filter(function(state) {
+            return state.enabled;
+        });
+
+        if(enabledState.length == 0) {
+            return 'none';
+        }
+        
+        if(enabledState.length == 1) {
+            return enabledState[0].kind;
+        } else {
+            return enabledState.map(function(state) {
+                return state.kind.substr(0,1);
+            }).join('/');
+        }
     };
     
     DatacontextUtility.prototype.get_activePane = function () {
@@ -289,7 +301,7 @@
         
         debugLogoUrl.push('styles');
         debugLogoUrl.push(_this.DEFAULT_TENANT);
-        debugLogoUrl.push('images')
+        debugLogoUrl.push('images');
         debugLogoUrl.push(logoFileName);
         debugLogoUrl = debugLogoUrl.join('/');
         

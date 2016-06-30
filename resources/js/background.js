@@ -54,6 +54,30 @@
             redirectUrl: debugLogoUrl
         };
     };
+
+    var _onBeforeSendHeadersListener = function (request) {
+        var isRefererSet = false;
+        var headers = request.requestHeaders,
+            blockingResponse = {};
+
+        for (var i = 0, l = headers.length; i < l; ++i) {
+            if (headers[i].name == 'Referer') {
+                headers[i].value = DatacontextConfig.utility.get_xhrOrigin();
+                isRefererSet = true;
+                break;
+            }
+        }
+
+        if (!isRefererSet) {
+            headers.push({
+                name: "Referer",
+                value: DatacontextConfig.utility.get_xhrOrigin()
+            });
+        }
+
+        blockingResponse.requestHeaders = headers;
+        return blockingResponse;
+    };
     
     var _setEnabled = function (enabled, sourceKind) {
         if (enabled) {
@@ -61,28 +85,37 @@
             var powCdn = "*://cdn.powell-365.com/*";
             var logoUrl = "*://cdn.powell-365.com/styles/Premium/*/*/*/images/logo-my-portal.png";
             var filters = {
-                urls: [powR7Cdn, powCdn, logoUrl],
-                types: [sourceKind]
+                urls: [powR7Cdn, powCdn, logoUrl]
             };
             var opt_extraInfoSpec = ['blocking'];
             switch (sourceKind) {
-                case 'script':
+                case 'js':
+                    filters.types = ['script'];
                     chrome.webRequest.onBeforeRequest.addListener(_onBeforeJsRequestListener, filters, opt_extraInfoSpec);
                     break;
-                case 'stylesheet':
+                case 'css':
+                    filters.types = ['stylesheet'];
                     chrome.webRequest.onBeforeRequest.addListener(_onBeforeCssRequestListener, filters, opt_extraInfoSpec);
-                    filters.types=['image'];
+                    filters.types = ['image'];
                     chrome.webRequest.onBeforeRequest.addListener(_onBeforeLogoRequestListener, filters, opt_extraInfoSpec);
+                    break;
+                case 'xhr':
+                    filters.types = ['xmlhttprequest'];
+                    opt_extraInfoSpec.push('requestHeaders');
+                    chrome.webRequest.onBeforeSendHeaders.addListener(_onBeforeSendHeadersListener, filters, opt_extraInfoSpec);
                     break;
             }
         } else {
             switch (sourceKind) {
-                case 'script':
+                case 'js':
                     chrome.webRequest.onBeforeRequest.removeListener(_onBeforeJsRequestListener);
                     break;
-                case 'stylesheet':
+                case 'css':
                     chrome.webRequest.onBeforeRequest.removeListener(_onBeforeCssRequestListener);
                     chrome.webRequest.onBeforeRequest.removeListener(_onBeforeLogoRequestListener);
+                    break;
+                case 'xhr':
+                    chrome.webRequest.onBeforeSendHeaders.removeListener(_onBeforeSendHeadersListener);
                     break;
             }
         }
@@ -97,17 +130,22 @@
             // Background scripts are obsolete. Plugin need refresh.
             chrome.runtime.reload();         
         }
-    }
+    };
 
     var _updateIcon = function () {
+        var currentState = DatacontextConfig.utility.enabledFourState();
+        var color = (DatacontextConfig.icons[currentState] || DatacontextConfig.icons['all']).color;
+        var text = DatacontextConfig.icons[currentState] && DatacontextConfig.icons[currentState].text || currentState;
+        var icon = (DatacontextConfig.icons[currentState] || DatacontextConfig.icons['all']).icon;
+
         chrome.browserAction.setBadgeBackgroundColor({
-            color: DatacontextConfig.icons[DatacontextConfig.utility.enabledFourState()].color 
+            color: color
         });
         chrome.browserAction.setBadgeText({
-            text: DatacontextConfig.icons[DatacontextConfig.utility.enabledFourState()].text 
+            text: text
         });
         chrome.browserAction.setIcon({
-            path: DatacontextConfig.icons[DatacontextConfig.utility.enabledFourState()].icon
+            path: icon
         });
     };
     
@@ -125,16 +163,18 @@
         DatacontextConfig.$q = $q;
         DatacontextConfig.utility = datacontextUtility;
         DatacontextConfig.icons = {
-            script: { color: '#EFBE19', text: 'js', icon: 'resources/img/icon19.png'},
-            stylesheet: { color: '#2FA9DA', text: 'css', icon: 'resources/img/icon19.png'},
+            js: { color: '#EFBE19', text: 'js', icon: 'resources/img/icon19.png'},
+            css: { color: '#2FA9DA', text: 'css', icon: 'resources/img/icon19.png'},
+            xhr: { color: '#2af32d', text: 'xhr', icon: 'resources/img/icon19.png'},
             all: { color: '#F3672A', text: 'all', icon: 'resources/img/icon19.png' },
-            none: { color: '#000', text:'', icon: 'resources/img/icon19_disabled.png'}
+            none: { color: '#000', text:'none', icon: 'resources/img/icon19_disabled.png'}
         };
     };
     
     var _init = function () {
-        localStorage.PowellDevTools_script_enabled = false;
-        localStorage.PowellDevTools_stylesheet_enabled = false;
+        localStorage.PowellDevTools_js_enabled = false;
+        localStorage.PowellDevTools_css_enabled = false;
+        localStorage.PowellDevTools_xhr_enabled = false;
 
         chrome.browserAction.setBadgeText({ text: '' });
 

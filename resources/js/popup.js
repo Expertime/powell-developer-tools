@@ -20,15 +20,18 @@
         /*****************
          * View variables
          *****************/
+        // For debugging mode //
+        //$scope.configTemplateUrl = '/resources/html/ConfigController.html'
+        // For production mode //     
         $scope.configTemplateUrl = 'https://rawgit.com/Expertime/powell-developer-tools/master/resources/html/ConfigController.html';
+        
+        
         $scope.config = {
             repoJsURL: datacontextUtility.get_repoJsURL(),
             defaultJsRepoState: datacontextUtility.get_defaultJsRepoState(),
             repoCssURL: datacontextUtility.get_repoCssURL(),
             defaultCssRepoState: datacontextUtility.get_defaultCssRepoState(),
-            //devJsID: datacontextUtility.get_devJsID(),
             devCssID: datacontextUtility.get_devCssID(),
-            //tenantJsID: datacontextUtility.get_tenantJsID(),
             defaultJsTenantState: datacontextUtility.get_defaultJsTenantState(),
             tenantCssID: datacontextUtility.get_tenantCssID(),
             defaultCssTenantState: datacontextUtility.get_defaultCssTenantState(),
@@ -37,11 +40,13 @@
             useThemeState: datacontextUtility.get_useThemeState(),
             sourceMode : datacontextUtility.get_sourceMode(),
             cdnJsMode : datacontextUtility.get_cdnJsMode(),
-            cdnCssMode : datacontextUtility.get_cdnCssMode()
+            cdnCssMode : datacontextUtility.get_cdnCssMode(),
+            xhrOrigin : datacontextUtility.get_xhrOrigin()
         };
         
-        $scope.enableJsEmulation = datacontextUtility.isEnabled('script');
-        $scope.enableCssEmulation = datacontextUtility.isEnabled('stylesheet');
+        $scope.enableJsEmulation = datacontextUtility.isEnabled('js');
+        $scope.enableCssEmulation = datacontextUtility.isEnabled('css');
+        $scope.enableXhrEmulation = datacontextUtility.isEnabled('xhr');
         $scope.environments = datacontextUtility.ENVIRONMENTS;
         $scope.sourceModes = datacontextUtility.SOURCEMODES;
         $scope.cdnModes = datacontextUtility.CDNMODES;
@@ -68,7 +73,7 @@
             var deferred = $q.defer();
             chrome.runtime.sendMessage({ 'action': 'setEnabled', 'enabled': !datacontextUtility.isEnabled(sourceKind), 'sourceKind': sourceKind }, 
                 function(response){
-                    if(!response && chrome.runtime.lastError != null) {
+                    if(!response && chrome.runtime.lastError) {
                         deferred.reject(chrome.runtime.lastError);
                     } else {
                         deferred.resolve(response);
@@ -77,7 +82,7 @@
             deferred.promise.catch(function(response) {
                 // Error while communicating with background scripts. Reloading plugin.
                 chrome.runtime.reload();
-            })
+            });
         };
         
         $scope.clearLocalStorage = function() {
