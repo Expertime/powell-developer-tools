@@ -81,7 +81,7 @@
                 });
             deferred.promise.catch(function(response) {
                 // Error while communicating with background scripts. Reloading plugin.
-                chrome.runtime.reload();
+                // chrome.runtime.reload();
             });
         };
         
