@@ -20,11 +20,16 @@
         /*****************
          * View variables
          *****************/
-        // For debugging mode //
-        //$scope.configTemplateUrl = '/resources/html/ConfigController.html'
-        // For production mode //     
-        $scope.configTemplateUrl = 'https://rawgit.com/Expertime/powell-developer-tools/master/resources/html/ConfigController.html';
-        
+
+        var scripts = document.querySelectorAll('script');
+        var script = scripts[scripts.length-1]
+        if (script.src.indexOf('chrome-extension://') >= 0) {
+            // For debugging mode //
+            $scope.configTemplateUrl = '/resources/html/ConfigController.html'
+        } else {
+            // For production mode //     
+            $scope.configTemplateUrl = 'https://rawgit.com/Expertime/powell-developer-tools/master/resources/html/ConfigController.html';
+        }
         
         $scope.config = {
             repoJsURL: datacontextUtility.get_repoJsURL(),
