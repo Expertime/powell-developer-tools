@@ -90,6 +90,22 @@
         _setLocalStorageValue('defaultCssRepoState', useDefault);
     };
 
+    DatacontextUtility.prototype.get_defautCssOnCdnState = function () {
+        return _getLocalStorageValue('defautCssOnCdnState') === "true";
+    };
+    
+    DatacontextUtility.prototype.set_defautCssOnCdnState = function (defaultCssOnCdn) {
+        _setLocalStorageValue('defautCssOnCdnState', defaultCssOnCdn);
+    };
+
+    DatacontextUtility.prototype.get_defaultCssURL = function() {
+        return _getLocalStorageValue('defaultCssURL') || '';
+    };
+       
+    DatacontextUtility.prototype.set_defaultCssURL = function (url) {
+        _setLocalStorageValue('defaultCssURL', url);
+    };
+
     DatacontextUtility.prototype.get_devCssID = function() {
         return _getLocalStorageValue('devCssID') || '';
     };

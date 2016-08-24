@@ -75,7 +75,6 @@
                 <div class="form-group-sm">                   
                     <label for="repoCssURL">URL du repository CSS:</label>
                     <input type="text" ng-model="config.repoCssURL" ng-disabled="config.defaultCssRepoState" class="form-control" id="repoCssURL" placeholder="D&eacute;faut : https://cdn.powell-365.com/" aria-describedby="repoCssURLhelpBlock">
-                    <!--<span id="repoCssURLhelpBlock" class="help-block form-control-static">D&eacute;fini l'URL de base pour les sources CSS</span>-->
                     <div class="row">
                       <div class="form-group-sm col-xs-6">
                         <label for="cdnCssMode">CDN mode:</label>
@@ -86,10 +85,26 @@
                             <div class="switch pull-right">
                                 <span class="form-control-static">Utiliser le CDN</span>
                                 &nbsp;
-                                <input ng-model="config.defaultCssRepoState" id="defaultRepoCssURLSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="checkbox" data-sourcekind="js">
+                                <input ng-model="config.defaultCssRepoState" id="defaultRepoCssURLSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="checkbox" data-sourcekind="css">
                                 <label for="defaultRepoCssURLSwitch" class="pull-right"></label>
                             </div>
                         </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group-sm col-xs-12">
+                        <div class="checkbox">
+                            <div class="switch pull-right">
+                                <span class="form-control-static">Les CSS originales sont sur le CDN</span>
+                                &nbsp;
+                                <input ng-model="config.defautCssOnCdnState" id="defautCssOnCdnSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="checkbox">
+                                <label for="defautCssOnCdnSwitch" class="pull-right"></label>
+                            </div>
+                        </div>
+                      </div>
+                      <div class="form-group-sm col-xs-12" ng-if="!config.defautCssOnCdnState">
+                        <label for="defaultCssURL">URL d'origine des CSS:</label>
+                        <input type="text" ng-model="config.defaultCssURL" class="form-control" id="defaultCssURL" placeholder="https://expertime365.sharepoint.com/.../_catalogs/masterpage/powell/styles/">
                       </div>
                     </div>
                 </div>                   

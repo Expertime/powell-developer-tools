@@ -29,9 +29,15 @@
     var _onBeforeCssRequestListener = function (request) {
         var originalCssUrl = request.url,
             debugCssUrl = request.url,
-            regIsOriginalUrl = /cdn.powell-365.com\/styles\//i,
+            regIsOriginalUrl,
             regFileName = /[^/\\&\?]+\.\w{3,4}(?=([\?&].*$|$))/;
-        if (regIsOriginalUrl.exec(originalCssUrl) !== null) {
+        if (DatacontextConfig.utility.get_defautCssOnCdnState()) {
+            regIsOriginalUrl = /cdn.powell-365.com\/styles\//i;
+        } else {
+            regIsOriginalUrl = DatacontextConfig.utility.get_defaultCssURL();
+        }
+
+        if ((regIsOriginalUrl.exec && (regIsOriginalUrl.exec(originalCssUrl) !== null)) || originalCssUrl.indexOf(regIsOriginalUrl) >= 0) {
             var cssFileName = originalCssUrl.match(regFileName)[0];
             debugCssUrl = DatacontextConfig.utility.get_cssSourceUrl(cssFileName);
             console.log('Redirecting original request [' + originalCssUrl + '] to [' + debugCssUrl + ']');
@@ -84,6 +90,7 @@
             var powR7Cdn = "*://r7-cdn.powell-365.com/*";
             var powCdn = "*://cdn.powell-365.com/*";
             var logoUrl = "*://cdn.powell-365.com/styles/Premium/*/*/*/images/logo-my-portal.png";
+            var wildcard = '*://*/*';
             var filters = {
                 urls: [powR7Cdn, powCdn, logoUrl]
             };
@@ -94,10 +101,11 @@
                     chrome.webRequest.onBeforeRequest.addListener(_onBeforeJsRequestListener, filters, opt_extraInfoSpec);
                     break;
                 case 'css':
-                    filters.types = ['stylesheet'];
-                    chrome.webRequest.onBeforeRequest.addListener(_onBeforeCssRequestListener, filters, opt_extraInfoSpec);
                     filters.types = ['image'];
                     chrome.webRequest.onBeforeRequest.addListener(_onBeforeLogoRequestListener, filters, opt_extraInfoSpec);
+                    filters.types = ['stylesheet'];
+                    filters.urls.push(wildcard);
+                    chrome.webRequest.onBeforeRequest.addListener(_onBeforeCssRequestListener, filters, opt_extraInfoSpec);
                     break;
                 case 'xhr':
                     filters.types = ['xmlhttprequest'];
@@ -189,7 +197,7 @@
         type: "basic",
         iconUrl: "resources/img/icon128.png",
         title: "Powell Dev Tools",
-        message: "The plugin has been reloaded to ensure JavaScript freshness."
+        message: "Plugin reloaded."
     });
 
 })(window, window.angular, window.chrome, window.localStorage);

@@ -21,9 +21,9 @@
          * View variables
          *****************/
         // For debugging mode //
-        //$scope.configTemplateUrl = '/resources/html/ConfigController.html'
+        $scope.configTemplateUrl = '/resources/html/ConfigController.html'
         // For production mode //     
-        $scope.configTemplateUrl = 'https://rawgit.com/Expertime/powell-developer-tools/master/resources/html/ConfigController.html';
+        //$scope.configTemplateUrl = 'https://rawgit.com/Expertime/powell-developer-tools/master/resources/html/ConfigController.html';
         
         
         $scope.config = {
@@ -31,6 +31,8 @@
             defaultJsRepoState: datacontextUtility.get_defaultJsRepoState(),
             repoCssURL: datacontextUtility.get_repoCssURL(),
             defaultCssRepoState: datacontextUtility.get_defaultCssRepoState(),
+            defautCssOnCdnState: datacontextUtility.get_defautCssOnCdnState(),
+            defaultCssURL: datacontextUtility.get_defaultCssURL(),
             devCssID: datacontextUtility.get_devCssID(),
             defaultJsTenantState: datacontextUtility.get_defaultJsTenantState(),
             tenantCssID: datacontextUtility.get_tenantCssID(),
