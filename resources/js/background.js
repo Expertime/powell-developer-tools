@@ -37,6 +37,8 @@
             regIsOriginalUrl = DatacontextConfig.utility.get_defaultCssURL();
         }
 
+        if(!regIsOriginalUrl) return;
+
         if ((regIsOriginalUrl.exec && (regIsOriginalUrl.exec(originalCssUrl) !== null)) || originalCssUrl.indexOf(regIsOriginalUrl) >= 0) {
             var cssFileName = originalCssUrl.match(regFileName)[0];
             debugCssUrl = DatacontextConfig.utility.get_cssSourceUrl(cssFileName);
