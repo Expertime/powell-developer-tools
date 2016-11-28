@@ -45,14 +45,19 @@
             envID: datacontextUtility.get_envID(),
             themeID: datacontextUtility.get_themeID(),
             useThemeState: datacontextUtility.get_useThemeState(),
+            repoHtmlURL: datacontextUtility.get_repoHtmlURL(),
+            defaultHtmlRepoState: datacontextUtility.get_defaultHtmlRepoState(),
+            htmlVersion: datacontextUtility.get_htmlVersion(),
             sourceMode : datacontextUtility.get_sourceMode(),
             cdnJsMode : datacontextUtility.get_cdnJsMode(),
             cdnCssMode : datacontextUtility.get_cdnCssMode(),
+            cdnHtmlMode: datacontextUtility.get_cdnHtmlMode(),
             xhrOrigin : datacontextUtility.get_xhrOrigin()
         };
         
         $scope.enableJsEmulation = datacontextUtility.isEnabled('js');
         $scope.enableCssEmulation = datacontextUtility.isEnabled('css');
+        $scope.enableHtmlEmulation = datacontextUtility.isEnabled('html');
         $scope.enableXhrEmulation = datacontextUtility.isEnabled('xhr');
         $scope.environments = datacontextUtility.ENVIRONMENTS;
         $scope.sourceModes = datacontextUtility.SOURCEMODES;
@@ -64,7 +69,8 @@
             }
             $scope.emulationSources = {
                 css: datacontextUtility.get_cssSourceUrl('*.css'),
-                js: datacontextUtility.get_jsSourceUrl()
+                js: datacontextUtility.get_jsSourceUrl(),
+                html: datacontextUtility.get_htmlSourceUrl('[layouts|templates]/*.html')
             };
         });
         

@@ -12,7 +12,9 @@
     max-height: 600px;
 }
 .tab-pane {
-    height: 50%;
+	padding-top: 20px;
+    padding-bottom: 20px;
+    margin-bottom: 0;
 }
  .cmn-toggle {
  	position: absolute;
@@ -95,12 +97,16 @@
  }
  ul#nav > li {
     position: relative;
-    width: 33%;
+/*    width: 25%;*/
+	width: 33%;
+}
+ul#nav #navHtml {
+	display: none;
 }
 #nav > li .switch {
     position: absolute;
     top: 50%;
-    right: 30px;
+    right: 20px;
     transform: translateY(-50%);
     z-index: 2;
 }

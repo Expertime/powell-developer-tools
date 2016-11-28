@@ -1,22 +1,32 @@
 <html ng-app="powellDevTools">
     <head>
         <title>Debug Powell Javascript sources</title>
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-sanitize.min.js"></script>
 
-        <!--For debugging mode-->
+        <!--For debugging mode-->     
+        <!--
+        <link href="resources/css/bootstrap/bootstrap.min.css" rel="stylesheet">
+        <link href="resources/css/bootstrap/bootstrap-multiselect.css" rel="stylesheet" />
+        <script src="resources/js/jquery/jquery.min.js"></script>
+        <script src="resources/js/bootstrap/bootstrap.min.js"></script>
+        <script src="resources/js/bootstrap/bootstrap-multiselect.min.js"></script>
+        <script src="resources/js/angularjs/angular.min.js"></script>
+        <script src="resources/js/angularjs/angular-sanitize.min.js"></script>
         <link href="resources/css/popup.css" rel="stylesheet">
         <script src="resources/js/global.js"></script>
         <script src="resources/js/popup.js"></script>
+        -->
 
-        <!--For production mode-->     
-        <!--<link href="https://rawgit.com/Expertime/powell-developer-tools/master/resources/css/popup.css" rel="stylesheet">
+        <!--For production mode-->            
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css" rel="stylesheet"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-sanitize.min.js"></script>
+        <link href="https://rawgit.com/Expertime/powell-developer-tools/master/resources/css/popup.css" rel="stylesheet">
         <script src="https://rawgit.com/Expertime/powell-developer-tools/master/resources/js/global.js"></script>
-        <script src="https://rawgit.com/Expertime/powell-developer-tools/master/resources/js/popup.js"></script>-->
-
+        <script src="https://rawgit.com/Expertime/powell-developer-tools/master/resources/js/popup.js"></script>
     </head>
     <body ng-controller="ConfigController">
       <div id="templateWrapper" class="container-fluid" ng-include="configTemplateUrl"></div>

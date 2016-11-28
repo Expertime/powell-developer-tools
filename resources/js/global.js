@@ -28,7 +28,7 @@
     var DatacontextUtility = function ($q) {
         var _this = this;
         DatacontextUtility.$q = $q;
-        _this.CDN_BASE_URL = 'https://[CDNMODE].powell-365.com/';
+        _this.CDN_BASE_URL = 'https://[CDNMODE].powell-365.com';
         _this.DEFAULT_TENANT = 'Default';
         _this.ENVIRONMENTS = {
             'PROD' : '1',
@@ -46,6 +46,7 @@
         _this.ENABLEDSTATES = [
             'js',
             'css',
+            'html',
             'xhr'
         ];
     };
@@ -58,6 +59,7 @@
         localStorage['PowellDevTools_' + key] = value;
     };
     
+    /* JS Panel */
     DatacontextUtility.prototype.get_repoJsURL = function () {
         return _getLocalStorageValue('repoJsURL') || '';
     };
@@ -74,6 +76,31 @@
         _setLocalStorageValue('defaultJsRepoState', useDefault);
     };
     
+    DatacontextUtility.prototype.get_defaultJsTenantState = function () {
+        return _getLocalStorageValue('defaultJsTenantState') === "true";
+    };
+    
+    DatacontextUtility.prototype.set_defaultJsTenantState = function (useDefault) {
+        _setLocalStorageValue('defaultJsTenantState', useDefault);
+    };
+        
+    DatacontextUtility.prototype.get_sourceMode = function () {
+        return _getLocalStorageValue('sourceMode') || '';
+    };
+    
+    DatacontextUtility.prototype.set_sourceMode = function (id) {
+        _setLocalStorageValue('sourceMode', id);
+    };
+    
+    DatacontextUtility.prototype.get_cdnJsMode = function () {
+        return _getLocalStorageValue('cdnJsMode') || 'cdn';
+    };
+    
+    DatacontextUtility.prototype.set_cdnJsMode = function (id) {
+        _setLocalStorageValue('cdnJsMode', id);
+    };
+
+    /* CSS Panel */
     DatacontextUtility.prototype.get_repoCssURL = function() {
         return _getLocalStorageValue('repoCssURL') || '';
     };
@@ -113,15 +140,6 @@
     DatacontextUtility.prototype.set_devCssID = function (id) {
         _setLocalStorageValue('devCssID', id);
     };
-
-    DatacontextUtility.prototype.get_defaultJsTenantState = function () {
-        return _getLocalStorageValue('defaultJsTenantState') === "true";
-    };
-    
-    DatacontextUtility.prototype.set_defaultJsTenantState = function (useDefault) {
-        _setLocalStorageValue('defaultJsTenantState', useDefault);
-    };
-        
     DatacontextUtility.prototype.get_tenantCssID = function() {
         return _getLocalStorageValue('tenantCssID') || '';
     };
@@ -154,22 +172,6 @@
         _setLocalStorageValue('themeID', id);
     };
     
-    DatacontextUtility.prototype.get_sourceMode = function () {
-        return _getLocalStorageValue('sourceMode') || '';
-    };
-    
-    DatacontextUtility.prototype.set_sourceMode = function (id) {
-        _setLocalStorageValue('sourceMode', id);
-    };
-    
-    DatacontextUtility.prototype.get_cdnJsMode = function () {
-        return _getLocalStorageValue('cdnJsMode') || 'cdn';
-    };
-    
-    DatacontextUtility.prototype.set_cdnJsMode = function (id) {
-        _setLocalStorageValue('cdnJsMode', id);
-    };
-    
     DatacontextUtility.prototype.get_cdnCssMode = function () {
         return _getLocalStorageValue('cdnCssMode') || 'cdn';
     };
@@ -186,6 +188,69 @@
         _setLocalStorageValue('useThemeState', useTheme);
     };
 
+    /* HTML Panel */
+    DatacontextUtility.prototype.get_repoHtmlURL = function () {
+        return _getLocalStorageValue('repoHtmlURL') || '';
+    };
+    
+    DatacontextUtility.prototype.set_repoHtmlURL = function (url) {
+        _setLocalStorageValue('repoHtmlURL', url);
+    };
+    
+    DatacontextUtility.prototype.get_defaultHtmlRepoState = function () {
+        return _getLocalStorageValue('defaultHtmlRepoState') === "true";
+    };
+    
+    DatacontextUtility.prototype.set_defaultHtmlRepoState = function (useDefault) {
+        _setLocalStorageValue('defaultHtmlRepoState', useDefault);
+    };
+    
+    DatacontextUtility.prototype.get_htmlVersion = function () {
+        return parseInt(_getLocalStorageValue('htmlVersion'), 10) || 0;
+    };
+    
+    DatacontextUtility.prototype.set_htmlVersion = function (id) {
+        _setLocalStorageValue('htmlVersion', id);
+    };
+    
+    DatacontextUtility.prototype.get_cdnHtmlMode = function () {
+        return _getLocalStorageValue('cdnHtmlMode') || 'cdn';
+    };
+    
+    DatacontextUtility.prototype.set_cdnHtmlMode = function (id) {
+        _setLocalStorageValue('cdnHtmlMode', id);
+    };
+
+    DatacontextUtility.prototype.get_htmlTemplates = function () {
+        return JSON.parse(_getLocalStorageValue('htmlTemplate') || '{}');
+    }
+
+    DatacontextUtility.prototype.get_htmlTemplate = function (fileName) {
+        var htmlTemplates = JSON.parse(_getLocalStorageValue('htmlTemplate') || '{}');
+        if (htmlTemplates[fileName] == null) {
+            htmlTemplates[fileName] = {
+                isOverriden: false,
+                fileName: fileName
+            };
+            _setLocalStorageValue('htmlTemplate', JSON.stringify(htmlTemplates));
+        }
+        return htmlTemplates[fileName];
+    }
+
+    DatacontextUtility.prototype.set_htmlTemplate = function (fileName, isOverriden) {
+        var htmlTemplates = JSON.parse(_getLocalStorageValue('htmlTemplate') || '{}');
+        if (htmlTemplates[fileName] == null) {
+            htmlTemplates[fileName] = {
+                isOverriden: isOverriden,
+                fileName: fileName
+            };
+        } else {
+            htmlTemplates[fileName].isOverriden = isOverriden;
+        }
+        _setLocalStorageValue('htmlTemplate', JSON.stringify(htmlTemplates));
+    }
+
+    /* XHR Panel*/
     DatacontextUtility.prototype.get_xhrOrigin = function () {
         return _getLocalStorageValue('xhrOrigin') || '';
     };
@@ -194,6 +259,7 @@
         _setLocalStorageValue('xhrOrigin', xhrOrigin);
     };
     
+    /* Common */
     DatacontextUtility.prototype.isEnabled = function (sourceKind) {
         return _getLocalStorageValue(sourceKind + '_enabled') === "true";
     };
@@ -229,7 +295,7 @@
         } else {
             return enabledState.map(function(state) {
                 return state.kind.substr(0,1);
-            }).join('/');
+            }).join('');
         }
     };
     
@@ -304,6 +370,26 @@
         }
         
         return debugCssUrl.replace(/([^:]\/)\/+/g, "$1");
+    };
+
+    DatacontextUtility.prototype.get_htmlSourceUrl = function (htmlFileName, htmlFileType) {
+        var _this = this;
+        var debugHtmlUrl = [];
+        if (_this.get_defaultHtmlRepoState()) {
+            debugHtmlUrl.push(_this.CDN_BASE_URL.replace('[CDNMODE]', _this.get_cdnHtmlMode()));
+            debugHtmlUrl.push('Common');
+            /* Comprendre les URLs des Layouts & Templates
+            Config.RESOURCE_FOLDER */   
+        } else {
+            debugHtmlUrl.push(_this.get_repoHtmlURL());
+        }
+        
+        //debugHtmlUrl.push(htmlFileType);
+        
+        debugHtmlUrl.push(htmlFileName);
+        debugHtmlUrl = debugHtmlUrl.join('/');
+        
+        return debugHtmlUrl.replace(/([^:]\/)\/+/g, "$1");
     };
 
     DatacontextUtility.prototype.get_logoSourceUrl = function (logoFileName) {

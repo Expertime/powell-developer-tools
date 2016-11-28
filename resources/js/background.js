@@ -49,6 +49,24 @@
         };
     };
 
+    var _onBeforeXhrRequestListener = function (request) {
+        var originalXhrUrl = request.url,
+            debugXhrUrl = request.url,
+            regIsOriginalUrl = /cdn.powell-365.com\/+(?:(?:\w|\S)+\/+)+(\S+\.html)/i;
+
+        var isOriginalUrl = regIsOriginalUrl.exec(originalXhrUrl);
+        if (isOriginalUrl) {
+            var originalTemplate = DatacontextConfig.utility.get_htmlTemplate(isOriginalUrl[1]);
+            if (originalTemplate.isOverriden) {
+                debugXhrUrl = DatacontextConfig.utility.get_htmlSourceUrl(originalTemplate.fileName)
+                console.log('Redirecting original request [' + originalXhrUrl + '] to [' + debugXhrUrl + ']');
+            }
+        }
+        return {
+            redirectUrl: debugXhrUrl
+        };
+    }
+
     var _onBeforeLogoRequestListener = function (request) {
         var originalLogoUrl = request.url,
             debugLogoUrl = request.url,
@@ -87,30 +105,49 @@
         return blockingResponse;
     };
     
+    var _buildFilters = function(powCdn, filterUrl) {
+        var filters = [];
+        for (var i = 0; i < powCdn.length; i++) {
+            for (var j = 0; j < filterUrl.length; j++) {
+                filters.push(powCdn[i] + filterUrl[j]);
+            }
+        }
+        return filters;
+    }
+
     var _setEnabled = function (enabled, sourceKind) {
         if (enabled) {
-            var powR7Cdn = "*://r7-cdn.powell-365.com/*";
-            var powCdn = "*://cdn.powell-365.com/*";
-            var logoUrl = "*://cdn.powell-365.com/styles/Premium/*/*/*/images/logo-my-portal.png";
-            var wildcard = '*://*/*';
-            var filters = {
-                urls: [powR7Cdn, powCdn, logoUrl]
-            };
+            var powCdn = ["*://r7-cdn.powell-365.com/", "*://cdn.powell-365.com/"];
+            var logoUrl = ["styles/Premium/*/*/*/images/logo-my-portal.png"];
+            var cssUrl = ["styles/Premium/*/*/*/powell.css"];
+            var jsUrl = ["scripts/Premium/*/*/*/powell"];
+            var htmlTemplateUrl = ["Common/*/*/*//layouts/*.html", "Common/*/*/*//Templates/*/*.html", "Common//Templates/*/*.html"];
+            var wildcard = "*://*/*";
+
+            var filters = {};
             var opt_extraInfoSpec = ['blocking'];
             switch (sourceKind) {
                 case 'js':
                     filters.types = ['script'];
+                    filters.urls = _buildFilters(powCdn, jsUrl);
                     chrome.webRequest.onBeforeRequest.addListener(_onBeforeJsRequestListener, filters, opt_extraInfoSpec);
                     break;
                 case 'css':
                     filters.types = ['image'];
+                    filters.urls = _buildFilters(powCdn, logoUrl);
                     chrome.webRequest.onBeforeRequest.addListener(_onBeforeLogoRequestListener, filters, opt_extraInfoSpec);
                     filters.types = ['stylesheet'];
+                    filters.urls = _buildFilters(powCdn, cssUrl);
                     filters.urls.push(wildcard);
                     chrome.webRequest.onBeforeRequest.addListener(_onBeforeCssRequestListener, filters, opt_extraInfoSpec);
                     break;
+                case 'html':
+                    filters.urls = _buildFilters(powCdn, htmlTemplateUrl);
+                    filters.types = ['xmlhttprequest'];
+                    chrome.webRequest.onBeforeRequest.addListener(_onBeforeXhrRequestListener, filters, opt_extraInfoSpec);
                 case 'xhr':
                     filters.types = ['xmlhttprequest'];
+                    filters.urls = _buildFilters(powCdn, ['*']);
                     opt_extraInfoSpec.push('requestHeaders');
                     chrome.webRequest.onBeforeSendHeaders.addListener(_onBeforeSendHeadersListener, filters, opt_extraInfoSpec);
                     break;
@@ -175,6 +212,7 @@
         DatacontextConfig.icons = {
             js: { color: '#EFBE19', text: 'js', icon: 'resources/img/icon19.png'},
             css: { color: '#2FA9DA', text: 'css', icon: 'resources/img/icon19.png'},
+            html: { color: '#cd62f3', text: 'html', icon: 'resources/img/icon19.png'},
             xhr: { color: '#2af32d', text: 'xhr', icon: 'resources/img/icon19.png'},
             all: { color: '#F3672A', text: 'all', icon: 'resources/img/icon19.png' },
             none: { color: '#000', text:'none', icon: 'resources/img/icon19_disabled.png'}
@@ -185,6 +223,7 @@
         localStorage.PowellDevTools_js_enabled = false;
         localStorage.PowellDevTools_css_enabled = false;
         localStorage.PowellDevTools_xhr_enabled = false;
+        localStorage.PowellDevTools_html_enabled = false;
 
         chrome.browserAction.setBadgeText({ text: '' });
 
