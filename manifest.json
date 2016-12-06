@@ -19,7 +19,7 @@
     "content_scripts": [
         {
             "matches": ["https://*.sharepoint.com/*"],
-            "js": ["powelldevtools.contentscript.js"]
+            "js": ["resources/js/powelldevtools.contentscript.min.js"]
         }
     ],
     "permissions": [
