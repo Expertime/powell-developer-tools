@@ -3,7 +3,7 @@
 
     var powellDevTools = angular.module('powellDevTools', [
         'ngSanitize'   // Fixes HTML issues in data binding
-    ]).config(['sceDelegateProvider', function($sceDelegateProvider) {
+    ]).config(['$sceDelegateProvider', function($sceDelegateProvider) {
       // Add some trusted resource origins
       $sceDelegateProvider.resourceUrlWhitelist([
         // Allow same origin resource loads.
