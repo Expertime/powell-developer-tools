@@ -91,8 +91,8 @@ fallback.config({
             // The URLs to load `Twitter Bootstrap multiselect`.
             "urls": [
                 "chrome-extension://fhhogopjgcndenpcpihdboilgfgbmiab/resources/css/popup.css",
-                "https://rawgit.com/Expertime/powell-developer-tools/master/resources/css/popup.css",
-                "resources/css/popup.css"
+                "https://rawgit.com/Expertime/powell-developer-tools/master/resources/css/popup.min.css",
+                "resources/css/popup.min.css"
             ]
         },
 
