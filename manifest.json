@@ -1,9 +1,9 @@
 {
     "manifest_version": 2,
-    "name": "Powell Developer Tools",
-    "short_name": "Powell DevTools",
-    "description": "This extension gives access to the developer-specific-version of the Powell JavaScript & CSS files",
-    "version": "3.3",
+    "name": "Powell 365 Branding",
+    "short_name": "Pow365-Branding",
+    "description": "This extension allows to apply custom Powell Manager Themes and Navigation ontop of any Powell 365 SharePoint site",
+    "version": "1.0",
     "browser_action": {
         "default_icon": "resources/img/icon19_disabled.png",
         "default_popup": "popup.html"
