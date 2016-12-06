@@ -135,15 +135,12 @@ fallback.config({
 });
 
 if (window.location.pathname == '/popup.html') {
-    fallback.require(function (
-        css$bootstrap,
-        css$bootstrap_multiselect,
-        css$popup,
-        popup) {
-    });
+    fallback.require(["css$bootstrap", "css$bootstrap_multiselect", "css$popup", "popup",
+        function (css$bootstrap, css$bootstrap_multiselect, css$popup, popup) {
+        }]);
 }
 
 if (window.location.pathname == '/background.html') {
-    fallback.require(function (background) {
-    });
+    fallback.require(["background", function (background) {
+    }]);
 }
