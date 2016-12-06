@@ -26,9 +26,9 @@ fallback.config({
             "deps": "Bootstrap_multiselect",
             // The URLs to load `Twitter Bootstrap multiselect`.
             "urls": [
-                "chrome-extension://fhhogopjgcndenpcpihdboilgfgbmiab/resources/css/bootstrap/bootstrap-multiselect.css",
+                "chrome-extension://fhhogopjgcndenpcpihdboilgfgbmiab/resources/css/bootstrap/bootstrap-multiselect.min.css",
                 "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css",
-                "resources/css/bootstrap/bootstrap-multiselect.css"
+                "resources/css/bootstrap/bootstrap-multiselect.min.css"
             ]
         },
 
