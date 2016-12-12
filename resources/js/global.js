@@ -3,16 +3,16 @@
 
     var powellDevTools = angular.module('powellDevTools', [
         'ngSanitize'   // Fixes HTML issues in data binding
-    ]).config(function($sceDelegateProvider) {
+    ]).config(['$sceDelegateProvider', function($sceDelegateProvider) {
       // Add some trusted resource origins
       $sceDelegateProvider.resourceUrlWhitelist([
         // Allow same origin resource loads.
         'self',
         // Allow loading from our assets domain.  Notice the difference between * and **.
         'https://rawgit.com/**',
-        'https://cdn.rawgit.com/**',
+        'https://cdn.rawgit.com/**'
       ]);
-    });/*.factory('$exceptionHandler', function() {
+    }]);/*.factory('$exceptionHandler', function() {
         return function (exception, cause) {
             chrome.runtime.reload()
         }
