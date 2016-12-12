@@ -52,7 +52,7 @@
     
     /* CSS Panel */
     DatacontextUtility.prototype.get_envID = function () {
-        return _getLocalStorageValue('envID') || '';
+        return _getLocalStorageValue('envID') || '1';
     };
     
     DatacontextUtility.prototype.set_envID = function (id) {
@@ -145,8 +145,8 @@
         debugCssUrl.push(cssFileName);
         debugCssUrl = debugCssUrl.join('/');
                
-        //debugCssUrl += '?env=' + _this.get_envID();
-        debugCssUrl += '?themeId=' + _this.get_themeID();
+        debugCssUrl += '?env=' + _this.get_envID();
+        debugCssUrl += '&themeId=' + _this.get_themeID();
                 
         return debugCssUrl.replace(/([^:]\/)\/+/g, "$1");
     };
