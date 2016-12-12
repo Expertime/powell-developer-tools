@@ -13,6 +13,10 @@
                 <h5>Thème</h5>
             </a>
             <div class="switch">
+                <span class="switch-state">
+                    <span ng-if="enableCssEmulation">Activé</span>
+                    <span ng-if="!enableCssEmulation">Désactivé</span>
+                </span>
                 <input ng-model="enableCssEmulation" ng-click="switchChanged('css');" id="cssSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round"
                     type="checkbox" data-sourcekind="css">
                 <label for="cssSwitch"></label>

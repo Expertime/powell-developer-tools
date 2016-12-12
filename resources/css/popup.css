@@ -112,6 +112,11 @@ ul#nav #navHtml {
     transform: translateY(-50%);
     z-index: 2;
 }
+#nav > li .switch .switch-state {
+    position: absolute;
+    right: 50px;
+    line-height: 20px;
+}
 #nav a[data-toggle=tab-disabled], .cmn-toggle[disabled] + label {
     cursor: no-drop
 }
