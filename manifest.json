@@ -3,7 +3,7 @@
     "name": "Powell 365 Branding",
     "short_name": "Pow365-Branding",
     "description": "This extension allows to apply custom Powell Manager Themes and Navigation ontop of any Powell 365 SharePoint site",
-    "version": "1.0",
+    "version": "1.1",
     "browser_action": {
         "default_icon": "resources/img/icon19_disabled.png",
         "default_popup": "popup.html"
