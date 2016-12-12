@@ -9,7 +9,8 @@
         // Allow same origin resource loads.
         'self',
         // Allow loading from our assets domain.  Notice the difference between * and **.
-        'https://rawgit.com/**'
+        'https://rawgit.com/**',
+        'https://cdn.rawgit.com/**',
       ]);
     });/*.factory('$exceptionHandler', function() {
         return function (exception, cause) {
@@ -28,25 +29,15 @@
     var DatacontextUtility = function ($q) {
         var _this = this;
         DatacontextUtility.$q = $q;
-        _this.CDN_BASE_URL = 'https://[CDNMODE].powell-365.com';
+        _this.CDN_BASE_URL = 'https://cdn.powell-365.com';
         _this.DEFAULT_TENANT = 'Default';
         _this.ENVIRONMENTS = {
             'PROD' : '1',
             'REC' : '2',
             'DEV': '3'
         };
-        _this.SOURCEMODES = {
-            'PROD' : '',
-            'DEBUG' : '/debug'
-        };
-        _this.CDNMODES = {
-            'PROD' : 'cdn',
-            'REC' : 'r7-cdn'
-        };
         _this.ENABLEDSTATES = [
-            'js',
             'css',
-            'html',
             'xhr'
         ];
     };
@@ -59,103 +50,7 @@
         localStorage['PowellDevTools_' + key] = value;
     };
     
-    /* JS Panel */
-    DatacontextUtility.prototype.get_repoJsURL = function () {
-        return _getLocalStorageValue('repoJsURL') || '';
-    };
-    
-    DatacontextUtility.prototype.set_repoJsURL = function (url) {
-        _setLocalStorageValue('repoJsURL', url);
-    };
-    
-    DatacontextUtility.prototype.get_defaultJsRepoState = function () {
-        return _getLocalStorageValue('defaultJsRepoState') === "true";
-    };
-    
-    DatacontextUtility.prototype.set_defaultJsRepoState = function (useDefault) {
-        _setLocalStorageValue('defaultJsRepoState', useDefault);
-    };
-    
-    DatacontextUtility.prototype.get_defaultJsTenantState = function () {
-        return _getLocalStorageValue('defaultJsTenantState') === "true";
-    };
-    
-    DatacontextUtility.prototype.set_defaultJsTenantState = function (useDefault) {
-        _setLocalStorageValue('defaultJsTenantState', useDefault);
-    };
-        
-    DatacontextUtility.prototype.get_sourceMode = function () {
-        return _getLocalStorageValue('sourceMode') || '';
-    };
-    
-    DatacontextUtility.prototype.set_sourceMode = function (id) {
-        _setLocalStorageValue('sourceMode', id);
-    };
-    
-    DatacontextUtility.prototype.get_cdnJsMode = function () {
-        return _getLocalStorageValue('cdnJsMode') || 'cdn';
-    };
-    
-    DatacontextUtility.prototype.set_cdnJsMode = function (id) {
-        _setLocalStorageValue('cdnJsMode', id);
-    };
-
     /* CSS Panel */
-    DatacontextUtility.prototype.get_repoCssURL = function() {
-        return _getLocalStorageValue('repoCssURL') || '';
-    };
-       
-    DatacontextUtility.prototype.set_repoCssURL = function (url) {
-        _setLocalStorageValue('repoCssURL', url);
-    };
-    
-    DatacontextUtility.prototype.get_defaultCssRepoState = function () {
-        return _getLocalStorageValue('defaultCssRepoState') === "true";
-    };
-    
-    DatacontextUtility.prototype.set_defaultCssRepoState = function (useDefault) {
-        _setLocalStorageValue('defaultCssRepoState', useDefault);
-    };
-
-    DatacontextUtility.prototype.get_defautCssOnCdnState = function () {
-        return _getLocalStorageValue('defautCssOnCdnState') === "true";
-    };
-    
-    DatacontextUtility.prototype.set_defautCssOnCdnState = function (defaultCssOnCdn) {
-        _setLocalStorageValue('defautCssOnCdnState', defaultCssOnCdn);
-    };
-
-    DatacontextUtility.prototype.get_defaultCssURL = function() {
-        return _getLocalStorageValue('defaultCssURL') || '';
-    };
-       
-    DatacontextUtility.prototype.set_defaultCssURL = function (url) {
-        _setLocalStorageValue('defaultCssURL', url);
-    };
-
-    DatacontextUtility.prototype.get_devCssID = function() {
-        return _getLocalStorageValue('devCssID') || '';
-    };
-    
-    DatacontextUtility.prototype.set_devCssID = function (id) {
-        _setLocalStorageValue('devCssID', id);
-    };
-    DatacontextUtility.prototype.get_tenantCssID = function() {
-        return _getLocalStorageValue('tenantCssID') || '';
-    };
-    
-    DatacontextUtility.prototype.set_tenantCssID = function (id) {
-        _setLocalStorageValue('tenantCssID', id);
-    };
-    
-    DatacontextUtility.prototype.get_defaultCssTenantState = function () {
-        return _getLocalStorageValue('defaultCssTenantState') === "true";
-    };
-    
-    DatacontextUtility.prototype.set_defaultCssTenantState = function (useDefault) {
-        _setLocalStorageValue('defaultCssTenantState', useDefault);
-    };
-    
     DatacontextUtility.prototype.get_envID = function () {
         return _getLocalStorageValue('envID') || '';
     };
@@ -163,7 +58,7 @@
     DatacontextUtility.prototype.set_envID = function (id) {
         _setLocalStorageValue('envID', id);
     };
-        
+            
     DatacontextUtility.prototype.get_themeID = function () {
         return parseInt(_getLocalStorageValue('themeID'), 10) || 0;
     };
@@ -171,84 +66,6 @@
     DatacontextUtility.prototype.set_themeID = function (id) {
         _setLocalStorageValue('themeID', id);
     };
-    
-    DatacontextUtility.prototype.get_cdnCssMode = function () {
-        return _getLocalStorageValue('cdnCssMode') || 'cdn';
-    };
-    
-    DatacontextUtility.prototype.set_cdnCssMode = function (id) {
-        _setLocalStorageValue('cdnCssMode', id);
-    };
-    
-    DatacontextUtility.prototype.get_useThemeState = function () {
-        return _getLocalStorageValue('useThemeState') === "true";
-    };
-    
-    DatacontextUtility.prototype.set_useThemeState = function (useTheme) {
-        _setLocalStorageValue('useThemeState', useTheme);
-    };
-
-    /* HTML Panel */
-    DatacontextUtility.prototype.get_repoHtmlURL = function () {
-        return _getLocalStorageValue('repoHtmlURL') || '';
-    };
-    
-    DatacontextUtility.prototype.set_repoHtmlURL = function (url) {
-        _setLocalStorageValue('repoHtmlURL', url);
-    };
-    
-    DatacontextUtility.prototype.get_defaultHtmlRepoState = function () {
-        return _getLocalStorageValue('defaultHtmlRepoState') === "true";
-    };
-    
-    DatacontextUtility.prototype.set_defaultHtmlRepoState = function (useDefault) {
-        _setLocalStorageValue('defaultHtmlRepoState', useDefault);
-    };
-    
-    DatacontextUtility.prototype.get_htmlVersion = function () {
-        return parseInt(_getLocalStorageValue('htmlVersion'), 10) || 0;
-    };
-    
-    DatacontextUtility.prototype.set_htmlVersion = function (id) {
-        _setLocalStorageValue('htmlVersion', id);
-    };
-    
-    DatacontextUtility.prototype.get_cdnHtmlMode = function () {
-        return _getLocalStorageValue('cdnHtmlMode') || 'cdn';
-    };
-    
-    DatacontextUtility.prototype.set_cdnHtmlMode = function (id) {
-        _setLocalStorageValue('cdnHtmlMode', id);
-    };
-
-    DatacontextUtility.prototype.get_htmlTemplates = function () {
-        return JSON.parse(_getLocalStorageValue('htmlTemplate') || '{}');
-    }
-
-    DatacontextUtility.prototype.get_htmlTemplate = function (fileName) {
-        var htmlTemplates = JSON.parse(_getLocalStorageValue('htmlTemplate') || '{}');
-        if (htmlTemplates[fileName] == null) {
-            htmlTemplates[fileName] = {
-                isOverriden: false,
-                fileName: fileName
-            };
-            _setLocalStorageValue('htmlTemplate', JSON.stringify(htmlTemplates));
-        }
-        return htmlTemplates[fileName];
-    }
-
-    DatacontextUtility.prototype.set_htmlTemplate = function (fileName, isOverriden) {
-        var htmlTemplates = JSON.parse(_getLocalStorageValue('htmlTemplate') || '{}');
-        if (htmlTemplates[fileName] == null) {
-            htmlTemplates[fileName] = {
-                isOverriden: isOverriden,
-                fileName: fileName
-            };
-        } else {
-            htmlTemplates[fileName].isOverriden = isOverriden;
-        }
-        _setLocalStorageValue('htmlTemplate', JSON.stringify(htmlTemplates));
-    }
 
     /* XHR Panel*/
     DatacontextUtility.prototype.get_xhrOrigin = function () {
@@ -270,7 +87,7 @@
 
     DatacontextUtility.prototype.shouldShowEnabled = function () {
         var _this = this;
-        return _this.isEnabled('js') || _this.isEnabled('css') || _this.isEnabled('xhr');
+        return _this.isEnabled('css') || _this.isEnabled('xhr');
     };
 
     DatacontextUtility.prototype.enabledFourState = function () {
@@ -300,7 +117,7 @@
     };
     
     DatacontextUtility.prototype.get_activePane = function () {
-        return _getLocalStorageValue('activePane') || 'js';
+        return _getLocalStorageValue('activePane') || 'css';
     };
     
     DatacontextUtility.prototype.set_activePane = function (paneId) {
@@ -317,89 +134,27 @@
         _this["set_" + key](value);
     };
     
-    DatacontextUtility.prototype.get_jsSourceUrl = function () {
-        var _this = this;       
-        var debugJsUrl = [];
-        if(_this.get_defaultJsRepoState()) {
-            debugJsUrl.push(_this.CDN_BASE_URL.replace('[CDNMODE]', _this.get_cdnJsMode()));
-            debugJsUrl.push('scripts');
-            debugJsUrl.push('powell' + _this.get_sourceMode());
-            debugJsUrl = debugJsUrl.join('/');
-        } else {
-            debugJsUrl = _this.get_repoJsURL();
-        }
-        
-        return debugJsUrl.replace(/([^:]\/)\/+/g, "$1");
-    };
-    
     DatacontextUtility.prototype.get_cssSourceUrl = function (cssFileName) {
         var _this = this;
         var debugCssUrl = [];
-        if (_this.get_defaultCssRepoState()) {
-            debugCssUrl.push(_this.CDN_BASE_URL.replace('[CDNMODE]', _this.get_cdnCssMode()));
-        } else {
-            debugCssUrl.push(_this.get_repoCssURL());
-        }
+        debugCssUrl.push(_this.CDN_BASE_URL);
         
         debugCssUrl.push('styles');
-        
-        if(_this.get_defaultCssTenantState()) {
-            debugCssUrl.push(_this.DEFAULT_TENANT);
-        } else {
-            debugCssUrl.push(_this.get_tenantCssID());
-        }
-        
-        var userUrl = _this.get_devCssID();
-        
-        if(userUrl) {
-            debugCssUrl.push('user');
-            debugCssUrl.push(userUrl);
-        }
+        debugCssUrl.push(_this.DEFAULT_TENANT);
         
         debugCssUrl.push(cssFileName);
         debugCssUrl = debugCssUrl.join('/');
-        
-        var envID = _this.get_envID();
-        var useTheme = _this.get_useThemeState();
-        
-        if (envID) {
-            debugCssUrl += '?env=' + _this.get_envID();
-            if (useTheme) {
-                debugCssUrl += '&themeId=' + _this.get_themeID();            
-            }
-        }
-        
+               
+        //debugCssUrl += '?env=' + _this.get_envID();
+        debugCssUrl += '?themeId=' + _this.get_themeID();
+                
         return debugCssUrl.replace(/([^:]\/)\/+/g, "$1");
-    };
-
-    DatacontextUtility.prototype.get_htmlSourceUrl = function (htmlFileName, htmlFileType) {
-        var _this = this;
-        var debugHtmlUrl = [];
-        if (_this.get_defaultHtmlRepoState()) {
-            debugHtmlUrl.push(_this.CDN_BASE_URL.replace('[CDNMODE]', _this.get_cdnHtmlMode()));
-            debugHtmlUrl.push('Common');
-            /* Comprendre les URLs des Layouts & Templates
-            Config.RESOURCE_FOLDER */   
-        } else {
-            debugHtmlUrl.push(_this.get_repoHtmlURL());
-        }
-        
-        //debugHtmlUrl.push(htmlFileType);
-        
-        debugHtmlUrl.push(htmlFileName);
-        debugHtmlUrl = debugHtmlUrl.join('/');
-        
-        return debugHtmlUrl.replace(/([^:]\/)\/+/g, "$1");
     };
 
     DatacontextUtility.prototype.get_logoSourceUrl = function (logoFileName) {
         var _this = this;
         var debugLogoUrl = [];
-        if (_this.get_defaultCssRepoState()) {
-            debugLogoUrl.push(_this.CDN_BASE_URL.replace('[CDNMODE]', _this.get_cdnCssMode()));
-        } else {
-            debugLogoUrl.push(_this.get_repoCssURL());
-        }
+        debugLogoUrl.push(_this.CDN_BASE_URL);
         
         debugLogoUrl.push('styles');
         debugLogoUrl.push(_this.DEFAULT_TENANT);
@@ -407,15 +162,8 @@
         debugLogoUrl.push(logoFileName);
         debugLogoUrl = debugLogoUrl.join('/');
         
-        var envID = _this.get_envID();
-        var useTheme = _this.get_useThemeState();
-        
-        if (envID) {
-            debugLogoUrl += '?env=' + _this.get_envID();
-            if (useTheme) {
-                debugLogoUrl += '&themeId=' + _this.get_themeID();            
-            }
-        }
+        debugLogoUrl += '?env=' + _this.get_envID();
+        debugLogoUrl += '&themeId=' + _this.get_themeID();
         
         return debugLogoUrl.replace(/([^:]\/)\/+/g, "$1");
     };

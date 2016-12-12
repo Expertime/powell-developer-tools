@@ -31,7 +31,8 @@
         "https://localhost/*",
         "tabs",
         "notifications",
-        "storage"
+        "storage",
+        "identity"
     ],
     "content_security_policy": "script-src 'self' https://ajax.googleapis.com https://maxcdn.bootstrapcdn.com https://cdnjs.cloudflare.com https://rawgit.com https://cdn.rawgit.com; object-src 'self'"
 }

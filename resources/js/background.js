@@ -31,11 +31,7 @@
             debugCssUrl = request.url,
             regIsOriginalUrl,
             regFileName = /[^/\\&\?]+\.\w{3,4}(?=([\?&].*$|$))/;
-        if (DatacontextConfig.utility.get_defautCssOnCdnState()) {
             regIsOriginalUrl = /cdn.powell-365.com\/styles\//i;
-        } else {
-            regIsOriginalUrl = DatacontextConfig.utility.get_defaultCssURL();
-        }
 
         if(!regIsOriginalUrl) return;
 
@@ -237,7 +233,7 @@
     chrome.notifications.create(null, {
         type: "basic",
         iconUrl: "resources/img/icon128.png",
-        title: "Powell Dev Tools",
+        title: "Powell 365 branding",
         message: "Plugin reloaded."
     });
 

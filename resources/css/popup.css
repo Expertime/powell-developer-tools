@@ -1,15 +1,18 @@
- body {
+body {
  	font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
  	font-size: 12px;
- 	min-width: 500px;
-  min-height: 300px;
-  background-image: url("../img/gears.gif");
-  background-repeat: no-repeat;
-  background-position: center;
- }
- .container-fluid {
+ 	min-width: 400px;
+  	min-height: 300px;
+  	background-image: url("../img/gears.gif");
+  	background-repeat: no-repeat;
+	background-position: center;
+}
+.container-fluid {
     overflow: hidden;
     max-height: 600px;
+}
+.p365b-logo {
+    width: 210px;
 }
 .tab-pane {
 	padding-top: 20px;
@@ -97,8 +100,7 @@
  }
  ul#nav > li {
     position: relative;
-/*    width: 25%;*/
-	width: 33%;
+	width: 100%;
 }
 ul#nav #navHtml {
 	display: none;

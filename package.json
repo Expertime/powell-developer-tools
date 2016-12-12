@@ -1,0 +1,12 @@
+{
+  "name": "[PDT]-Powell-365-branding",
+  "version": "1.0.0",
+  "description": "This extension allows to apply custom Powell Manager Themes and Navigation ontop of any Powell 365 SharePoint site",
+  "author": "Serge ARADJ",
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-compress": "^1.3.0",
+    "grunt-webstore-upload": "^0.9.4"
+  }
+}

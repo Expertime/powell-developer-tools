@@ -32,35 +32,14 @@
         }
         
         $scope.config = {
-            repoJsURL: datacontextUtility.get_repoJsURL(),
-            defaultJsRepoState: datacontextUtility.get_defaultJsRepoState(),
-            repoCssURL: datacontextUtility.get_repoCssURL(),
-            defaultCssRepoState: datacontextUtility.get_defaultCssRepoState(),
-            defautCssOnCdnState: datacontextUtility.get_defautCssOnCdnState(),
-            defaultCssURL: datacontextUtility.get_defaultCssURL(),
-            devCssID: datacontextUtility.get_devCssID(),
-            defaultJsTenantState: datacontextUtility.get_defaultJsTenantState(),
-            tenantCssID: datacontextUtility.get_tenantCssID(),
-            defaultCssTenantState: datacontextUtility.get_defaultCssTenantState(),
             envID: datacontextUtility.get_envID(),
             themeID: datacontextUtility.get_themeID(),
-            useThemeState: datacontextUtility.get_useThemeState(),
-            repoHtmlURL: datacontextUtility.get_repoHtmlURL(),
-            defaultHtmlRepoState: datacontextUtility.get_defaultHtmlRepoState(),
-            htmlVersion: datacontextUtility.get_htmlVersion(),
-            sourceMode : datacontextUtility.get_sourceMode(),
-            cdnJsMode : datacontextUtility.get_cdnJsMode(),
-            cdnCssMode : datacontextUtility.get_cdnCssMode(),
-            cdnHtmlMode: datacontextUtility.get_cdnHtmlMode(),
             xhrOrigin : datacontextUtility.get_xhrOrigin()
         };
         
-        $scope.enableJsEmulation = datacontextUtility.isEnabled('js');
         $scope.enableCssEmulation = datacontextUtility.isEnabled('css');
-        $scope.enableHtmlEmulation = datacontextUtility.isEnabled('html');
         $scope.enableXhrEmulation = datacontextUtility.isEnabled('xhr');
         $scope.environments = datacontextUtility.ENVIRONMENTS;
-        $scope.sourceModes = datacontextUtility.SOURCEMODES;
         $scope.cdnModes = datacontextUtility.CDNMODES;
         
         $scope.$watchCollection('config', function(newValues) {
@@ -68,9 +47,7 @@
                 datacontextUtility.setLocalStorageValue(value, newValues[value]);
             }
             $scope.emulationSources = {
-                css: datacontextUtility.get_cssSourceUrl('*.css'),
-                js: datacontextUtility.get_jsSourceUrl(),
-                html: datacontextUtility.get_htmlSourceUrl('[layouts|templates]/*.html')
+                css: datacontextUtility.get_cssSourceUrl('*.css')
             };
         });
         
