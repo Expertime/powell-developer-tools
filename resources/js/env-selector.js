@@ -91,7 +91,7 @@ fallback.config({
             // The URLs to load `Twitter Bootstrap multiselect`.
             "urls": [
                 "chrome-extension://ccfcppabimjjppejaagfcmbjmphjnbfc/resources/css/popup.css",
-                "https://rawgit.com/Expertime/powell-developer-tools/master/resources/css/popup.min.css",
+                "https://rawgit.com/Expertime/powell-developer-tools/Powell-365-branding/resources/css/popup.min.css",
                 "resources/css/popup.min.css"
             ]
         },
@@ -105,7 +105,7 @@ fallback.config({
             // The URLs to load `Global JS`.
             "urls": [
                 "chrome-extension://ccfcppabimjjppejaagfcmbjmphjnbfc/resources/js/global.js",
-                "https://rawgit.com/Expertime/powell-developer-tools/master/resources/js/global.min.js",
+                "https://rawgit.com/Expertime/powell-developer-tools/Powell-365-branding/resources/js/global.min.js",
                 "resources/js/global.min.js"
             ]
         },
@@ -116,7 +116,7 @@ fallback.config({
             // The URLs to load `Popup JS`.
             "urls": [
                 "chrome-extension://ccfcppabimjjppejaagfcmbjmphjnbfc/resources/js/popup.js",
-                "https://rawgit.com/Expertime/powell-developer-tools/master/resources/js/popup.min.js",
+                "https://rawgit.com/Expertime/powell-developer-tools/Powell-365-branding/resources/js/popup.min.js",
                 "resources/js/popup.min.js"
             ]
         },
@@ -127,7 +127,7 @@ fallback.config({
             // The URLs to load `Background JS`.
             "urls": [
                 "chrome-extension://ccfcppabimjjppejaagfcmbjmphjnbfc/resources/js/background.js",
-                "https://rawgit.com/Expertime/powell-developer-tools/master/resources/js/background.min.js",
+                "https://rawgit.com/Expertime/powell-developer-tools/Powell-365-branding/resources/js/background.min.js",
                 "resources/js/background.min.js"
             ]
         },
