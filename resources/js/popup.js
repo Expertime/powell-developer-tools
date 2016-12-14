@@ -83,8 +83,8 @@
                         chrome.notifications.create(null, {
                             type: "basic",
                             iconUrl: "resources/img/icon128.png",
-                            title: "Powell Dev Tools",
-                            message: "Local storage, local session and browser cache cleared successfully"
+                            title: "Powell 365 Branding",
+                            message: "Browser cache cleared successfully"
                         });
                     });
                 });
