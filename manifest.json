@@ -25,10 +25,7 @@
     "permissions": [
         "webRequest",
         "webRequestBlocking",
-        "https://*.powell-365.com/",
-        "https://*.sharepoint.com/*",
-        "http://localhost/*",
-        "https://localhost/*",
+        "*://*/*",
         "tabs",
         "notifications",
         "storage"
