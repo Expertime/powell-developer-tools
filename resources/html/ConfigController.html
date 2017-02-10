@@ -3,19 +3,19 @@
         <img class="p365b-logo" src="resources/img/POWELL-365-branding-LOGO.png"/>
     </span>
     <span class="col-xs-4">
-        <button type="button" id="clearStorage" ng-click="clearLocalStorage()" class="btn btn-primary">Vider le cache</button>
+        <button type="button" id="clearStorage" ng-click="clearLocalStorage()" class="btn btn-primary">Clear cache</button>
     </span>
 </h3>
 <div class="row">
     <ul class="nav nav-tabs" id="nav">
         <li class="pull-left" ng-class='isPaneActive("css")' id="navCss">
             <a data-target="#css" data-toggle="tab" href ng-click="setActivePane('css')">
-                <h5>Thème</h5>
+                <h5>Theme</h5>
             </a>
             <div class="switch">
                 <span class="switch-state">
-                    <span ng-if="enableCssEmulation">Activé</span>
-                    <span ng-if="!enableCssEmulation">Désactivé</span>
+                    <span ng-if="enableCssEmulation">Enabled</span>
+                    <span ng-if="!enableCssEmulation">Disabled</span>
                 </span>
                 <input ng-model="enableCssEmulation" ng-click="switchChanged('css');" id="cssSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round"
                     type="checkbox" data-sourcekind="css">
