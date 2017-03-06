@@ -68,7 +68,7 @@
                 datacontextUtility.setLocalStorageValue(value, newValues[value]);
             }
             $scope.emulationSources = {
-                css: datacontextUtility.get_cssSourceUrl('*.css'),
+                css: datacontextUtility.get_cssSourceUrl('*.css', false),
                 js: datacontextUtility.get_jsSourceUrl(),
                 html: datacontextUtility.get_htmlSourceUrl('[layouts|templates]/*.html')
             };

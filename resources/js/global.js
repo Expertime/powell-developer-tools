@@ -29,20 +29,25 @@
     var DatacontextUtility = function ($q) {
         var _this = this;
         DatacontextUtility.$q = $q;
-        _this.CDN_BASE_URL = 'https://[CDNMODE].powell-365.com';
+
+        _this.CDN_BASE_URL = 'https://[CDNMODE][CDNPREMMODE]';
         _this.DEFAULT_TENANT = 'Default';
         _this.ENVIRONMENTS = {
-            'PROD' : '1',
-            'REC' : '2',
-            'DEV': '3'
+            'PROD'  : '1',
+            'REC'   : '2',
+            'DEV'   : '3'
         };
         _this.SOURCEMODES = {
-            'PROD' : '',
+            'PROD'  : '',
             'DEBUG' : '/debug'
         };
         _this.CDNMODES = {
-            'PROD' : 'cdn',
-            'REC' : 'r7-cdn'
+            'PROD'  : '',
+            'REC'   : 'r7-',
+        };
+        _this.CDNPREMMODE = {
+            'BASIC' : 'cdn.powell-365.com',
+            'PREM'  : 'powell365-cdn.azureedge.net'
         };
         _this.ENABLEDSTATES = [
             'js',
@@ -94,7 +99,7 @@
     };
     
     DatacontextUtility.prototype.get_cdnJsMode = function () {
-        return _getLocalStorageValue('cdnJsMode') || 'cdn';
+        return _getLocalStorageValue('cdnJsMode') || '';
     };
     
     DatacontextUtility.prototype.set_cdnJsMode = function (id) {
@@ -318,11 +323,16 @@
         _this["set_" + key](value);
     };
     
-    DatacontextUtility.prototype.get_jsSourceUrl = function () {
+    DatacontextUtility.prototype.get_cdnPremMode = function (isPremium) {
+        var _this = this;
+        return _this.CDNPREMMODE[isPremium ? 'PREM' : 'BASIC'];
+    };
+
+    DatacontextUtility.prototype.get_jsSourceUrl = function (isPremium) {
         var _this = this;       
         var debugJsUrl = [];
         if(_this.get_defaultJsRepoState()) {
-            debugJsUrl.push(_this.CDN_BASE_URL.replace('[CDNMODE]', _this.get_cdnJsMode()));
+            debugJsUrl.push(_this.CDN_BASE_URL.replace('[CDNMODE]', _this.get_cdnJsMode()).replace('[CDNPREMMODE]', _this.get_cdnPremMode(isPremium)));
             debugJsUrl.push('scripts');
             debugJsUrl.push('powell' + _this.get_sourceMode());
             debugJsUrl = debugJsUrl.join('/');
@@ -333,11 +343,11 @@
         return debugJsUrl.replace(/([^:]\/)\/+/g, "$1");
     };
     
-    DatacontextUtility.prototype.get_cssSourceUrl = function (cssFileName) {
+    DatacontextUtility.prototype.get_cssSourceUrl = function (cssFileName, isPremium) {
         var _this = this;
         var debugCssUrl = [];
         if (_this.get_defaultCssRepoState()) {
-            debugCssUrl.push(_this.CDN_BASE_URL.replace('[CDNMODE]', _this.get_cdnCssMode()));
+            debugCssUrl.push(_this.CDN_BASE_URL.replace('[CDNMODE]', _this.get_cdnCssMode()).replace('[CDNPREMMODE]', _this.get_cdnPremMode(isPremium)));
         } else {
             debugCssUrl.push(_this.get_repoCssURL());
         }
@@ -393,11 +403,11 @@
         return debugHtmlUrl.replace(/([^:]\/)\/+/g, "$1");
     };
 
-    DatacontextUtility.prototype.get_logoSourceUrl = function (logoFileName) {
+    DatacontextUtility.prototype.get_logoSourceUrl = function (logoFileName, isPremium) {
         var _this = this;
         var debugLogoUrl = [];
         if (_this.get_defaultCssRepoState()) {
-            debugLogoUrl.push(_this.CDN_BASE_URL.replace('[CDNMODE]', _this.get_cdnCssMode()));
+            debugLogoUrl.push(_this.CDN_BASE_URL.replace('[CDNMODE]', _this.get_cdnCssMode()).replace('[CDNPREMMODE]', _this.get_cdnPremMode(isPremium)));
         } else {
             debugLogoUrl.push(_this.get_repoCssURL());
         }

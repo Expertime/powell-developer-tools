@@ -12,13 +12,15 @@
     var _onBeforeJsRequestListener = function (request) {
         var originalJsUrl = request.url,
             debugJsUrl = request.url,
-            regIsOriginalUrl = /cdn.powell-365.com\/scripts\/(?:powell(?:\/debug)?\?siteCollectionUrl=|Premium)/i,
+            regIsOriginalUrl = /(cdn.powell-365.com|powell365-cdn.azureedge.net)\/scripts\/(?:powell(?:\/debug)?\?siteCollectionUrl=|Premium)/i,
+            regIsCdnPremium = /powell365-cdn.azureedge.net/i,
             regIsReplacedUrl = /#powellDevTools=1/;
         
         var isOriginalUrl = !regIsReplacedUrl.exec(originalJsUrl) && regIsOriginalUrl.exec(originalJsUrl);
         
         if (isOriginalUrl) {
-            debugJsUrl = DatacontextConfig.utility.get_jsSourceUrl() + '#powellDevTools=1';
+            var isCdnPremium = regIsCdnPremium.exec(originalJsUrl) != null;
+            debugJsUrl = DatacontextConfig.utility.get_jsSourceUrl(isCdnPremium) + '#powellDevTools=1';
             console.log('Redirecting original request [' + originalJsUrl + '] to [' + debugJsUrl + ']');
         }
         return {
@@ -30,9 +32,10 @@
         var originalCssUrl = request.url,
             debugCssUrl = request.url,
             regIsOriginalUrl,
+            regIsCdnPremium = /powell365-cdn.azureedge.net/i,
             regFileName = /[^/\\&\?]+\.\w{3,4}(?=([\?&].*$|$))/;
         if (DatacontextConfig.utility.get_defautCssOnCdnState()) {
-            regIsOriginalUrl = /cdn.powell-365.com\/styles\//i;
+            regIsOriginalUrl = /(?:cdn.powell-365.com|powell365-cdn.azureedge.net)\/styles\//i;
         } else {
             regIsOriginalUrl = DatacontextConfig.utility.get_defaultCssURL();
         }
@@ -40,8 +43,9 @@
         if(!regIsOriginalUrl) return;
 
         if ((regIsOriginalUrl.exec && (regIsOriginalUrl.exec(originalCssUrl) !== null)) || originalCssUrl.indexOf(regIsOriginalUrl) >= 0) {
+            var isCdnPremium = regIsCdnPremium.exec(originalCssUrl) != null;
             var cssFileName = originalCssUrl.match(regFileName)[0];
-            debugCssUrl = DatacontextConfig.utility.get_cssSourceUrl(cssFileName);
+            debugCssUrl = DatacontextConfig.utility.get_cssSourceUrl(cssFileName, isCdnPremium);
             console.log('Redirecting original request [' + originalCssUrl + '] to [' + debugCssUrl + ']');
         }
         return {
@@ -52,7 +56,7 @@
     var _onBeforeXhrRequestListener = function (request) {
         var originalXhrUrl = request.url,
             debugXhrUrl = request.url,
-            regIsOriginalUrl = /cdn.powell-365.com\/+(?:(?:\w|\S)+\/+)+(\S+\.html)/i;
+            regIsOriginalUrl = /(?:cdn.powell-365.com|powell365-cdn.azureedge.net)\/+(?:(?:\w|\S)+\/+)+(\S+\.html)/i;
 
         var isOriginalUrl = regIsOriginalUrl.exec(originalXhrUrl);
         if (isOriginalUrl) {
@@ -70,10 +74,12 @@
     var _onBeforeLogoRequestListener = function (request) {
         var originalLogoUrl = request.url,
             debugLogoUrl = request.url,
-            regIsOriginalUrl = /cdn.powell-365.com\/styles.*\/logo-my-portal\.png/i,
+            regIsOriginalUrl = /(?:cdn.powell-365.com|powell365-cdn.azureedge.net)\/styles.*\/logo-my-portal\.png/i,
+            regIsCdnPremium = /powell365-cdn.azureedge.net/i,
             logoFileName = 'logo-my-portal.png';
         if (regIsOriginalUrl.exec(originalLogoUrl) !== null) {
-            debugLogoUrl = DatacontextConfig.utility.get_logoSourceUrl(logoFileName);
+            var isCdnPremium = regIsCdnPremium.exec(originalLogoUrl) != null;
+            debugLogoUrl = DatacontextConfig.utility.get_logoSourceUrl(logoFileName, isCdnPremium);
             console.log('Redirecting original request [' + originalLogoUrl + '] to [' + debugLogoUrl + ']');
         }
         return {
@@ -117,7 +123,7 @@
 
     var _setEnabled = function (enabled, sourceKind) {
         if (enabled) {
-            var powCdn = ["*://r7-cdn.powell-365.com/", "*://cdn.powell-365.com/"];
+            var powCdn = ["*://r7-cdn.powell-365.com/", "*://cdn.powell-365.com/", "*://r7-powell365-cdn.azureedge.net/", "*://powell365-cdn.azureedge.net/"];
             var logoUrl = ["styles/Premium/*/*/*/images/logo-my-portal.png"];
             var cssUrl = ["styles/Premium/*/*/*/powell.css"];
             var jsUrl = ["scripts/Premium/*/*/*/powell"];

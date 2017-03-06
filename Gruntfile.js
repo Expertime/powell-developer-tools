@@ -39,5 +39,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-webstore-upload');
 
   // Default task(s).
-  grunt.registerTask('default', ['compress', 'webstore_upload']);
+  grunt.registerTask('default', ['compress']);
 };
