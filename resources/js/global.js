@@ -332,7 +332,7 @@
         var _this = this;       
         var debugJsUrl = [];
         if(_this.get_defaultJsRepoState()) {
-            debugJsUrl.push(_this.CDN_BASE_URL.replace('[CDNMODE]', _this.get_cdnJsMode()).replace('[CDNPREMMODE]', _this.get_cdnPremMode(isPremium)));
+            debugJsUrl.push(_this.CDN_BASE_URL.replace('[CDNMODE]', _this.get_cdnJsMode()).replace('[CDNPREMMODE]', _this.get_cdnPremMode(false)));
             debugJsUrl.push('scripts');
             debugJsUrl.push('powell' + _this.get_sourceMode());
             debugJsUrl = debugJsUrl.join('/');
@@ -347,7 +347,7 @@
         var _this = this;
         var debugCssUrl = [];
         if (_this.get_defaultCssRepoState()) {
-            debugCssUrl.push(_this.CDN_BASE_URL.replace('[CDNMODE]', _this.get_cdnCssMode()).replace('[CDNPREMMODE]', _this.get_cdnPremMode(isPremium)));
+            debugCssUrl.push(_this.CDN_BASE_URL.replace('[CDNMODE]', _this.get_cdnCssMode()).replace('[CDNPREMMODE]', _this.get_cdnPremMode(false)));
         } else {
             debugCssUrl.push(_this.get_repoCssURL());
         }
@@ -407,7 +407,7 @@
         var _this = this;
         var debugLogoUrl = [];
         if (_this.get_defaultCssRepoState()) {
-            debugLogoUrl.push(_this.CDN_BASE_URL.replace('[CDNMODE]', _this.get_cdnCssMode()).replace('[CDNPREMMODE]', _this.get_cdnPremMode(isPremium)));
+            debugLogoUrl.push(_this.CDN_BASE_URL.replace('[CDNMODE]', _this.get_cdnCssMode()).replace('[CDNPREMMODE]', _this.get_cdnPremMode(false)));
         } else {
             debugLogoUrl.push(_this.get_repoCssURL());
         }
