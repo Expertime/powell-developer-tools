@@ -179,7 +179,7 @@
     };
     
     DatacontextUtility.prototype.get_cdnCssMode = function () {
-        return _getLocalStorageValue('cdnCssMode') || 'cdn';
+        return _getLocalStorageValue('cdnCssMode') || '';
     };
     
     DatacontextUtility.prototype.set_cdnCssMode = function (id) {
@@ -220,7 +220,7 @@
     };
     
     DatacontextUtility.prototype.get_cdnHtmlMode = function () {
-        return _getLocalStorageValue('cdnHtmlMode') || 'cdn';
+        return _getLocalStorageValue('cdnHtmlMode') || '';
     };
     
     DatacontextUtility.prototype.set_cdnHtmlMode = function (id) {
