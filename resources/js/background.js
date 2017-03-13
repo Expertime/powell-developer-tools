@@ -1,23 +1,24 @@
-(function (window, angular, chrome, localStorage, undefined) {
+(function(window, angular, chrome, localStorage, undefined) {
     'use strict';
 
     var SERVICE_ID = 'datacontextConfig';
     angular.module('powellDevTools').factory(SERVICE_ID, ['$q', 'datacontextUtility',
-        datacontextConfigFactory]);
-    
+        datacontextConfigFactory
+    ]);
+
     function datacontextConfigFactory($q, datacontextUtility) {
         return new DatacontextConfig($q, datacontextUtility);
     }
-    
-    var _onBeforeJsRequestListener = function (request) {
+
+    var _onBeforeJsRequestListener = function(request) {
         var originalJsUrl = request.url,
             debugJsUrl = request.url,
             regIsOriginalUrl = /(cdn.powell-365.com|powell365-cdn.azureedge.net)\/scripts\/(?:powell(?:\/debug)?\?siteCollectionUrl=|Premium)/i,
             regIsCdnPremium = /powell365-cdn.azureedge.net/i,
             regIsReplacedUrl = /#powellDevTools=1/;
-        
+
         var isOriginalUrl = !regIsReplacedUrl.exec(originalJsUrl) && regIsOriginalUrl.exec(originalJsUrl);
-        
+
         if (isOriginalUrl) {
             var isCdnPremium = regIsCdnPremium.exec(originalJsUrl) != null;
             debugJsUrl = DatacontextConfig.utility.get_jsSourceUrl(isCdnPremium) + '#powellDevTools=1';
@@ -27,8 +28,8 @@
             redirectUrl: debugJsUrl
         };
     };
-    
-    var _onBeforeCssRequestListener = function (request) {
+
+    var _onBeforeCssRequestListener = function(request) {
         var originalCssUrl = request.url,
             debugCssUrl = request.url,
             regIsOriginalUrl,
@@ -40,7 +41,7 @@
             regIsOriginalUrl = DatacontextConfig.utility.get_defaultCssURL();
         }
 
-        if(!regIsOriginalUrl) return;
+        if (!regIsOriginalUrl) return;
 
         if ((regIsOriginalUrl.exec && (regIsOriginalUrl.exec(originalCssUrl) !== null)) || originalCssUrl.indexOf(regIsOriginalUrl) >= 0) {
             var isCdnPremium = regIsCdnPremium.exec(originalCssUrl) != null;
@@ -53,7 +54,7 @@
         };
     };
 
-    var _onBeforeXhrRequestListener = function (request) {
+    var _onBeforeXhrRequestListener = function(request) {
         var originalXhrUrl = request.url,
             debugXhrUrl = request.url,
             regIsOriginalUrl = /(?:cdn.powell-365.com|powell365-cdn.azureedge.net)\/+(?:(?:\w|\S)+\/+)+(\S+\.html)/i;
@@ -71,7 +72,7 @@
         };
     }
 
-    var _onBeforeLogoRequestListener = function (request) {
+    var _onBeforeLogoRequestListener = function(request) {
         var originalLogoUrl = request.url,
             debugLogoUrl = request.url,
             regIsOriginalUrl = /(?:cdn.powell-365.com|powell365-cdn.azureedge.net)\/styles.*\/logo-my-portal\.png/i,
@@ -87,7 +88,7 @@
         };
     };
 
-    var _onBeforeSendHeadersListener = function (request) {
+    var _onBeforeSendHeadersListener = function(request) {
         var isRefererSet = false;
         var headers = request.requestHeaders,
             blockingResponse = {};
@@ -110,7 +111,14 @@
         blockingResponse.requestHeaders = headers;
         return blockingResponse;
     };
-    
+
+    var _onBeforeSendSearchQueryListener = function(request) {
+        var redirectUrl = request.url + '#"%7B%22Querytext%22:%22%22,%22QueryTemplate%22:%22%7BsearchTerms%7D%20ContentClass=urn:content-class:SPSPeople%22%7D"'
+        return {
+            redirectUrl: redirectUrl
+        }
+    }
+
     var _buildFilters = function(powCdn, filterUrl) {
         var filters = [];
         for (var i = 0; i < powCdn.length; i++) {
@@ -121,7 +129,7 @@
         return filters;
     }
 
-    var _setEnabled = function (enabled, sourceKind) {
+    var _setEnabled = function(enabled, sourceKind) {
         if (enabled) {
             var powCdn = ["*://r7-cdn.powell-365.com/", "*://cdn.powell-365.com/", "*://r7-powell365-cdn.azureedge.net/", "*://powell365-cdn.azureedge.net/"];
             var logoUrl = ["styles/Premium/*/*/*/images/logo-my-portal.png"];
@@ -152,11 +160,15 @@
                     filters.types = ['xmlhttprequest'];
                     chrome.webRequest.onBeforeRequest.addListener(_onBeforeXhrRequestListener, filters, opt_extraInfoSpec);
                 case 'xhr':
-                    filters.types = ['xmlhttprequest'];
                     filters.urls = _buildFilters(powCdn, ['*']);
+                    filters.types = ['xmlhttprequest'];
                     opt_extraInfoSpec.push('requestHeaders');
                     chrome.webRequest.onBeforeSendHeaders.addListener(_onBeforeSendHeadersListener, filters, opt_extraInfoSpec);
-                    break;
+
+                    // filters.urls = ['*/_api/search/postquery'];
+                    // filters.types = ['xmlhttprequest'];
+                    // chrome.webRequest.onBeforeSendHeaders.addListener(_onBeforeSendSearchQueryListener, filters, opt_extraInfoSpec);
+                    // break;
             }
         } else {
             switch (sourceKind) {
@@ -177,15 +189,15 @@
 
         _updateIcon();
     };
-    
-    var _checkScriptFreshness = function (globalMD5) {
+
+    var _checkScriptFreshness = function(globalMD5) {
         if (globalMD5 != window.GLOBAL) {
             // Background scripts are obsolete. Plugin need refresh.
-            chrome.runtime.reload();         
+            chrome.runtime.reload();
         }
     };
 
-    var _updateIcon = function () {
+    var _updateIcon = function() {
         var currentState = DatacontextConfig.utility.enabledFourState();
         var color = (DatacontextConfig.icons[currentState] || DatacontextConfig.icons['all']).color;
         var text = DatacontextConfig.icons[currentState] && DatacontextConfig.icons[currentState].text || currentState;
@@ -201,8 +213,8 @@
             path: icon
         });
     };
-    
-    var _onRequest = function (request, sender, callback) {
+
+    var _onRequest = function(request, sender, callback) {
         if (request.action == 'setEnabled') {
             _setEnabled(request.enabled, request.sourceKind);
         }
@@ -211,21 +223,21 @@
         }
         return true;
     };
-    
-    var DatacontextConfig = function ($q, datacontextUtility) {
+
+    var DatacontextConfig = function($q, datacontextUtility) {
         DatacontextConfig.$q = $q;
         DatacontextConfig.utility = datacontextUtility;
         DatacontextConfig.icons = {
-            js: { color: '#EFBE19', text: 'js', icon: 'resources/img/icon19.png'},
-            css: { color: '#2FA9DA', text: 'css', icon: 'resources/img/icon19.png'},
-            html: { color: '#cd62f3', text: 'html', icon: 'resources/img/icon19.png'},
-            xhr: { color: '#2af32d', text: 'xhr', icon: 'resources/img/icon19.png'},
+            js: { color: '#EFBE19', text: 'js', icon: 'resources/img/icon19.png' },
+            css: { color: '#2FA9DA', text: 'css', icon: 'resources/img/icon19.png' },
+            html: { color: '#cd62f3', text: 'html', icon: 'resources/img/icon19.png' },
+            xhr: { color: '#2af32d', text: 'xhr', icon: 'resources/img/icon19.png' },
             all: { color: '#F3672A', text: 'all', icon: 'resources/img/icon19.png' },
-            none: { color: '#000', text:'none', icon: 'resources/img/icon19_disabled.png'}
+            none: { color: '#000', text: 'none', icon: 'resources/img/icon19_disabled.png' }
         };
     };
-    
-    var _init = function () {
+
+    var _init = function() {
         localStorage.PowellDevTools_js_enabled = false;
         localStorage.PowellDevTools_css_enabled = false;
         localStorage.PowellDevTools_xhr_enabled = false;
@@ -234,10 +246,10 @@
         chrome.browserAction.setBadgeText({ text: '' });
 
         chrome.runtime.onMessage.addListener(_onRequest);
-        
+
         _updateIcon();
     };
-    
+
     angular.module('powellDevTools').run(['datacontextConfig', _init]);
 
     chrome.notifications.create(null, {
