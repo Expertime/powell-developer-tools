@@ -1,6 +1,7 @@
 <h3 class="row">
     <span class="col-xs-8">
         Powell Developer Tools
+        <span class="app-vers">3.4.0</span>
     </span>
     <span class="col-xs-4">
         <button type="button" id="clearStorage" ng-click="clearLocalStorage()" class="btn btn-primary">Vider le cache</button>
@@ -13,8 +14,7 @@
                 <h5>JS</h5>
             </a>
             <div class="switch">
-                <input ng-model="enableJsEmulation" ng-click="switchChanged('js');" id="jsSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round"
-                    type="checkbox" data-sourcekind="js">
+                <input ng-model="enableJsEmulation" ng-click="switchChanged('js');" id="jsSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="checkbox" data-sourcekind="js">
                 <label for="jsSwitch"></label>
             </div>
         </li>
@@ -23,8 +23,7 @@
                 <h5>CSS</h5>
             </a>
             <div class="switch">
-                <input ng-model="enableCssEmulation" ng-click="switchChanged('css');" id="cssSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round"
-                    type="checkbox" data-sourcekind="css">
+                <input ng-model="enableCssEmulation" ng-click="switchChanged('css');" id="cssSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="checkbox" data-sourcekind="css">
                 <label for="cssSwitch"></label>
             </div>
         </li>
@@ -33,8 +32,7 @@
                 <h5>HTML</h5>
             </a>
             <div class="switch">
-                <input ng-model="enableHtmlEmulation" ng-click="switchChanged('html');" id="htmlSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round"
-                    type="checkbox" data-sourcekind="html">
+                <input ng-model="enableHtmlEmulation" ng-click="switchChanged('html');" id="htmlSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="checkbox" data-sourcekind="html">
                 <label for="htmlSwitch"></label>
             </div>
         </li>
@@ -43,8 +41,7 @@
                 <h5>XHR</h5>
             </a>
             <div class="switch">
-                <input ng-model="enableXhrEmulation" ng-click="switchChanged('xhr');" id="xhrSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round"
-                    type="checkbox" data-sourcekind="xhr">
+                <input ng-model="enableXhrEmulation" ng-click="switchChanged('xhr');" id="xhrSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="checkbox" data-sourcekind="xhr">
                 <label for="xhrSwitch"></label>
             </div>
         </li>
@@ -56,22 +53,19 @@
                 <div class="row">
                     <div class="form-group-sm col-xs-12">
                         <label for="repoJsURL">URL du repository JavaScript:</label>
-                        <input type="text" ng-model="config.repoJsURL" ng-disabled="config.defaultJsRepoState" class="form-control" id="repoJsURL"
-                            placeholder="D&eacute;faut : https://cdn.powell-365.com/" aria-describedby="repoJsURLhelpBlock">
+                        <input type="text" ng-model="config.repoJsURL" ng-disabled="config.defaultJsRepoState" class="form-control" id="repoJsURL" placeholder="D&eacute;faut : https://cdn.powell-365.com/" aria-describedby="repoJsURLhelpBlock">
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group-sm col-xs-6">
                         <label for="cdnJsMode">CDN mode:</label>
-                        <select id="cdnJsMode" class="form-control input-small" ng-disabled="!config.defaultJsRepoState" ng-model="config.cdnJsMode"
-                            ng-options="id as value for (value, id) in cdnModes"></select>
+                        <select id="cdnJsMode" class="form-control input-small" ng-disabled="!config.defaultJsRepoState" ng-model="config.cdnJsMode" ng-options="id as value for (value, id) in cdnModes"></select>
                     </div>
                     <div class="form-group-sm col-xs-6">
                         <div class="checkbox">
                             <div class="switch pull-right">
                                 <span class="form-control-static">Utiliser le CDN</span> &nbsp;
-                                <input id="defaultRepoJsURLSwitch" ng-model="config.defaultJsRepoState" class="cmn-horizontal cmn-toggle cmn-toggle-round"
-                                    type="checkbox" data-sourcekind="js">
+                                <input id="defaultRepoJsURLSwitch" ng-model="config.defaultJsRepoState" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="checkbox" data-sourcekind="js">
                                 <label for="defaultRepoJsURLSwitch" class="pull-right"></label>
                             </div>
                         </div>
@@ -80,8 +74,7 @@
                 <div class="row">
                     <div class="form-group-sm col-xs-6">
                         <label for="sourceMode">Source mode:</label>
-                        <select id="sourceMode" class="form-control input-small" ng-disabled="!config.defaultJsRepoState" ng-model="config.sourceMode"
-                            ng-options="id as value for (value, id) in sourceModes"></select>
+                        <select id="sourceMode" class="form-control input-small" ng-disabled="!config.defaultJsRepoState" ng-model="config.sourceMode" ng-options="id as value for (value, id) in sourceModes"></select>
                     </div>
                 </div>
             </div>
@@ -91,22 +84,19 @@
                 <div class="row">
                     <div class="form-group-sm col-xs-12">
                         <label for="repoCssURL">URL du repository CSS:</label>
-                        <input type="text" ng-model="config.repoCssURL" ng-disabled="config.defaultCssRepoState" class="form-control" id="repoCssURL"
-                            placeholder="D&eacute;faut : https://cdn.powell-365.com/" aria-describedby="repoCssURLhelpBlock">
+                        <input type="text" ng-model="config.repoCssURL" ng-disabled="config.defaultCssRepoState" class="form-control" id="repoCssURL" placeholder="D&eacute;faut : https://cdn.powell-365.com/" aria-describedby="repoCssURLhelpBlock">
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group-sm col-xs-6">
                         <label for="cdnCssMode">CDN mode:</label>
-                        <select id="cdnCssMode" class="form-control input-small" ng-disabled="!config.defaultCssRepoState" ng-model="config.cdnCssMode"
-                            ng-options="id as value for (value, id) in cdnModes"></select>
+                        <select id="cdnCssMode" class="form-control input-small" ng-disabled="!config.defaultCssRepoState" ng-model="config.cdnCssMode" ng-options="id as value for (value, id) in cdnModes"></select>
                     </div>
                     <div class="form-group-sm col-xs-6">
                         <div class="checkbox">
                             <div class="switch pull-right">
                                 <span class="form-control-static">Utiliser le CDN</span> &nbsp;
-                                <input ng-model="config.defaultCssRepoState" id="defaultRepoCssURLSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round"
-                                    type="checkbox" data-sourcekind="css">
+                                <input ng-model="config.defaultCssRepoState" id="defaultRepoCssURLSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="checkbox" data-sourcekind="css">
                                 <label for="defaultRepoCssURLSwitch" class="pull-right"></label>
                             </div>
                         </div>
@@ -117,8 +107,7 @@
                         <div class="checkbox">
                             <div class="switch pull-right">
                                 <span class="form-control-static">Les CSS originales sont sur le CDN</span> &nbsp;
-                                <input ng-model="config.defautCssOnCdnState" id="defautCssOnCdnSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round"
-                                    type="checkbox">
+                                <input ng-model="config.defautCssOnCdnState" id="defautCssOnCdnSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="checkbox">
                                 <label for="defautCssOnCdnSwitch" class="pull-right"></label>
                             </div>
                         </div>
@@ -137,15 +126,13 @@
                 <div class="row">
                     <div class="form-group-sm col-xs-5">
                         <label for="tenantCssID">Nom du tenant:</label>
-                        <input type="text" ng-model="config.tenantCssID" ng-disabled="config.defaultCssTenantState" class="form-control" id="tenantCssID"
-                            placeholder="Entrer le nom du tenant dans Powell Manager (ex: FDJ)">
+                        <input type="text" ng-model="config.tenantCssID" ng-disabled="config.defaultCssTenantState" class="form-control" id="tenantCssID" placeholder="Entrer le nom du tenant dans Powell Manager (ex: FDJ)">
                     </div>
                     <div class="form-group-sm col-xs-7">
                         <div class="checkbox pull-right">
                             <div class="switch">
                                 <span class="form-control-static">Utiliser le Tenant "Default"</span> &nbsp;
-                                <input ng-model="config.defaultCssTenantState" id="defaultCssSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="checkbox"
-                                    data-sourcekind="js">
+                                <input ng-model="config.defaultCssTenantState" id="defaultCssSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="checkbox" data-sourcekind="js">
                                 <label for="defaultCssSwitch" class="pull-right"></label>
                             </div>
                         </div>
@@ -159,15 +146,13 @@
                     </div>
                     <div class="form-group-sm col-xs-3">
                         <label for="themeID">Theme ID:</label>
-                        <input id="themeID" type="number" ng-disabled="!config.useThemeState" class="form-control input-small ng-pristine ng-untouched ng-valid"
-                            ng-model="config.themeID" />
+                        <input id="themeID" type="number" ng-disabled="!config.useThemeState" class="form-control input-small ng-pristine ng-untouched ng-valid" ng-model="config.themeID" />
                     </div>
                     <div class="form-group-sm col-xs-6">
                         <div class="checkbox pull-right">
                             <div class="switch">
                                 <span class="form-control-static">Utiliser les th&egrave;mes</span> &nbsp;
-                                <input ng-model="config.useThemeState" id="useThemeSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="checkbox"
-                                    data-sourcekind="js">
+                                <input ng-model="config.useThemeState" id="useThemeSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="checkbox" data-sourcekind="js">
                                 <label for="useThemeSwitch" class="pull-right"></label>
                             </div>
                         </div>
@@ -180,22 +165,19 @@
                 <div class="row">
                     <div class="form-group-sm col-xs-12">
                         <label for="repoHtmlURL">URL du repository HTML:</label>
-                        <input type="text" ng-model="config.repoHtmlURL" ng-disabled="config.defaultHtmlRepoState" class="form-control" id="repoHtmlURL"
-                            placeholder="D&eacute;faut : https://cdn.powell-365.com/" aria-describedby="repoHtmlURLhelpBlock">
-                    </div>  
+                        <input type="text" ng-model="config.repoHtmlURL" ng-disabled="config.defaultHtmlRepoState" class="form-control" id="repoHtmlURL" placeholder="D&eacute;faut : https://cdn.powell-365.com/" aria-describedby="repoHtmlURLhelpBlock">
+                    </div>
                 </div>
                 <div class="row">
                     <div class="form-group-sm col-xs-6">
                         <label for="cdnHtmlMode">CDN mode:</label>
-                        <select id="cdnHtmlMode" class="form-control input-small" ng-disabled="!config.defaultHtmlRepoState" ng-model="config.cdnHtmlMode"
-                            ng-options="id as value for (value, id) in cdnModes"></select>
+                        <select id="cdnHtmlMode" class="form-control input-small" ng-disabled="!config.defaultHtmlRepoState" ng-model="config.cdnHtmlMode" ng-options="id as value for (value, id) in cdnModes"></select>
                     </div>
                     <div class="form-group-sm col-xs-6">
                         <div class="checkbox">
                             <div class="switch pull-right">
                                 <span class="form-control-static">Utiliser le CDN</span> &nbsp;
-                                <input id="defaultRepoHtmlURLSwitch" ng-model="config.defaultHtmlRepoState" class="cmn-horizontal cmn-toggle cmn-toggle-round"
-                                    type="checkbox" data-sourcekind="js" disabled="disabled">
+                                <input id="defaultRepoHtmlURLSwitch" ng-model="config.defaultHtmlRepoState" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="checkbox" data-sourcekind="js" disabled="disabled">
                                 <label for="defaultRepoHtmlURLSwitch" class="pull-right"></label>
                             </div>
                         </div>
@@ -204,14 +186,13 @@
                 <div class="row">
                     <div class="form-group-sm col-xs-6">
                         <label for="htmlVersion">Max version:</label>
-                        <input id="htmlVersion" type="number" ng-disabled="!config.defaultHtmlRepoState" class="form-control input-small ng-pristine ng-untouched ng-valid"
-                            ng-model="config.htmlVersion">
+                        <input id="htmlVersion" type="number" ng-disabled="!config.defaultHtmlRepoState" class="form-control input-small ng-pristine ng-untouched ng-valid" ng-model="config.htmlVersion">
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group-sm col-xs-12">
                         <label for="htmlTemplates">Templates HTML:</label>
-                        
+
                     </div>
                 </div>
             </div>
@@ -221,8 +202,7 @@
                 <div class="row">
                     <div class="form-group-sm col-xs-12">
                         <label for="xhrOrigin">Forcer le header 'Referer' à:</label>
-                        <input type="text" ng-model="config.xhrOrigin" ng-disabled="config.defaultXhrOriginState" class="form-control" id="xhrOrigin"
-                            placeholder="Exemple : https://contoso.sharepoint.com" aria-describedby="xhrOriginhelpBlock">
+                        <input type="text" ng-model="config.xhrOrigin" ng-disabled="config.defaultXhrOriginState" class="form-control" id="xhrOrigin" placeholder="Exemple : https://contoso.sharepoint.com" aria-describedby="xhrOriginhelpBlock">
                     </div>
                 </div>
                 <div class="row">
