@@ -1,12 +1,12 @@
 {
-  "name": "powell-developer-tools",
-  "version": "3.4.0",
-  "description": "This extension gives access to the developer-specific-version of the Powell JavaScript & CSS files",
-  "author": "Serge ARADJ",
-  "license": "MIT",
-  "devDependencies": {
-    "grunt": "^1.0.1",
-    "grunt-contrib-compress": "^1.3.0",
-    "grunt-webstore-upload": "^0.9.4"
-  }
+    "name": "powell-developer-tools",
+    "version": "3.6.0",
+    "description": "This extension gives access to the developer-specific-version of the Powell JavaScript & CSS files",
+    "author": "Serge ARADJ",
+    "license": "MIT",
+    "devDependencies": {
+        "grunt": "^1.0.1",
+        "grunt-contrib-compress": "^1.3.0",
+        "grunt-webstore-upload": "^0.9.4"
+    }
 }
