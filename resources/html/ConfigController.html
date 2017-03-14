@@ -1,6 +1,7 @@
 <h3 class="row">
     <span class="col-xs-8">
         <img class="p365b-logo" src="resources/img/POWELL-365-branding-LOGO.png"/>
+        <span class="app-vers">1.3.0</span>
     </span>
     <span class="col-xs-4">
         <button type="button" id="clearStorage" ng-click="clearLocalStorage()" class="btn btn-primary">Clear cache</button>
@@ -15,10 +16,9 @@
             <div class="switch">
                 <span class="switch-state">
                     <span ng-if="enableCssEmulation">Enabled</span>
-                    <span ng-if="!enableCssEmulation">Disabled</span>
+                <span ng-if="!enableCssEmulation">Disabled</span>
                 </span>
-                <input ng-model="enableCssEmulation" ng-click="switchChanged('css');" id="cssSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round"
-                    type="checkbox" data-sourcekind="css">
+                <input ng-model="enableCssEmulation" ng-click="switchChanged('css');" id="cssSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="checkbox" data-sourcekind="css">
                 <label for="cssSwitch"></label>
             </div>
         </li>
@@ -91,7 +91,8 @@
                     </div>
                 </div>
 -->
-                <div class="row"><!--
+                <div class="row">
+                    <!--
                     <div class="form-group-sm col-xs-3">
                         <label for="envID">Environnement:</label>
                         <select id="envID" class="form-control input-small" ng-model="config.envID" ng-options="id as value for (value, id) in environments"></select>
@@ -99,7 +100,7 @@
                     <div class="form-group-sm col-xs-12">
                         <label for="themeID">Theme ID:</label>
                         <div class="input-group">
-                            <span class="input-group-addon" id="themeIDhelpBlock">https://manager.powell-365.com/#/theme/</span>                            
+                            <span class="input-group-addon" id="themeIDhelpBlock">https://manager.powell-365.com/#/theme/</span>
                             <input id="themeID" type="number" min="0" class="form-control input-small" ng-model="config.themeID" aria-describedby="themeIDhelpBlock">
                         </div>
                     </div>
@@ -111,8 +112,7 @@
                 <div class="row">
                     <div class="form-group-sm col-xs-12">
                         <label for="xhrOrigin">Forcer le header 'Referer' à:</label>
-                        <input type="text" ng-model="config.xhrOrigin" ng-disabled="config.defaultXhrOriginState" class="form-control" id="xhrOrigin"
-                            placeholder="Exemple : https://contoso.sharepoint.com" aria-describedby="xhrOriginhelpBlock">
+                        <input type="text" ng-model="config.xhrOrigin" ng-disabled="config.defaultXhrOriginState" class="form-control" id="xhrOrigin" placeholder="Exemple : https://contoso.sharepoint.com" aria-describedby="xhrOriginhelpBlock">
                     </div>
                 </div>
                 <div class="row">

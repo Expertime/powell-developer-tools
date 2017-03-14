@@ -4,17 +4,15 @@
     "version": "0.1.0",
     "command": "grunt",
     "isShellCommand": true,
-    "tasks": [
-        {
-            "taskName": "default",
-            "args": [],
-            "isBuildCommand": true,
-            "isWatching": false,
-            "problemMatcher": [
-                "$lessCompile",
-                "$tsc",
-                "$jshint"
-            ]
-        }
-    ]
+    "tasks": [{
+        "taskName": "default",
+        "args": [],
+        "isBuildCommand": true,
+        "isBackground": false,
+        "problemMatcher": [
+            "$lessCompile",
+            "$tsc",
+            "$jshint"
+        ]
+    }]
 }
