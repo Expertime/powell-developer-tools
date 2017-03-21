@@ -2,3 +2,4 @@ key.pem
 powell-developer-tools.zip
 node_modules
 *.log
+.vscode
