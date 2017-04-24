@@ -3,7 +3,13 @@
         function(request, sender, sendResponse) {
             if (request.method == "powDevTools.clearStorage") {
                 localStorage.clear();
+                if (localStorage._keys && localStorage._keys.forEach) {
+                    localStorage._keys.forEach(function(key) { localStorage.removeItem(key) })
+                }
                 sessionStorage.clear();
+                if (sessionsStorage._keys && sessionStorage._keys.forEach) {
+                    sessionStorage._keys.forEach(function(key) { sessionStorage.removeItem(key) })
+                }
                 sendResponse(true);
             }
         });
