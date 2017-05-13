@@ -1,12 +1,14 @@
-<h3 class="row">
-    <span class="col-xs-8">
+<h4 class="row ng-scope">
+    <span class="col-xs-4">
         Powell Developer Tools
-        <span class="app-vers">3.8.0</span>
+        <span class="app-vers">3.9.0</span>
     </span>
     <span class="col-xs-4">
+        <button type="button" id="clearStorage" ng-click="clearLocalStorage(true)" class="btn btn-primary">Vider le cache search</button>
+    </span><span class="col-xs-4">
         <button type="button" id="clearStorage" ng-click="clearLocalStorage()" class="btn btn-primary">Vider le cache</button>
     </span>
-</h3>
+</h4>
 <div class="row">
     <ul class="nav nav-tabs" id="nav">
         <li class="pull-left" ng-class='isPaneActive("js")' id="navJs">

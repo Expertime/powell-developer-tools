@@ -1,28 +1,28 @@
-(function (window, angular, $, chrome, undefined) {
+(function(window, angular, $, chrome, undefined) {
     'use strict';
 
     var CONTROLLER_ID = 'ConfigController';
-    
-    angular.module('powellDevTools').controller(CONTROLLER_ID,
-        ['$scope', '$element', '$q', '$sce', '$timeout', '$interval', 'datacontextUtility',
-            configControllerModule]);
-    
+
+    angular.module('powellDevTools').controller(CONTROLLER_ID, ['$scope', '$element', '$q', '$sce', '$timeout', '$interval', 'datacontextUtility',
+        configControllerModule
+    ]);
+
     function configControllerModule($scope, $element, $q, $sce, $timeout, $interval, datacontextUtility) {
         // Check background scripts freshness 
         chrome.runtime.sendMessage({ 'action': 'checkScriptFreshness', 'globalMD5': window.GLOBAL });
-        
+
         return new ConfigController($scope, $element, $q, $sce, $timeout, $interval, datacontextUtility);
     }
 
-    var ConfigController = function ($scope, $element, $q, $sce, $timeout, $interval, datacontextUtility) {
+    var ConfigController = function($scope, $element, $q, $sce, $timeout, $interval, datacontextUtility) {
         var _this = this;
-        
+
         /*****************
          * View variables
          *****************/
 
         var scripts = document.querySelectorAll('script');
-        var script = scripts[scripts.length-1]
+        var script = scripts[scripts.length - 1]
         if (script.src.indexOf('chrome-extension://') >= 0) {
             // For debugging mode //
             $scope.configTemplateUrl = '/resources/html/ConfigController.html'
@@ -30,7 +30,7 @@
             // For production mode //     
             $scope.configTemplateUrl = 'https://rawgit.com/Expertime/powell-developer-tools/master/resources/html/ConfigController.html';
         }
-        
+
         $scope.config = {
             repoJsURL: datacontextUtility.get_repoJsURL(),
             defaultJsRepoState: datacontextUtility.get_defaultJsRepoState(),
@@ -48,13 +48,13 @@
             repoHtmlURL: datacontextUtility.get_repoHtmlURL(),
             defaultHtmlRepoState: datacontextUtility.get_defaultHtmlRepoState(),
             htmlVersion: datacontextUtility.get_htmlVersion(),
-            sourceMode : datacontextUtility.get_sourceMode(),
-            cdnJsMode : datacontextUtility.get_cdnJsMode(),
-            cdnCssMode : datacontextUtility.get_cdnCssMode(),
+            sourceMode: datacontextUtility.get_sourceMode(),
+            cdnJsMode: datacontextUtility.get_cdnJsMode(),
+            cdnCssMode: datacontextUtility.get_cdnCssMode(),
             cdnHtmlMode: datacontextUtility.get_cdnHtmlMode(),
-            xhrOrigin : datacontextUtility.get_xhrOrigin()
+            xhrOrigin: datacontextUtility.get_xhrOrigin()
         };
-        
+
         $scope.enableJsEmulation = datacontextUtility.isEnabled('js');
         $scope.enableCssEmulation = datacontextUtility.isEnabled('css');
         $scope.enableHtmlEmulation = datacontextUtility.isEnabled('html');
@@ -62,7 +62,7 @@
         $scope.environments = datacontextUtility.ENVIRONMENTS;
         $scope.sourceModes = datacontextUtility.SOURCEMODES;
         $scope.cdnModes = datacontextUtility.CDNMODES;
-        
+
         $scope.$watchCollection('config', function(newValues) {
             for (var value in newValues) {
                 datacontextUtility.setLocalStorageValue(value, newValues[value]);
@@ -73,20 +73,20 @@
                 html: datacontextUtility.get_htmlSourceUrl('[layouts|templates]/*.html')
             };
         });
-        
-        $scope.isPaneActive = function (paneId) {
+
+        $scope.isPaneActive = function(paneId) {
             return paneId == datacontextUtility.get_activePane() ? 'active' : '';
         };
-        
-        $scope.setActivePane = function (paneId) {
+
+        $scope.setActivePane = function(paneId) {
             datacontextUtility.set_activePane(paneId);
         };
-        
-        $scope.switchChanged = function (sourceKind) {
+
+        $scope.switchChanged = function(sourceKind) {
             var deferred = $q.defer();
-            chrome.runtime.sendMessage({ 'action': 'setEnabled', 'enabled': !datacontextUtility.isEnabled(sourceKind), 'sourceKind': sourceKind }, 
-                function(response){
-                    if(!response && chrome.runtime.lastError) {
+            chrome.runtime.sendMessage({ 'action': 'setEnabled', 'enabled': !datacontextUtility.isEnabled(sourceKind), 'sourceKind': sourceKind },
+                function(response) {
+                    if (!response && chrome.runtime.lastError) {
                         deferred.reject(chrome.runtime.lastError);
                     } else {
                         deferred.resolve(response);
@@ -97,12 +97,12 @@
                 // chrome.runtime.reload();
             });
         };
-        
-        $scope.clearLocalStorage = function() {
-            chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-                chrome.tabs.sendMessage(tabs[0].id, {method: "powDevTools.clearStorage"}, function(storageResponse) {
-                    chrome.tabs.reload(tabs[0].id, {bypassCache: true}, function(refreshResponse) {
-                        console.log(storageResponse, refreshResponse);
+
+        $scope.clearLocalStorage = function(onlyClearSearchCache) {
+            var message = onlyClearSearchCache ? "powDevTools.clearSearchStorage" : "powDevTools.clearStorage";
+            chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+                chrome.tabs.sendMessage(tabs[0].id, { method: message }, function(storageResponse) {
+                    chrome.tabs.reload(tabs[0].id, { bypassCache: true }, function(refreshResponse) {
                         chrome.notifications.create(null, {
                             type: "basic",
                             iconUrl: "resources/img/icon128.png",
