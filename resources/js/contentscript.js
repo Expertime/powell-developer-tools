@@ -8,7 +8,7 @@
                         localStorage._keys.forEach(function(key) { localStorage.removeItem(key) })
                     }
                     sessionStorage.clear();
-                    if (sessionsStorage._keys && sessionStorage._keys.forEach) {
+                    if (sessionStorage._keys && sessionStorage._keys.forEach) {
                         sessionStorage._keys.forEach(function(key) { sessionStorage.removeItem(key) })
                     }
                     break;
@@ -16,7 +16,7 @@
                     for (var k in sessionStorage) {
                         k.match(/pow_search/gi) && sessionStorage.removeItem(k)
                     }
-                    if (sessionsStorage._keys && sessionStorage._keys.forEach) {
+                    if (sessionStorage._keys && sessionStorage._keys.forEach) {
                         sessionStorage._keys.forEach(function(key) { key.match(/pow_search/gi) && sessionStorage.removeItem(key) })
                     }
                     break;
