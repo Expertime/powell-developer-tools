@@ -13,8 +13,7 @@ fallback.config({
             // The URLs to load `Twitter Bootstrap`.
             "urls": [
                 "chrome-extension://lnbmhdpfadgpochajkgbekodmafbnkgo/resources/css/bootstrap/bootstrap.min.css",
-                "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css",
-                "resources/css/bootstrap/bootstrap.min.css"
+                "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
             ]
         },
 
@@ -27,8 +26,7 @@ fallback.config({
             // The URLs to load `Twitter Bootstrap multiselect`.
             "urls": [
                 "chrome-extension://lnbmhdpfadgpochajkgbekodmafbnkgo/resources/css/bootstrap/bootstrap-multiselect.min.css",
-                "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css",
-                "resources/css/bootstrap/bootstrap-multiselect.min.css"
+                "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css"
             ]
         },
 
@@ -37,8 +35,7 @@ fallback.config({
             // The URLs to load `jQuery`.
             "urls": [
                 "chrome-extension://lnbmhdpfadgpochajkgbekodmafbnkgo/resources/js/jquery/jquery.min.js",
-                "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js",
-                "resources/js/jquery/jquery.min.js"
+                "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"
             ]
         },
 
@@ -48,8 +45,7 @@ fallback.config({
             // The URLs to load `Bootstrap`.
             "urls": [
                 "chrome-extension://lnbmhdpfadgpochajkgbekodmafbnkgo/resources/js/bootstrap/bootstrap.min.js",
-                "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js",
-                "resources/js/bootstrap/bootstrap.min.js"
+                "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
             ]
         },
 
@@ -59,8 +55,7 @@ fallback.config({
             // The URLs to load `Bootstrap multiselect`.
             "urls": [
                 "chrome-extension://lnbmhdpfadgpochajkgbekodmafbnkgo/resources/js/bootstrap/bootstrap-multiselect.min.js",
-                "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.min.js",
-                "resources/js/bootstrap/bootstrap-multiselect.min.js"
+                "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.min.js"
             ]
         },
 
@@ -70,8 +65,7 @@ fallback.config({
             // The URLs to load `Angular`.
             "urls": [
                 "chrome-extension://lnbmhdpfadgpochajkgbekodmafbnkgo/resources/js/angularjs/angular.min.js",
-                "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js",
-                "resources/js/angularjs/angular.min.js"
+                "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"
             ]
         },
 
@@ -81,8 +75,7 @@ fallback.config({
             // The URLs to load `Angular sanitize`.
             "urls": [
                 "chrome-extension://lnbmhdpfadgpochajkgbekodmafbnkgo/resources/js/angularjs/angular-sanitize.min.js",
-                "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-sanitize.min.js",
-                "resources/js/angularjs/angular-sanitize.min.js"
+                "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-sanitize.min.js"
             ]
         },
 
@@ -91,8 +84,7 @@ fallback.config({
             // The URLs to load `Twitter Bootstrap multiselect`.
             "urls": [
                 "chrome-extension://lnbmhdpfadgpochajkgbekodmafbnkgo/resources/css/popup.css",
-                "https://rawgit.com/Expertime/powell-developer-tools/master/resources/css/popup.min.css",
-                "resources/css/popup.min.css"
+                "https://rawgit.com/Expertime/powell-developer-tools/master/resources/css/popup.min.css"
             ]
         },
 
@@ -105,8 +97,7 @@ fallback.config({
             // The URLs to load `Global JS`.
             "urls": [
                 "chrome-extension://lnbmhdpfadgpochajkgbekodmafbnkgo/resources/js/global.js",
-                "https://rawgit.com/Expertime/powell-developer-tools/master/resources/js/global.min.js",
-                "resources/js/global.min.js"
+                "https://rawgit.com/Expertime/powell-developer-tools/master/resources/js/global.min.js"
             ]
         },
 
@@ -116,8 +107,7 @@ fallback.config({
             // The URLs to load `Popup JS`.
             "urls": [
                 "chrome-extension://lnbmhdpfadgpochajkgbekodmafbnkgo/resources/js/popup.js",
-                "https://rawgit.com/Expertime/powell-developer-tools/master/resources/js/popup.min.js",
-                "resources/js/popup.min.js"
+                "https://rawgit.com/Expertime/powell-developer-tools/master/resources/js/popup.min.js"
             ]
         },
 
@@ -127,8 +117,7 @@ fallback.config({
             // The URLs to load `Background JS`.
             "urls": [
                 "chrome-extension://lnbmhdpfadgpochajkgbekodmafbnkgo/resources/js/background.js",
-                "https://rawgit.com/Expertime/powell-developer-tools/master/resources/js/background.min.js",
-                "resources/js/background.min.js"
+                "https://rawgit.com/Expertime/powell-developer-tools/master/resources/js/background.min.js"
             ]
         },
     }
