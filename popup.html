@@ -1,11 +1,15 @@
 <html ng-app="powellDevTools">
-    <head>
-        <title>Debug Powell Javascript sources</title>
 
-        <script data-main="resources/js/env-selector.min" src="https://cdn.rawgit.com/dolox/fallback/v2/dist/fallback.min.js"></script>
+<head>
+    <title>Debug Powell Javascript sources</title>
 
-    </head>
-    <body ng-controller="ConfigController">
-      <div id="templateWrapper" class="container-fluid" ng-include="configTemplateUrl"></div>
-    </body>
+    <script data-main="resources/js/env-selector.min" src="https://cdn.rawgit.com/dolox/fallback/v2/dist/fallback.min.js"></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="utf-8">
+</head>
+
+<body ng-controller="ConfigController">
+    <div id="templateWrapper" class="container-fluid" ng-include="configTemplateUrl"></div>
+</body>
+
 </html>

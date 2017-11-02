@@ -1,7 +1,7 @@
 <h4 class="row ng-scope">
     <span class="col-xs-4">
         Powell Developer Tools
-        <span class="app-vers">3.9.0</span>
+        <span class="app-vers">3.9.2</span>
     </span>
     <span class="col-xs-4">
         <button type="button" id="clearStorage" ng-click="clearLocalStorage(true)" class="btn btn-primary">Vider le cache search</button>
@@ -142,20 +142,55 @@
                 </div>
 
                 <div class="row">
-                    <div class="form-group-sm col-xs-3">
-                        <label for="envID">Environnement:</label>
-                        <select id="envID" class="form-control input-small" ng-model="config.envID" ng-options="id as value for (value, id) in environments"></select>
+                    <div class="col-xs-3">
+                        <div class="form-group-sm">
+                            <label for="envID">Environnement:</label>
+                            <select id="envID" class="form-control input-small" ng-model="config.envID" ng-options="id as value for (value, id) in environments"></select>
+                        </div>
+                        <div class="form-group-sm">
+                            <label for="themeID">Theme ID:</label>
+                            <input id="themeID" type="number" ng-disabled="!config.useThemeState" class="form-control input-small ng-pristine ng-untouched ng-valid" ng-model="config.themeID" />
+                        </div>
                     </div>
-                    <div class="form-group-sm col-xs-3">
-                        <label for="themeID">Theme ID:</label>
-                        <input id="themeID" type="number" ng-disabled="!config.useThemeState" class="form-control input-small ng-pristine ng-untouched ng-valid" ng-model="config.themeID" />
+                    <div class="col-xs-3">
+                        <div class="form-group-sm">
+                            <label for="headerID">Header ID:</label>
+                            <input id="headerID" type="number" ng-disabled="!config.useHeaderState" class="form-control input-small ng-pristine ng-untouched ng-valid" ng-model="config.headerID" />
+                        </div>
+                        <div class="form-group-sm">
+                            <label for="footerID">Footer ID:</label>
+                            <input id="footerID" type="number" ng-disabled="!config.useFooterState" class="form-control input-small ng-pristine ng-untouched ng-valid" ng-model="config.footerID" />
+                        </div>
                     </div>
-                    <div class="form-group-sm col-xs-6">
-                        <div class="checkbox pull-right">
-                            <div class="switch">
-                                <span class="form-control-static">Utiliser les th&egrave;mes</span> &nbsp;
-                                <input ng-model="config.useThemeState" id="useThemeSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="checkbox" data-sourcekind="js">
-                                <label for="useThemeSwitch" class="pull-right"></label>
+                    <div class="col-xs-6">
+                        <div class="col-xs-6">
+                            <label>Eléments à surcharger :</label>
+                        </div>
+                        <div class="form-group-sm col-xs-6">
+                            <label for="useHeaderSwitch">Header</label>
+                            <div class="checkbox pull-left">
+                                <div class="switch">
+                                    <input ng-model="config.useHeaderState" id="useHeaderSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="checkbox">
+                                    <label for="useHeaderSwitch" class="pull-left"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group-sm col-xs-6">
+                            <label for="useHeaderSwitch">Thème</label>
+                            <div class="checkbox pull-left">
+                                <div class="switch">
+                                    <input ng-model="config.useThemeState" id="useThemeSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="checkbox">
+                                    <label for="useThemeSwitch" class="pull-left"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group-sm col-xs-6">
+                            <label for="useHeaderSwitch">Footer</label>
+                            <div class="checkbox pull-left">
+                                <div class="switch">
+                                    <input ng-model="config.useFooterState" id="useFooterSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="checkbox">
+                                    <label for="useFooterSwitch" class="pull-left"></label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -218,17 +253,20 @@
         </div>
 
         <div class="panel col-xs-12">
-            <div class="form-group-sm" ng-if="enableJsEmulation">
-                <label>Sources JS</label>
-                <p id="ftpJsUrl" class="form-control-static">{{emulationSources.js}}</p>
+            <div class="form-group-sm" ng-if="enableJsEmulation && isPaneActive('js')">
+                <p id="ftpJsUrl" class="form-control-static">
+                    <label>Sources JS :</label>
+                    <span>{{emulationSources.js}}</span>
             </div>
-            <div class="form-group-sm" ng-if="enableCssEmulation">
-                <label>Sources CSS</label>
-                <p id="ftpCssUrl" class="form-control-static">{{emulationSources.css}}</p>
+            <div class="form-group-sm" ng-if="enableCssEmulation && isPaneActive('css')">
+                <p id="ftpCssUrl" class="form-control-static">
+                    <label>Sources CSS :</label>
+                    <span>{{emulationSources.css}}</span>
             </div>
-            <div class="form-group-sm" ng-if="enableHtmlEmulation">
-                <label>Sources HTML</label>
-                <p id="ftpHtmlUrl" class="form-control-static">{{emulationSources.html}}</p>
+            <div class="form-group-sm" ng-if="enableHtmlEmulation && isPaneActive('html')">
+                <p id="ftpHtmlUrl" class="form-control-static">
+                    <label>Sources HTML :</label>
+                    <span>{{emulationSources.html}}</span>
             </div>
         </div>
         <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;" />
