@@ -22,12 +22,6 @@
         (document.head || document.documentElement).appendChild(s);
     }
 
-    // current state
-    console.log(document.readyState);
-
-    // print state changes
-    document.addEventListener('readystatechange', () => console.log('READYSTATE =', document.readyState));
-
     /********************************************
      * Listen to messages from the page context
      ********************************************/
