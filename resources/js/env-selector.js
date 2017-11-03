@@ -81,6 +81,10 @@ fallback.config({
 
         // Include `Popup CSS`
         "css$popup": {
+            "deps": [
+                "css$bootstrap",
+                "css$bootstrap_multiselect"
+            ],
             // The URLs to load `Twitter Bootstrap multiselect`.
             "urls": [
                 "chrome-extension://lnbmhdpfadgpochajkgbekodmafbnkgo/resources/css/popup.css",
@@ -124,7 +128,7 @@ fallback.config({
 });
 
 if (window.location.pathname == '/popup.html') {
-    fallback.require(["css$bootstrap", "css$bootstrap_multiselect", "css$popup", "popup",
+    fallback.require(["css$popup", "popup",
         function(css$bootstrap, css$bootstrap_multiselect, css$popup, popup) {}
     ]);
 }
