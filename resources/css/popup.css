@@ -159,8 +159,7 @@
      background-image: url("../img/warning.png");
  }
  
- #bingTranslate,
- #bingTranslate2 {
+ #bingTranslate {
      height: 100%;
      width: 100%;
      border: none;
