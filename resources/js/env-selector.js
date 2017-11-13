@@ -151,6 +151,6 @@ if (window.location.pathname == '/background.html') {
     fallback.require(["background", function(background) {}]);
 }
 
-if (window.location.pathname == '/resources/html/BingTranslate.html') {
+if (window.location.pathname.indexOf('BingTranslate.html') > -1) {
     fallback.require(["BingTranslate", function(BingTranslate) {}]);
 }
