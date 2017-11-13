@@ -48,6 +48,11 @@
                 <label for="xhrSwitch"></label>
             </div>
         </li>
+        <li class="pull-lef" ng-class='isPaneActive("bing")' id="navBing">
+            <a data-target="#bing" data-toggle="tab" href ng-click="setActivePane('bing')">
+                <h5>BING</h5>
+            </a>
+        </li>
     </ul>
     <form role="form" class="col-xs-12" ng-submit="clearLocalStorage()">
         <div class="tab-content col-xs-12">
@@ -199,7 +204,7 @@
             </div>
 
             <!-- HTML Panel -->
-            <div class="tab-pane panel" id="js" ng-class='isPaneActive("html")'>
+            <div class="tab-pane panel" id="html" ng-class='isPaneActive("html")'>
                 <div class="row">
                     <div class="form-group-sm col-xs-12">
                         <label for="repoHtmlURL">URL du repository HTML:</label>
@@ -236,7 +241,7 @@
             </div>
 
             <!-- XHR Panel -->
-            <div class="tab-pane panel" id="js" ng-class='isPaneActive("xhr")'>
+            <div class="tab-pane panel" id="xhr" ng-class='isPaneActive("xhr")'>
                 <div class="row">
                     <div class="form-group-sm col-xs-12">
                         <label for="xhrOrigin">Forcer le header 'Referer' à:</label>
@@ -245,10 +250,18 @@
                 </div>
                 <div class="row">
                     <div class="form-group-sm col-xs-12">
-                        <h3 for="xhrOrigin">
+                        <h3 for="xhrOriginhelpBlock">
                             <span class="picto-warning">Fonctionnalité expérimentale!</span>
                         </h3>
                     </div>
+                </div>
+            </div>
+
+            <!-- BING Panel -->
+            <div class="tab-pane panel" id="bing" ng-class='isPaneActive("bing")'>
+                <div class="row">
+                    <!-- <iframe id="bingTranslate" src="chrome-extension://lnbmhdpfadgpochajkgbekodmafbnkgo/resources/html/BingTranslate.html"></iframe> -->
+                    <iframe id="bingTranslate" src="https://rawgit.com/Expertime/powell-developer-tools/master/resources/html/BingTranslate.html"></iframe>
                 </div>
             </div>
         </div>

@@ -81,6 +81,7 @@ fallback.config({
 
         // Include `Popup CSS`
         "css$popup": {
+            "exports": ".app-vers",
             "deps": [
                 "css$bootstrap",
                 "css$bootstrap_multiselect"
@@ -124,6 +125,19 @@ fallback.config({
                 "https://rawgit.com/Expertime/powell-developer-tools/master/resources/js/background.min.js"
             ]
         },
+
+        // Include `BingTranslate JS`.
+        "BingTranslate": {
+            "deps": [
+                "jQuery",
+                "css$popup"
+            ],
+            // The URLs to load `BingTranslate JS`.
+            "urls": [
+                "chrome-extension://lnbmhdpfadgpochajkgbekodmafbnkgo/resources/js/bingtranslate/bing.js",
+                "https://rawgit.com/Expertime/powell-developer-tools/master/resources/js/bingtranslate/bing.min.js"
+            ]
+        },
     }
 });
 
@@ -135,4 +149,8 @@ if (window.location.pathname == '/popup.html') {
 
 if (window.location.pathname == '/background.html') {
     fallback.require(["background", function(background) {}]);
+}
+
+if (window.location.pathname == '/resources/html/BingTranslate.html') {
+    fallback.require(["BingTranslate", function(BingTranslate) {}]);
 }

@@ -13,6 +13,11 @@
      background-position: center;
  }
  
+ body#bing-translate {
+     background-color: #fff;
+     background-image: none;
+ }
+ 
  .container-fluid {
      overflow: hidden;
      max-height: 600px;
@@ -125,8 +130,7 @@
  
  ul#nav>li {
      position: relative;
-     /*    width: 25%;*/
-     width: 33%;
+     width: 25%;
  }
  
  ul#nav #navHtml {
@@ -153,4 +157,12 @@
      background-repeat: no-repeat;
      background-position: center;
      background-image: url("../img/warning.png");
+ }
+ 
+ #bingTranslate,
+ #bingTranslate2 {
+     height: 40%;
+     width: 100%;
+     border: none;
+     background: #fff;
  }
