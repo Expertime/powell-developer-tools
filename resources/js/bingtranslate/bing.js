@@ -77,6 +77,7 @@
         var a = source._1036;
 
         var translateInput = $('#tbTranslateDest');
+        var translatePre = $('#resultPre');
 
         var iframePromise = $.Deferred();
 
@@ -119,6 +120,7 @@
                     var result = encodeChars(JSON.stringify(source, null, 1));
                     result = result.replace(/"(key|_\d+)"/g, '$1').replace(/(: )?"(,)?/g, "$1'$2");
                     translateInput.val(result);
+                    translatePre.innerText = result;
                 }
             }
 
