@@ -13,7 +13,7 @@
      background-position: center;
  }
  
- body#bing-translate {
+ body.bing-translate {
      background-color: #fff;
      background-image: none;
  }
