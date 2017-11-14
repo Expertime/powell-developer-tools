@@ -65,7 +65,7 @@ fallback.config({
             // The URLs to load `Angular`.
             "urls": [
                 "chrome-extension://lnbmhdpfadgpochajkgbekodmafbnkgo/resources/js/angularjs/angular.min.js",
-                "https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular.js"
+                "https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular.min.js"
             ]
         },
 
@@ -75,7 +75,7 @@ fallback.config({
             // The URLs to load `Angular resource`.
             "urls": [
                 "chrome-extension://lnbmhdpfadgpochajkgbekodmafbnkgo/resources/js/angularjs/angular-resource.min.js",
-                "https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular-resource.js"
+                "https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular-resource.min.js"
             ]
         },
 
