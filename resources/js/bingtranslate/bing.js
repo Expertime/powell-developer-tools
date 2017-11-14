@@ -68,7 +68,7 @@
         var interval = 0
         var loader = setInterval(function() {
             interval++;
-            event.target.innerText = 'Translating' + '.'.repeat(interval % 3);
+            event.target.innerText = 'Traduction' + '.'.repeat(interval % 3);
         }, 500);
 
 
@@ -115,7 +115,7 @@
                     });
                 } else {
                     clearInterval(loader);
-                    event.target.innerText = 'Translate';
+                    event.target.innerText = 'Traduire';
                     var result = encodeChars(JSON.stringify(source, null, 1));
                     result = result.replace(/"(key|_\d+)"/g, '$1').replace(/(: )?"(,)?/g, "$1'$2");
                     translateInput.val(result);

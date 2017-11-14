@@ -54,6 +54,25 @@
         };
     };
 
+    var _isHeaderRequest = [];
+
+    var _onBeforeHeaderFooterRequestListener = function(request) {
+
+        _isHeaderRequest[request.tabId] = !_isHeaderRequest[request.tabId];
+
+        var originalHtmlTemplateUrl = request.url,
+            debugHtmlTemplateUrl = request.url,
+            regIsCdnPremium = /powell365-cdn.azureedge.net/i;
+
+        var isCdnPremium = regIsCdnPremium.exec(originalHtmlTemplateUrl) != null;
+        debugHtmlTemplateUrl = DatacontextConfig.utility.get_headerFooterHtmlTemplateUrl(originalHtmlTemplateUrl, _isHeaderRequest[request.tabId]);
+        console.log('Redirecting original request [' + originalHtmlTemplateUrl + '] to [' + debugHtmlTemplateUrl + ']');
+        if (debugHtmlTemplateUrl == originalHtmlTemplateUrl) return;
+        return {
+            redirectUrl: debugHtmlTemplateUrl
+        };
+    }
+
     var _onBeforeXhrRequestListener = function(request) {
         var originalXhrUrl = request.url,
             debugXhrUrl = request.url,
@@ -129,12 +148,13 @@
         return filters;
     }
 
-    var _setEnabled = function(enabled, sourceKind) {
+    var _setEnabled = function(enabled, sourceKind, extraData) {
         if (enabled) {
             var powCdn = ["*://r7-cdn.powell-365.com/", "*://cdn.powell-365.com/", "*://r7-powell365-cdn.azureedge.net/", "*://powell365-cdn.azureedge.net/"];
             var logoUrl = ["styles/Premium/*/*/*/images/logo-my-portal.png"];
             var cssUrl = ["styles/Premium/*/*/*/powell.css"];
             var jsUrl = ["scripts/Premium/*/*/*/powell"];
+            var headerFooterHtmlTemplateUrl = ["Common/*/*/*//HtmlTemplates/*"];
             var htmlTemplateUrl = ["Common/*/*/*//layouts/*.html", "Common/*/*/*//Templates/*/*.html", "Common//Templates/*/*.html"];
             var wildcard = "*://*/*";
 
@@ -154,6 +174,12 @@
                     filters.urls = _buildFilters(powCdn, cssUrl);
                     filters.urls.push(wildcard);
                     chrome.webRequest.onBeforeRequest.addListener(_onBeforeCssRequestListener, filters, opt_extraInfoSpec);
+                    if (extraData) {
+
+                    }
+                    filters.urls = _buildFilters(powCdn, headerFooterHtmlTemplateUrl);
+                    filters.types = ['xmlhttprequest'];
+                    chrome.webRequest.onBeforeRequest.addListener(_onBeforeHeaderFooterRequestListener, filters, opt_extraInfoSpec);
                     break;
                 case 'html':
                     filters.urls = _buildFilters(powCdn, htmlTemplateUrl);
@@ -190,6 +216,12 @@
         _updateIcon();
     };
 
+    var _updateOnBeforeHeaderFooterRequestListener = function(requestName, requestValue) {
+        if (chrome.webRequest.onBeforeRequest.hasListener(_onBeforeHeaderFooterRequestListener)) {
+
+        }
+    }
+
     var _checkScriptFreshness = function(globalMD5) {
         if (globalMD5 != window.GLOBAL) {
             // Background scripts are obsolete. Plugin need refresh.
@@ -215,11 +247,14 @@
     };
 
     var _onRequest = function(request, sender, callback) {
-        if (request.action == 'setEnabled') {
+        if (request.action == 'powDevTools.setEnabled') {
             _setEnabled(request.enabled, request.sourceKind);
         }
-        if (request.action == 'checkScriptFreshness') {
+        if (request.action == 'powDevTools.checkScriptFreshness') {
             _checkScriptFreshness(request.globalMD5);
+        }
+        if (request.action == 'powDevTools.valueUpdated') {
+            _updateOnBeforeHeaderFooterRequestListener(request.data.name, request.data.value);
         }
         return true;
     };
@@ -257,6 +292,26 @@
         iconUrl: "resources/img/icon128.png",
         title: "Powell Dev Tools",
         message: "Plugin reloaded."
+    });
+
+    var contentScriptLoader = {
+        conditions: [
+            new chrome.declarativeContent.PageStateMatcher({
+                pageUrl: { urlMatches: '.sharepoint.com', schemes: ['https'] }
+            })
+        ],
+        actions: [new chrome.declarativeContent.RequestContentScript({
+            js: [chrome.runtime.id == 'ipcafcbnkhgdaiefpfnmogkcnikmfifa' ?
+                'https://rawgit.com/Expertime/powell-developer-tools/master/resources/js/contentscript.min.js' :
+                '/resources/js/contentscript.js'
+            ]
+        })]
+    };
+
+    chrome.runtime.onInstalled.addListener(function(details) {
+        chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
+            chrome.declarativeContent.onPageChanged.addRules([contentScriptLoader]);
+        });
     });
 
 })(window, window.angular, window.chrome, window.localStorage);

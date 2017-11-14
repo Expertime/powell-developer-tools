@@ -9,7 +9,7 @@
 
     function configControllerModule($scope, $element, $q, $sce, $timeout, $interval, datacontextUtility) {
         // Check background scripts freshness 
-        chrome.runtime.sendMessage({ 'action': 'checkScriptFreshness', 'globalMD5': window.GLOBAL });
+        chrome.runtime.sendMessage({ 'action': 'powDevTools.checkScriptFreshness', 'globalMD5': window.GLOBAL });
 
         return new ConfigController($scope, $element, $q, $sce, $timeout, $interval, datacontextUtility);
     }
@@ -44,7 +44,11 @@
             defaultCssTenantState: datacontextUtility.get_defaultCssTenantState(),
             envID: datacontextUtility.get_envID(),
             themeID: datacontextUtility.get_themeID(),
+            headerID: datacontextUtility.get_headerID(),
+            footerID: datacontextUtility.get_footerID(),
             useThemeState: datacontextUtility.get_useThemeState(),
+            useHeaderState: datacontextUtility.get_useHeaderState(),
+            useFooterState: datacontextUtility.get_useFooterState(),
             repoHtmlURL: datacontextUtility.get_repoHtmlURL(),
             defaultHtmlRepoState: datacontextUtility.get_defaultHtmlRepoState(),
             htmlVersion: datacontextUtility.get_htmlVersion(),
@@ -66,6 +70,11 @@
         $scope.$watchCollection('config', function(newValues) {
             for (var value in newValues) {
                 datacontextUtility.setLocalStorageValue(value, newValues[value]);
+                if (value == 'headerID' || value == 'footerID') {
+                    var action = "powDevTools.valueUpdated";
+                    var data = { name: value, value: newValues[value] };
+                    chrome.runtime.sendMessage({ 'action': action, 'data': data });
+                }
             }
             $scope.emulationSources = {
                 css: datacontextUtility.get_cssSourceUrl('*.css', false),
@@ -84,7 +93,7 @@
 
         $scope.switchChanged = function(sourceKind) {
             var deferred = $q.defer();
-            chrome.runtime.sendMessage({ 'action': 'setEnabled', 'enabled': !datacontextUtility.isEnabled(sourceKind), 'sourceKind': sourceKind },
+            chrome.runtime.sendMessage({ 'action': 'powDevTools.setEnabled', 'enabled': !datacontextUtility.isEnabled(sourceKind), 'sourceKind': sourceKind },
                 function(response) {
                     if (!response && chrome.runtime.lastError) {
                         deferred.reject(chrome.runtime.lastError);
@@ -113,8 +122,5 @@
                 });
             });
         };
-    };
-
-
-
+    }
 })(window, window.angular, window.jQuery, window.chrome);
