@@ -122,5 +122,66 @@
                 });
             });
         };
+
+        var powLang = {
+            'fr': '1036',
+            'en': '1033',
+            'it': '1040',
+            'es': '3082',
+            'cs': '1029',
+            'de': '1031',
+            'nl': '1043',
+            'pl': '1045',
+            'pt': '1046',
+            'ru': '1049',
+            'sv': '1053',
+            'tr': '1055',
+            'zh-CHS': '2052',
+        };
+
+        function encodeChars(string) {
+            return string.replace(/[ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽž]/g, function(m) {
+                return (m === '"' || m === '\\') ? " " : "\\x" + m.charCodeAt(0).toString(16).toUpperCase();
+            });
+        }
+
+        $scope.Bing = {
+            bingSource: '',
+            bingDestination: '',
+            bingTranslatingIndicator: '',
+            btnTranslateTitle: 'Traduire',
+            translateBing: function() {
+                $scope.Bing.btnTranslateTitle = 'Traduction';
+                var interval = 0
+                var loader = $interval(function() {
+                    interval++;
+                    $scope.Bing.bingTranslatingIndicator = '.'.repeat(interval % 3 + 1);
+                }, 500);
+
+                var bingQuery = {
+                    Input: $scope.Bing.bingSourcePhrase,
+                    Languages: Object.keys(powLang)
+                };
+
+                var resource = datacontextUtility.get_bingTranslationResource();
+                resource.post(bingQuery, function(response) {
+                    $interval.cancel(loader);
+                    $scope.Bing.bingTranslatingIndicator = '';
+                    $scope.Bing.btnTranslateTitle = 'Traduire';
+
+                    var result = {
+                        key: $scope.Bing.bingSourceKey
+                    };
+
+                    Object.keys(response.Data).forEach(function(key) {
+                        result['_' + powLang[key]] = response.Data[key];
+                    });
+
+                    result = encodeChars(JSON.stringify(result, null, 1));
+                    result = result.replace(/"(key|_\d+)"/g, '$1').replace(/\'/g, "\\'").replace(/(: )?"(,)?/g, "$1'$2");
+                    $scope.Bing.bingDestination = result;
+                });
+            }
+        };
     }
 })(window, window.angular, window.jQuery, window.chrome);

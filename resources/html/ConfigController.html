@@ -1,7 +1,7 @@
 <h4 class="row ng-scope">
     <div class="col-xs-4">
         Powell Developer Tools
-        <span class="app-vers">4.0.1</span>
+        <span class="app-vers">4.0.2</span>
     </div>
     <div class="col-xs-4">
         <button type="button" id="clearStorage" ng-click="clearLocalStorage(true)" class="btn btn-primary">Vider le cache search</button>
@@ -260,7 +260,24 @@
             <!-- BING Panel -->
             <div class="tab-pane panel" id="bing" ng-class='isPaneActive("bing")'>
                 <div class="row">
-                    <iframe id="bingTranslate" src="https://rawgit.com/Expertime/powell-developer-tools/master/resources/html/BingTranslate.html"></iframe>
+                    <div class="form-group-sm col-xs-12">
+                        <label for="bingSourceKey">Clé:</label>
+                        <input type="text" ng-model="Bing.bingSourceKey" class="form-control" id="bingSourceKey" placeholder="LabelAuBoisDormant">
+                        <label for="bingSourcePhrase">Source de la traduction (n'importe quelle langue):</label>
+                        <input type="text" ng-model="Bing.bingSourcePhrase" class="form-control" id="bingSourcePhrase" placeholder="Interprète ! Interprète ! Cuillère !">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <button type="button" id="bingTranslate" ng-click="Bing.translateBing()" class="btn btn-primary">{{Bing.btnTranslateTitle}}{{Bing.bingTranslatingIndicator}}</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group-sm col-xs-12" ng-if="Bing.bingDestination && !Bing.bingTranslatingIndicator">
+                        <label for="bingDestination">Valeur traduite:</label>
+                        <input type="text" ng-model="Bing.bingDestination" class="form-control" id="bingDestination">
+                        <!-- <pre>{{Bing.bingDestination}}</pre> -->
+                    </div>
                 </div>
             </div>
         </div>

@@ -2,7 +2,8 @@
     'use strict';
 
     var powellDevTools = angular.module('powellDevTools', [
-        'ngSanitize' // Fixes HTML issues in data binding
+        'ngSanitize', // Fixes HTML issues in data binding
+        'ngResource'
     ]).config(['$sceDelegateProvider', function($sceDelegateProvider) {
         // Add some trusted resource origins
         $sceDelegateProvider.resourceUrlWhitelist([
@@ -20,17 +21,18 @@
         });*/
 
     var SERVICE_ID = 'datacontextUtility';
-    angular.module('powellDevTools').factory(SERVICE_ID, ['$q',
+    angular.module('powellDevTools').factory(SERVICE_ID, ['$q', '$resource',
         datacontextUtilityFactory
     ]);
 
-    function datacontextUtilityFactory($q) {
-        return new DatacontextUtility($q);
+    function datacontextUtilityFactory($q, $resource) {
+        return new DatacontextUtility($q, $resource);
     }
 
-    var DatacontextUtility = function($q) {
+    var DatacontextUtility = function($q, $resource) {
         var _this = this;
         DatacontextUtility.$q = $q;
+        DatacontextUtility.$resource = $resource;
 
         _this.CDN_BASE_URL = 'https://[CDNMODE][CDNPREMMODE]';
         _this.DEFAULT_TENANT = 'Default';
@@ -494,6 +496,22 @@
         }
 
         return debugLogoUrl.replace(/([^:]\/)\/+/g, "$1");
+    };
+
+    DatacontextUtility.prototype.get_bingTranslationResource = function() {
+        return DatacontextUtility.$resource('https://r7-cdn.powell-365.com/translate', {}, {
+            post: {
+                method: 'POST',
+                params: {},
+                headers: {
+                    'Accept': 'application/json;odata=verbose',
+                    "content-type": "application/json;odata=verbose",
+                    'X-Powell-Phone': 1081,
+                }
+            }
+        });
+
+
     };
 
     var _hashCodeFor = function(string) {

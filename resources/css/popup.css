@@ -21,6 +21,7 @@
  .container-fluid {
      overflow: hidden;
      max-height: 600px;
+     background: #fff;
  }
  
  .app-vers {
@@ -157,11 +158,4 @@
      background-repeat: no-repeat;
      background-position: center;
      background-image: url("../img/warning.png");
- }
- 
- #bingTranslate {
-     height: 100%;
-     width: 100%;
-     border: none;
-     background: #fff;
  }

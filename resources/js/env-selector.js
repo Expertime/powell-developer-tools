@@ -65,7 +65,17 @@ fallback.config({
             // The URLs to load `Angular`.
             "urls": [
                 "chrome-extension://lnbmhdpfadgpochajkgbekodmafbnkgo/resources/js/angularjs/angular.min.js",
-                "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"
+                "https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular.js"
+            ]
+        },
+
+        // Include `Angular resource`.
+        "Angular_resource": {
+            "deps": "Angular",
+            // The URLs to load `Angular resource`.
+            "urls": [
+                "chrome-extension://lnbmhdpfadgpochajkgbekodmafbnkgo/resources/js/angularjs/angular-resource.min.js",
+                "https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular-resource.js"
             ]
         },
 
@@ -75,7 +85,7 @@ fallback.config({
             // The URLs to load `Angular sanitize`.
             "urls": [
                 "chrome-extension://lnbmhdpfadgpochajkgbekodmafbnkgo/resources/js/angularjs/angular-sanitize.min.js",
-                "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-sanitize.min.js"
+                "https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular-sanitize.min.js"
             ]
         },
 
@@ -97,7 +107,8 @@ fallback.config({
         "global": {
             "deps": [
                 "Angular",
-                "Angular_sanitize"
+                "Angular_sanitize",
+                "Angular_resource"
             ],
             // The URLs to load `Global JS`.
             "urls": [
