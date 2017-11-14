@@ -72,8 +72,7 @@
         }, 500);
 
 
-        //eval("source = " + source);
-        source = { key: 'LabelToto', _1036: 'Pâte à modeler' };
+        eval("source = " + source);
         var a = source._1036;
 
         var translateInput = $('#tbTranslateDest');
