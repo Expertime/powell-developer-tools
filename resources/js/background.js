@@ -295,6 +295,7 @@
     });
 
     var contentScriptLoader = {
+        id: 'PowellDevTools_contentScript_loader',
         conditions: [
             new chrome.declarativeContent.PageStateMatcher({
                 pageUrl: { urlMatches: '.sharepoint.com', schemes: ['https'] }
@@ -311,30 +312,15 @@
 
     chrome.runtime.onInstalled.addListener(function(details) {
         chrome.declarativeContent.onPageChanged.getRules(undefined, function(rules) {
-            chrome.notifications.create(null, {
-                type: "basic",
-                iconUrl: "resources/img/icon128.png",
-                title: "before remove",
-                message: JSON.stringify(rules)
+            console.log('before remove', JSON.stringify(rules));
+        });
+        chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
+            chrome.declarativeContent.onPageChanged.getRules(undefined, function(rules) {
+                console.log('after remove', JSON.stringify(rules));
             });
-            chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
+            chrome.declarativeContent.onPageChanged.addRules([contentScriptLoader], function(rules) {
                 chrome.declarativeContent.onPageChanged.getRules(undefined, function(rules) {
-                    chrome.notifications.create(null, {
-                        type: "basic",
-                        iconUrl: "resources/img/icon128.png",
-                        title: "after remove",
-                        message: JSON.stringify(rules)
-                    });
-                    chrome.declarativeContent.onPageChanged.addRules([contentScriptLoader], function(rules) {
-                        chrome.declarativeContent.onPageChanged.getRules(undefined, function(rules) {
-                            chrome.notifications.create(null, {
-                                type: "basic",
-                                iconUrl: "resources/img/icon128.png",
-                                title: "before remove",
-                                message: JSON.stringify(rules)
-                            });
-                        });
-                    });
+                    console.log('after add', JSON.stringify(rules));
                 });
             });
         });
