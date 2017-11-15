@@ -310,14 +310,33 @@
     };
 
     chrome.runtime.onInstalled.addListener(function(details) {
-        chrome.notifications.create(null, {
-            type: "basic",
-            iconUrl: "resources/img/icon128.png",
-            title: "Powell Dev Tools",
-            message: JSON.stringify(details)
-        });
-        chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
-            chrome.declarativeContent.onPageChanged.addRules([contentScriptLoader]);
+        chrome.declarativeContent.onPageChanged.getRules(undefined, function(rules) {
+            chrome.notifications.create(null, {
+                type: "basic",
+                iconUrl: "resources/img/icon128.png",
+                title: "before remove",
+                message: JSON.stringify(rules)
+            });
+            chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
+                chrome.declarativeContent.onPageChanged.getRules(undefined, function(rules) {
+                    chrome.notifications.create(null, {
+                        type: "basic",
+                        iconUrl: "resources/img/icon128.png",
+                        title: "after remove",
+                        message: JSON.stringify(rules)
+                    });
+                    chrome.declarativeContent.onPageChanged.addRules([contentScriptLoader], function(rules) {
+                        chrome.declarativeContent.onPageChanged.getRules(undefined, function(rules) {
+                            chrome.notifications.create(null, {
+                                type: "basic",
+                                iconUrl: "resources/img/icon128.png",
+                                title: "before remove",
+                                message: JSON.stringify(rules)
+                            });
+                        });
+                    });
+                });
+            });
         });
     });
 
