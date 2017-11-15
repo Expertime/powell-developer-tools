@@ -4,7 +4,6 @@
      * Inject powelldevtools.contentscript.js
      ******************************************/
 
-
     if (document.head || document.documentElement)
         injectContentScript();
     else
