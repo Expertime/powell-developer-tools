@@ -310,6 +310,12 @@
     };
 
     chrome.runtime.onInstalled.addListener(function(details) {
+        chrome.notifications.create(null, {
+            type: "basic",
+            iconUrl: "resources/img/icon128.png",
+            title: "Powell Dev Tools",
+            message: JSON.stringify(details)
+        });
         chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
             chrome.declarativeContent.onPageChanged.addRules([contentScriptLoader]);
         });
