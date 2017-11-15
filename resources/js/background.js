@@ -294,25 +294,25 @@
         message: "Plugin reloaded."
     });
 
-    // var contentScriptLoader = {
-    //     conditions: [
-    //         new chrome.declarativeContent.PageStateMatcher({
-    //             pageUrl: { urlMatches: '.sharepoint.com', schemes: ['https'] }
-    //         })
-    //     ],
-    //     actions: [new chrome.declarativeContent.RequestContentScript({
-    //         js: [
-    //             /*chrome.runtime.id == 'ipcafcbnkhgdaiefpfnmogkcnikmfifa' ?
-    //                             'https://rawgit.com/Expertime/powell-developer-tools/master/resources/js/contentscript.min.js' :*/
-    //             '/resources/js/contentscript.js'
-    //         ]
-    //     })]
-    // };
+    var contentScriptLoader = {
+        conditions: [
+            new chrome.declarativeContent.PageStateMatcher({
+                pageUrl: { urlMatches: '.sharepoint.com', schemes: ['https'] }
+            })
+        ],
+        actions: [new chrome.declarativeContent.RequestContentScript({
+            js: [
+                /*chrome.runtime.id == 'ipcafcbnkhgdaiefpfnmogkcnikmfifa' ?
+                                'https://rawgit.com/Expertime/powell-developer-tools/master/resources/js/contentscript.min.js' :*/
+                '/resources/js/contentscript.js'
+            ]
+        })]
+    };
 
-    // chrome.runtime.onInstalled.addListener(function(details) {
-    //     chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
-    //         chrome.declarativeContent.onPageChanged.addRules([contentScriptLoader]);
-    //     });
-    // });
+    chrome.runtime.onInstalled.addListener(function(details) {
+        chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
+            chrome.declarativeContent.onPageChanged.addRules([contentScriptLoader]);
+        });
+    });
 
 })(window, window.angular, window.chrome, window.localStorage);
