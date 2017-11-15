@@ -1,5 +1,4 @@
 (function(window, undefined) {
-    console.log(window);
     var observer = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
             if (!mutation.addedNodes) return
