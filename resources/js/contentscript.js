@@ -14,7 +14,7 @@
         var s = document.createElement('script');
         var resource = chrome.runtime.id == 'ipcafcbnkhgdaiefpfnmogkcnikmfifa' ?
             'https://rawgit.com/Expertime/powell-developer-tools/master/resources/js/powelldevtools.contentscript.min.js' :
-            '/resources/js/powelldevtools.contentscript.js'
+            '/resources/js/powelldevtools.contentscript.js';
         s.src = chrome.extension.getURL(resource);
         s.onload = function() {
             this.remove();
