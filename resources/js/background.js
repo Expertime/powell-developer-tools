@@ -302,8 +302,8 @@
         ],
         actions: [new chrome.declarativeContent.RequestContentScript({
             js: [
-                /*chrome.runtime.id == 'ipcafcbnkhgdaiefpfnmogkcnikmfifa' ?
-                                'https://rawgit.com/Expertime/powell-developer-tools/master/resources/js/contentscript.min.js' :*/
+                chrome.runtime.id == 'ipcafcbnkhgdaiefpfnmogkcnikmfifa' ?
+                '/resources/js/contentscript.min.js' :
                 '/resources/js/contentscript.js'
             ]
         })]
