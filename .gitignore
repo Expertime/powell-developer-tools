@@ -3,3 +3,4 @@ powell-developer-tools.zip
 node_modules
 *.log
 .vscode
+.jshintr
