@@ -48,9 +48,14 @@
                 <label for="xhrSwitch"></label>
             </div>
         </li>
-        <li class="pull-lef" ng-class='isPaneActive("bing")' id="navBing">
+        <li class="pull-left" ng-class='isPaneActive("bing")' id="navBing">
             <a data-target="#bing" data-toggle="tab" href ng-click="setActivePane('bing')">
                 <h5>BING</h5>
+            </a>
+        </li>
+        <li class="pull-left" ng-class='isPaneActive("sp")' id="navSp">
+            <a data-target="#sp" data-toggle="tab" href ng-click="setActivePane('sp')">
+                <h5>SP</h5>
             </a>
         </li>
     </ul>
@@ -276,6 +281,30 @@
                     <div class="form-group-sm col-xs-12" ng-if="Bing.bingDestination && !Bing.bingTranslatingIndicator">
                         <label for="bingDestination">Valeur traduite:</label>
                         <input type="text" ng-model="Bing.bingDestination" class="form-control" id="bingDestination">
+                        <!-- <pre>{{Bing.bingDestination}}</pre> -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- SP Panel -->
+            <div class="tab-pane panel" id="sp" ng-class='isPaneActive("sp")'>
+                <div class="row">
+                    <div class="form-group-sm col-xs-12">
+                        <label for="spResName">Name:</label>
+                        <input type="text" ng-model="Sp.Res.Name" class="form-control" id="spResName" placeholder="cmscore">
+                        <label for="spResKey">Key:</label>
+                        <input type="text" ng-model="Sp.Res.Key" class="form-control" id="spResKey" placeholder="list_Pages_UrlName">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <button type="button" id="sPgetResourceValues" ng-click="Sp.Res.getResourceValues()" class="btn btn-primary">{{Sp.Res.btnGetResourceValues}}{{Sp.Res.getResourceValuesIndicator}}</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group-sm col-xs-12" ng-if="Sp.Res.resourceValues && !Sp.Res.getResourceValuesIndicator">
+                        <label for="spResourceValues">Resources:</label>
+                        <input type="text" ng-model="Sp.Res.resourceValues" class="form-control" id="spResourceValues">
                         <!-- <pre>{{Bing.bingDestination}}</pre> -->
                     </div>
                 </div>

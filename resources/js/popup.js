@@ -123,6 +123,37 @@
             });
         };
 
+        $scope.Sp = {
+            Res: {
+                Name: '',
+                Key: '',
+                resourceValues: '',
+                getResourceValuesIndicator: '',
+                btnGetResourceValues: 'Get resources',
+                getResourceValues: function() {
+
+                    var interval = 0
+                    var loader = $interval(function() {
+                        interval++;
+                        $scope.Sp.Res.getResourceValuesIndicator = '.'.repeat(interval % 3 + 1);
+                    }, 500);
+
+                    var message = "powDevTools.getResourceValues";
+                    var data = {
+                        'name': $scope.Sp.Res.Name,
+                        'key': $scope.Sp.Res.Key
+                    };
+                    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+                        chrome.tabs.sendMessage(tabs[0].id, { method: message, data: data }, function(resourceValues) {
+                            $interval.cancel(loader);
+                            $scope.Sp.Res.getResourceValuesIndicator = '';
+                            $scope.Sp.Res.resourceValues = resourceValues;
+                        });
+                    });
+                }
+            }
+        };
+
         var powLang = {
             'fr': '1036',
             'en': '1033',
