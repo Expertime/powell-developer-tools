@@ -13,7 +13,7 @@
     var _onBeforeJsRequestListener = function(request) {
         var originalJsUrl = request.url,
             debugJsUrl = request.url,
-            regIsOriginalUrl = /(cdn.powell-365.com|powell365-cdn.azureedge.net)\/scripts\/(?:powell(?:\/debug)?\?siteCollectionUrl=|Premium\/\d+\/\d+\/\d+\/powell\?)/i,
+            regIsOriginalUrl = /(cdn.powell-365.com|powell365-cdn.azureedge.net)\/scripts\/(?:powell(?:\/debug)?\?siteCollectionUrl=|Premium)/i,
             regIsCdnPremium = /powell365-cdn.azureedge.net/i,
             regIsReplacedUrl = /#powellDevTools=1/;
 
