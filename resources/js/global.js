@@ -510,8 +510,6 @@
                 }
             }
         });
-
-
     };
 
     var _hashCodeFor = function(string) {
