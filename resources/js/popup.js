@@ -17,6 +17,11 @@
     var ConfigController = function($scope, $element, $q, $sce, $timeout, $interval, datacontextUtility) {
         var _this = this;
 
+        /**************
+         * App version
+         **************/
+        $scope.appVers = "4.5.3";
+
         /*****************
          * View variables
          *****************/
