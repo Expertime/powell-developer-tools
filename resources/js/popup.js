@@ -84,7 +84,7 @@
         });
 
         $scope.isPaneActive = function(paneId) {
-            return paneId == datacontextUtility.get_activePane() ? 'active' : '';
+            return datacontextUtility.get_activePane().match(new RegExp(paneId)) ? 'active' : '';
         };
 
         $scope.setActivePane = function(paneId) {

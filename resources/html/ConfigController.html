@@ -48,13 +48,20 @@
                 <label for="xhrSwitch"></label>
             </div>
         </li>
-        <li class="pull-left" ng-class='isPaneActive("bing")' id="navBing">
-            <a data-target="#bing" data-toggle="tab" href ng-click="setActivePane('bing')">
+        <li class="pull-left" ng-class='isPaneActive("translate.*")' id="navTranslate">
+            <a data-target="#bing" data-toggle="tab" href ng-click="setActivePane('translate-bing')">
+                <h5>TRANSLATE</h5>
+            </a>
+        </li>
+    </ul>
+    <ul class="nav nav-tabs sub-nav-tabs" id="subNavTranslate" ng-class='isPaneActive("translate.*")'>
+        <li class="pull-left" ng-class='isPaneActive("translate-bing")' id="navBing">
+            <a data-target="#bing" data-toggle="tab" href ng-click="setActivePane('translate-bing')">
                 <h5>BING</h5>
             </a>
         </li>
-        <li class="pull-left" ng-class='isPaneActive("sp")' id="navSp">
-            <a data-target="#sp" data-toggle="tab" href ng-click="setActivePane('sp')">
+        <li class="pull-left" ng-class='isPaneActive("translate-sp")' id="navSp">
+            <a data-target="#sp" data-toggle="tab" href ng-click="setActivePane('translate-sp')">
                 <h5>SP</h5>
             </a>
         </li>
