@@ -310,7 +310,7 @@
         })]
     };
 
-    chrome.runtime.onInstalled.addListener(function(details) {
+    function doReplaceRules(details) {
         chrome.declarativeContent.onPageChanged.getRules(undefined, function(rules) {
             console.log('before remove', JSON.stringify(rules));
         });
@@ -324,6 +324,12 @@
                 });
             });
         });
-    });
+    }
+
+    if (chrome.extension.inIncognitoContext) {
+        doReplaceRules();
+    } else {
+        chrome.runtime.onInstalled.addListener(doReplaceRules);
+    }
 
 })(window, window.angular, window.chrome, window.localStorage);
