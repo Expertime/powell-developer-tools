@@ -1,4 +1,4 @@
-(function(window, angular, $, chrome, undefined) {
+(function (window, angular, $, chrome, undefined) {
     'use strict';
 
     var CONTROLLER_ID = 'ConfigController';
@@ -9,18 +9,21 @@
 
     function configControllerModule($scope, $element, $q, $sce, $timeout, $interval, datacontextUtility) {
         // Check background scripts freshness 
-        chrome.runtime.sendMessage({ 'action': 'powDevTools.checkScriptFreshness', 'globalMD5': window.GLOBAL });
+        chrome.runtime.sendMessage({
+            'action': 'powDevTools.checkScriptFreshness',
+            'globalMD5': window.GLOBAL
+        });
 
         return new ConfigController($scope, $element, $q, $sce, $timeout, $interval, datacontextUtility);
     }
 
-    var ConfigController = function($scope, $element, $q, $sce, $timeout, $interval, datacontextUtility) {
+    var ConfigController = function ($scope, $element, $q, $sce, $timeout, $interval, datacontextUtility) {
         var _this = this;
 
         /**************
          * App version
          **************/
-        $scope.appVers = "4.7.1";
+        $scope.appVers = "4.7.2";
 
         /*****************
          * View variables
@@ -72,13 +75,19 @@
         $scope.sourceModes = datacontextUtility.SOURCEMODES;
         $scope.cdnModes = datacontextUtility.CDNMODES;
 
-        $scope.$watchCollection('config', function(newValues) {
+        $scope.$watchCollection('config', function (newValues) {
             for (var value in newValues) {
                 datacontextUtility.setLocalStorageValue(value, newValues[value]);
                 if (value == 'headerID' || value == 'footerID') {
                     var action = "powDevTools.valueUpdated";
-                    var data = { name: value, value: newValues[value] };
-                    chrome.runtime.sendMessage({ 'action': action, 'data': data });
+                    var data = {
+                        name: value,
+                        value: newValues[value]
+                    };
+                    chrome.runtime.sendMessage({
+                        'action': action,
+                        'data': data
+                    });
                 }
             }
             $scope.emulationSources = {
@@ -88,35 +97,46 @@
             };
         });
 
-        $scope.isPaneActive = function(paneId) {
+        $scope.isPaneActive = function (paneId) {
             return datacontextUtility.get_activePane().match(new RegExp(paneId)) ? 'active' : '';
         };
 
-        $scope.setActivePane = function(paneId) {
+        $scope.setActivePane = function (paneId) {
             datacontextUtility.set_activePane(paneId);
         };
 
-        $scope.switchChanged = function(sourceKind) {
+        $scope.switchChanged = function (sourceKind) {
             var deferred = $q.defer();
-            chrome.runtime.sendMessage({ 'action': 'powDevTools.setEnabled', 'enabled': !datacontextUtility.isEnabled(sourceKind), 'sourceKind': sourceKind },
-                function(response) {
+            chrome.runtime.sendMessage({
+                    'action': 'powDevTools.setEnabled',
+                    'enabled': !datacontextUtility.isEnabled(sourceKind),
+                    'sourceKind': sourceKind
+                },
+                function (response) {
                     if (!response && chrome.runtime.lastError) {
                         deferred.reject(chrome.runtime.lastError);
                     } else {
                         deferred.resolve(response);
                     }
                 });
-            deferred.promise.catch(function(response) {
+            deferred.promise.catch(function (response) {
                 // Error while communicating with background scripts. Reloading plugin.
                 // chrome.runtime.reload();
             });
         };
 
-        $scope.clearLocalStorage = function(onlyClearSearchCache) {
+        $scope.clearLocalStorage = function (onlyClearSearchCache) {
             var message = onlyClearSearchCache ? "powDevTools.clearSearchStorage" : "powDevTools.clearStorage";
-            chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-                chrome.tabs.sendMessage(tabs[0].id, { method: message }, function(storageResponse) {
-                    chrome.tabs.reload(tabs[0].id, { bypassCache: true }, function(refreshResponse) {
+            chrome.tabs.query({
+                active: true,
+                currentWindow: true
+            }, function (tabs) {
+                chrome.tabs.sendMessage(tabs[0].id, {
+                    method: message
+                }, function (storageResponse) {
+                    chrome.tabs.reload(tabs[0].id, {
+                        bypassCache: true
+                    }, function (refreshResponse) {
                         chrome.notifications.create(null, {
                             type: "basic",
                             iconUrl: "resources/img/icon128.png",
@@ -135,10 +155,10 @@
                 resourceValues: '',
                 getResourceValuesIndicator: '',
                 btnGetResourceValues: 'Get resources',
-                getResourceValues: function() {
+                getResourceValues: function () {
 
                     var interval = 0
-                    var loader = $interval(function() {
+                    var loader = $interval(function () {
                         interval++;
                         $scope.Sp.Res.getResourceValuesIndicator = '.'.repeat(interval % 3 + 1);
                     }, 500);
@@ -148,8 +168,14 @@
                         'name': $scope.Sp.Res.Name,
                         'key': $scope.Sp.Res.Key
                     };
-                    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-                        chrome.tabs.sendMessage(tabs[0].id, { method: message, data: data }, function(resourceValues) {
+                    chrome.tabs.query({
+                        active: true,
+                        currentWindow: true
+                    }, function (tabs) {
+                        chrome.tabs.sendMessage(tabs[0].id, {
+                            method: message,
+                            data: data
+                        }, function (resourceValues) {
                             $interval.cancel(loader);
                             $scope.Sp.Res.getResourceValuesIndicator = '';
                             $scope.Sp.Res.resourceValues = resourceValues;
@@ -168,8 +194,10 @@
             'de': '1031',
             'nl': '1043',
             'pl': '1045',
-            'pt': '1046',
-            'pt': '2070',
+            'pt': [
+                '1046',
+                '2070'
+            ],
             'ru': '1049',
             'sv': '1053',
             'tr': '1055',
@@ -178,7 +206,7 @@
         };
 
         function encodeChars(string) {
-            return string.replace(/[ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽž]/g, function(m) {
+            return string.replace(/[ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽž]/g, function (m) {
                 return (m === '"' || m === '\\') ? " " : "\\x" + m.charCodeAt(0).toString(16).toUpperCase();
             });
         }
@@ -188,10 +216,10 @@
             bingDestination: '',
             bingTranslatingIndicator: '',
             btnTranslateTitle: 'Traduire',
-            translateBing: function() {
+            translateBing: function () {
                 $scope.Bing.btnTranslateTitle = 'Traduction';
                 var interval = 0
-                var loader = $interval(function() {
+                var loader = $interval(function () {
                     interval++;
                     $scope.Bing.bingTranslatingIndicator = '.'.repeat(interval % 3 + 1);
                 }, 500);
@@ -202,7 +230,7 @@
                 };
 
                 var resource = datacontextUtility.get_bingTranslationResource();
-                resource.post(bingQuery, function(response) {
+                resource.post(bingQuery, function (response) {
                     $interval.cancel(loader);
                     $scope.Bing.bingTranslatingIndicator = '';
                     $scope.Bing.btnTranslateTitle = 'Traduire';
@@ -211,8 +239,14 @@
                         key: $scope.Bing.bingSourceKey
                     };
 
-                    Object.keys(response.Data).forEach(function(key) {
-                        result['_' + powLang[key]] = response.Data[key];
+                    Object.keys(response.Data).forEach(function (key) {
+                        if (Array.isArray(powLang[key])) {
+                            powLang[key].forEach(function (lcid) {
+                                result['_' + lcid] = response.Data[key];
+                            });
+                        } else {
+                            result['_' + powLang[key]] = response.Data[key];
+                        }
                     });
 
                     result = encodeChars(JSON.stringify(result, null, 1));
