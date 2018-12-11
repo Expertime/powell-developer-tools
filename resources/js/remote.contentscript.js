@@ -12,7 +12,7 @@
     function injectContentScript() {
         var s = document.createElement('script');
         var resource = chrome.runtime.id == 'ipcafcbnkhgdaiefpfnmogkcnikmfifa' ?
-            'https://rawgit.com/Expertime/powell-developer-tools/master/resources/js/powelldevtools.contentscript.min.js' :
+            'https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools/resources/js/powelldevtools.contentscript.min.js' :
             chrome.runtime.getURL('/resources/js/powelldevtools.contentscript.js');
         s.src = resource;
         s.onload = function() {
