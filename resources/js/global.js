@@ -10,8 +10,7 @@
             // Allow same origin resource loads.
             'self',
             // Allow loading from our assets domain.  Notice the difference between * and **.
-            'https://rawgit.com/**',
-            'https://cdn.rawgit.com/**'
+            'https://cdn.jsdelivr.net/**'
         ]);
     }]);
     /*.factory('$exceptionHandler', function() {
