@@ -33,10 +33,10 @@
         var script = scripts[scripts.length - 1]
         if (script.src.indexOf('chrome-extension://') >= 0) {
             // For debugging mode //
-            $scope.configTemplateUrl = '/resources/html/ConfigController.html'
+            $scope.configTemplateUrl = '/resources/html/ConfigController.html';
         } else {
             // For production mode //     
-            $scope.configTemplateUrl = 'https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools/resources/html/ConfigController.html';
+            $scope.configTemplateUrl = 'https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools@latest/resources/html/ConfigController.html';
         }
 
         $scope.config = {
