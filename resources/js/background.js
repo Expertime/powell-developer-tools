@@ -223,7 +223,7 @@
     }
 
     var _checkScriptFreshness = function(globalMD5) {
-        if (globalMD5 != window.GLOBAL) {
+        if (globalMD5 != window.PDT_GLOBAL) {
             // Background scripts are obsolete. Plugin need refresh.
             chrome.runtime.reload();
         }

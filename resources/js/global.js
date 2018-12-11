@@ -1,4 +1,4 @@
-(function GLOBAL(window, angular, localStorage, undefined) {
+(function PDT_GLOBAL(window, angular, localStorage, undefined) {
     'use strict';
 
     var powellDevTools = angular.module('powellDevTools', [
@@ -523,6 +523,6 @@
         return hash;
     };
 
-    window.GLOBAL = _hashCodeFor(GLOBAL.toString());
+    window.PDT_GLOBAL = _hashCodeFor(PDT_GLOBAL.toString());
 
 })(window, window.angular, window.localStorage);

@@ -11,7 +11,7 @@
         // Check background scripts freshness 
         chrome.runtime.sendMessage({
             'action': 'powDevTools.checkScriptFreshness',
-            'globalMD5': window.GLOBAL
+            'globalMD5': window.PDT_GLOBAL
         });
 
         return new ConfigController($scope, $element, $q, $sce, $timeout, $interval, datacontextUtility);
@@ -23,7 +23,7 @@
         /**************
          * App version
          **************/
-        $scope.appVers = "5.1.1";
+        $scope.appVers = "5.1.2";
 
         /*****************
          * View variables
