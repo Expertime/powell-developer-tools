@@ -294,8 +294,8 @@
         message: "Plugin reloaded."
     });
 
-    var contentScriptLoader = {
-        id: 'PowellDevTools_contentScript_loader',
+    var spContentScriptLoader = {
+        id: 'PowellDevTools_SP_contentScript_loader',
         conditions: [
             new chrome.declarativeContent.PageStateMatcher({
                 pageUrl: { urlMatches: '.sharepoint.com', schemes: ['https'] }
@@ -304,8 +304,24 @@
         actions: [new chrome.declarativeContent.RequestContentScript({
             js: [
                 chrome.runtime.id == 'ipcafcbnkhgdaiefpfnmogkcnikmfifa' ?
-                '/resources/js/contentscript.min.js' :
-                '/resources/js/contentscript.js'
+                '/resources/js/sp.contentscript.min.js' :
+                '/resources/js/sp.contentscript.js'
+            ]
+        })]
+    };
+
+    var pmContentScriptLoader = {
+        id: 'PowellDevTools_PM_contentScript_loader',
+        conditions: [
+            new chrome.declarativeContent.PageStateMatcher({
+                pageUrl: { urlMatches: 'manager.powell-365.com', schemes: ['https'] }
+            })
+        ],
+        actions: [new chrome.declarativeContent.RequestContentScript({
+            js: [
+                chrome.runtime.id == 'ipcafcbnkhgdaiefpfnmogkcnikmfifa' ?
+                '/resources/js/pm.contentscript.min.js' :
+                '/resources/js/pm.contentscript.js'
             ]
         })]
     };
@@ -318,7 +334,7 @@
             chrome.declarativeContent.onPageChanged.getRules(undefined, function(rules) {
                 console.log('after remove', JSON.stringify(rules));
             });
-            chrome.declarativeContent.onPageChanged.addRules([contentScriptLoader], function(rules) {
+            chrome.declarativeContent.onPageChanged.addRules([spContentScriptLoader, pmContentScriptLoader], function(rules) {
                 chrome.declarativeContent.onPageChanged.getRules(undefined, function(rules) {
                     console.log('after add', JSON.stringify(rules));
                 });

@@ -11,9 +11,11 @@
         x.send();
     }
 
+    get('https://cdn.jsdelivr.net/gh/SheetJS/js-xlsx/dist/xlsx.full.min.js', execute);
+
     var resource = chrome.runtime.id == 'ipcafcbnkhgdaiefpfnmogkcnikmfifa' ?
-        'https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools@latest/resources/js/remote.contentscript.js' :
-        chrome.runtime.getURL('/resources/js/remote.contentscript.js');
+        'https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools@latest/resources/js/remote.pm.contentscript.js' :
+        chrome.runtime.getURL('/resources/js/remote.pm.contentscript.js');
 
     get(resource, execute);
 })(window, chrome);
