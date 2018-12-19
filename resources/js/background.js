@@ -295,8 +295,8 @@
     });
 
     var spContentScriptLoader = {
-        id: 'PowellDevTools_SP_contentScript_loader',
         conditions: [
+            id: 'PowellDevTools_SP_contentScript_loader',
             new chrome.declarativeContent.PageStateMatcher({
                 pageUrl: { urlMatches: '.sharepoint.com', schemes: ['https'] }
             })

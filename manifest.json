@@ -3,7 +3,7 @@
     "name": "Powell Developer Tools",
     "short_name": "Powell DevTools",
     "description": "This extension gives access to the developer-specific-version of the Powell JavaScript & CSS files",
-    "version": "5.3.0",
+    "version": "5.4.0",
     "browser_action": {
         "default_icon": "resources/img/icon19_disabled.png",
         "default_popup": "popup.html"
@@ -28,7 +28,7 @@
         "storage"
     ],
     "web_accessible_resources": [
-        "resources/js/*"
+        "resources/*"
     ],
-    "content_security_policy": "script-src 'self' https://ajax.googleapis.com https://maxcdn.bootstrapcdn.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://*.microsofttranslator.com https://*.bing.com; object-src 'self'"
+    "content_security_policy": "script-src 'self' 'unsafe-eval' chrome-extension://fhhogopjgcndenpcpihdboilgfgbmiab https://ajax.googleapis.com https://maxcdn.bootstrapcdn.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://gitcdn.link https://*.microsofttranslator.com https://*.bing.com; object-src 'self' 'unsafe-eval' chrome-extension://fhhogopjgcndenpcpihdboilgfgbmiab"
 }

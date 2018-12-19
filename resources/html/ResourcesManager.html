@@ -1,31 +1,29 @@
-<div class="page" data-ng-view="">
-    <header class="page-header">
-        <div class="intro-page">
-            <h1 class="page-title">Tenant resources management</h1>
-            <div class="page-description">
-                <span></span>
-            </div>
-        </div>
-    </header>
-    <div class="overlay-loader" ng-hide="!loading" ng-loading="">
-        <div class="content-loader-art">
-            <div class="content-loader-art-wrapper">
-                <div class="content-loader-art-bar"></div>
-                <div class="content-loader-art-bar"></div>
-                <div class="content-loader-art-bar"></div>
-                <div class="content-loader-art-bar"></div>
-            </div>
+<header class="page-header">
+    <div class="intro-page">
+        <h1 class="page-title">Tenant resources management</h1>
+        <div class="page-description">
+            <span></span>
         </div>
     </div>
-    <div class="box">
-        <div class="panel-heading">
-            <h2><span>Manage resources</span></h2>
+</header>
+<div class="overlay-loader" ng-hide="!loading" ng-loading="">
+    <div class="content-loader-art">
+        <div class="content-loader-art-wrapper">
+            <div class="content-loader-art-bar"></div>
+            <div class="content-loader-art-bar"></div>
+            <div class="content-loader-art-bar"></div>
+            <div class="content-loader-art-bar"></div>
         </div>
-        <div class="wrapper-btn">
-            <button class="btn-export" title="Export" ng-confirm-click="" confirmed-click="exportResources();">Export</button>
-            <br/>
-            <input ng-model="" type="file" ng-file-select="onFileSelect($files)">
-            <button class="btn-import" title="Import" ng-confirm-click="" confirmed-click="importResources();">Import</button>
-        </div>
+    </div>
+</div>
+<div class="box">
+    <div class="panel-heading">
+        <h2><span>Manage resources</span></h2>
+    </div>
+    <div class="wrapper-btn">
+        <button class="btn-export" title="Export" ng-confirm-click="" confirmed-click="exportResources();">Export</button>
+        <br />
+        <input ng-model="file" type="file" ng-file-select="onFileSelect($files)">
+        <button class="btn-import" title="Import" ng-confirm-click="" confirmed-click="importResources();">Import</button>
     </div>
 </div>

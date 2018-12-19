@@ -1,6 +1,6 @@
-// (function(window, undefined) {
-//     var observer = new MutationObserver(function(mutations) {
-//         mutations.forEach(function(mutation) {
+// (function (window, undefined) {
+//     var observer = new MutationObserver(function (mutations) {
+//         mutations.forEach(function (mutation) {
 //             if (!mutation.addedNodes) return
 
 //             for (var i = 0; i < mutation.addedNodes.length; i++) {
@@ -22,7 +22,7 @@
 //                             return;
 //                         }
 //                         // The call back isn't ready. We need to wait for it
-//                         setTimeout(function() {
+//                         setTimeout(function () {
 //                             if (!count) {
 //                                 // We have run out of retries
 //                                 if (error !== undefined) {
@@ -34,9 +34,9 @@
 //                             }
 //                         }, interval);
 //                     }
-//                     waitUntil(function() {
+//                     waitUntil(function () {
 //                         return window.angular !== undefined;
-//                     }, function() {
+//                     }, function () {
 //                         if (window.Config && window.Config.PROPERTIES) {
 //                             //window.postMessage({ type: "POWELL_DEVELOPER_TOOLS", object: 'CONFIG', data: window.Config }, "*");
 //                             // window.addEventListener("PassToBackground", function(evt) {
@@ -45,13 +45,13 @@
 //                         }
 //                         if (window.angular && window.angular.module) {
 //                             angular.module('app')
-//                                 .decorator("$templateCache", ["$delegate", function($delegate) {
+//                                 .decorator("$templateCache", ["$delegate", function ($delegate) {
 //                                     console.log('OK Delegate');
 //                                     // Stash away the original get method
 //                                     var origPutMethod = $delegate.put;
 //                                     $delegate.templatesArray = []
-//                                         // Replace it with our getter
-//                                     $delegate.put = function(url, content) {
+//                                     // Replace it with our getter
+//                                     $delegate.put = function (url, content) {
 //                                         // Do we match our content type family prefix?
 //                                         $delegate.templatesArray.push(url);
 //                                         //console.log('$templateCache:', $delegate.templatesArray);

@@ -1,4 +1,10 @@
+var currentId = chrome.runtime.id;
+if (currentId === 'ipcafcbnkhgdaiefpfnmogkcnikmfifa') {
+    currentId = 'fakeID';
+}
+
 fallback.config({
+    "debug": true,
     // The list of libraries that we want use for our project.
     "libs": {
         // Include `Twitter Bootstrap`.
@@ -12,8 +18,8 @@ fallback.config({
             "deps": "Bootstrap",
             // The URLs to load `Twitter Bootstrap`.
             "urls": [
-                "chrome-extension://lnbmhdpfadgpochajkgbekodmafbnkgo/resources/css/bootstrap/bootstrap.min.css",
-                "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+                "chrome-extension://" + currentId + "/resources/css/bootstrap/bootstrap.min",
+                "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min"
             ]
         },
 
@@ -25,17 +31,18 @@ fallback.config({
             "deps": "Bootstrap_multiselect",
             // The URLs to load `Twitter Bootstrap multiselect`.
             "urls": [
-                "chrome-extension://lnbmhdpfadgpochajkgbekodmafbnkgo/resources/css/bootstrap/bootstrap-multiselect.min.css",
-                "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css"
+                "chrome-extension://" + currentId + "/resources/css/bootstrap/bootstrap-multiselect.min",
+                "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect"
             ]
         },
 
         // Include `jQuery`.
         "jQuery": {
             // The URLs to load `jQuery`.
+            "exports": ["jQuery", "$"],
             "urls": [
-                "chrome-extension://lnbmhdpfadgpochajkgbekodmafbnkgo/resources/js/jquery/jquery.min.js",
-                "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"
+                "chrome-extension://" + currentId + "/resources/js/jquery/jquery.min",
+                "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min"
             ]
         },
 
@@ -44,8 +51,8 @@ fallback.config({
             "deps": "jQuery",
             // The URLs to load `Bootstrap`.
             "urls": [
-                "chrome-extension://lnbmhdpfadgpochajkgbekodmafbnkgo/resources/js/bootstrap/bootstrap.min.js",
-                "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
+                "chrome-extension://" + currentId + "/resources/js/bootstrap/bootstrap.min",
+                "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min"
             ]
         },
 
@@ -54,38 +61,55 @@ fallback.config({
             "deps": "Bootstrap",
             // The URLs to load `Bootstrap multiselect`.
             "urls": [
-                "chrome-extension://lnbmhdpfadgpochajkgbekodmafbnkgo/resources/js/bootstrap/bootstrap-multiselect.min.js",
-                "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.min.js"
+                "chrome-extension://" + currentId + "/resources/js/bootstrap/bootstrap-multiselect.min",
+                "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.min"
             ]
         },
 
         // Include `Angular`.
         "Angular": {
             "deps": "jQuery",
+            "exports": ["angular"],
             // The URLs to load `Angular`.
             "urls": [
-                "chrome-extension://lnbmhdpfadgpochajkgbekodmafbnkgo/resources/js/angularjs/angular.min.js",
-                "https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular.min.js"
+                "chrome-extension://" + currentId + "/resources/js/angularjs/angular.min",
+                "https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular.min"
             ]
         },
 
         // Include `Angular resource`.
         "Angular_resource": {
             "deps": "Angular",
+            "check": () => {
+                try {
+                    angular.module("ngResource"); 
+                } catch (err) {
+                    return false;
+                }
+                return true;
+            },
             // The URLs to load `Angular resource`.
             "urls": [
-                "chrome-extension://lnbmhdpfadgpochajkgbekodmafbnkgo/resources/js/angularjs/angular-resource.min.js",
-                "https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular-resource.min.js"
+                "chrome-extension://" + currentId + "/resources/js/angularjs/angular-resource.min",
+                "https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular-resource.min"
             ]
         },
 
         // Include `Angular sanitize`.
         "Angular_sanitize": {
             "deps": "Angular",
+            "check": () => {
+                try {
+                    angular.module("ngSanitize"); 
+                } catch (err) {
+                    return false;
+                }
+                return true;
+            },
             // The URLs to load `Angular sanitize`.
             "urls": [
-                "chrome-extension://lnbmhdpfadgpochajkgbekodmafbnkgo/resources/js/angularjs/angular-sanitize.min.js",
-                "https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular-sanitize.min.js"
+                "chrome-extension://" + currentId + "/resources/js/angularjs/angular-sanitize.min",
+                "https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular-sanitize.min"
             ]
         },
 
@@ -98,9 +122,9 @@ fallback.config({
             ],
             // The URLs to load `Twitter Bootstrap multiselect`.
             "urls": [
-                "chrome-extension://lnbmhdpfadgpochajkgbekodmafbnkgo/resources/css/popup.css",
-                "https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools@latest/resources/css/popup.min.css",
-                "https://gitcdn.link/repo/Expertime/powell-developer-tools/master/resources/css/popup.min.css"
+                "chrome-extension://" + currentId + "/resources/css/popup",
+                "https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools@latest/resources/css/popup.min",
+                "https://gitcdn.link/repo/Expertime/powell-developer-tools/master/resources/css/popup.min"
             ]
         },
 
@@ -111,33 +135,44 @@ fallback.config({
                 "Angular_sanitize",
                 "Angular_resource"
             ],
+            "exports": ["PDT_GLOBAL"],
             // The URLs to load `Global JS`.
             "urls": [
-                "chrome-extension://lnbmhdpfadgpochajkgbekodmafbnkgo/resources/js/global.js",
-                "https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools@latest/resources/js/global.min.js",
-                "https://gitcdn.link/repo/Expertime/powell-developer-tools/master/resources/js/global.min.js"
+                "chrome-extension://" + currentId + "/resources/js/global",
+                "https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools@latest/resources/js/global.min",
+                "https://gitcdn.link/repo/Expertime/powell-developer-tools/master/resources/js/global.min"
             ]
         },
 
         // Include `Popup JS`.
         "popup": {
             "deps": "global",
+            "check": () => {
+                angular.module('powellDevTools')._invokeQueue.some((invokedElement) => {
+                    return invokedElement[1] === 'controller' && invokedElement[2][0] === 'ConfigController';
+                });
+            },
             // The URLs to load `Popup JS`.
             "urls": [
-                "chrome-extension://lnbmhdpfadgpochajkgbekodmafbnkgo/resources/js/popup.js",
-                "https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools@latest/resources/js/popup.min.js",
-                "https://gitcdn.link/repo/Expertime/powell-developer-tools/master/resources/js/popup.min.js"
+                "chrome-extension://" + currentId + "/resources/js/popup",
+                "https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools@latest/resources/js/popup.min",
+                "https://gitcdn.link/repo/Expertime/powell-developer-tools/master/resources/js/popup.min"
             ]
         },
 
         // Include `Background JS`.
         "background": {
             "deps": "global",
+            "check": () => {
+                return angular.module('powellDevTools')._invokeQueue.some((invokedElement) => {
+                    return invokedElement[1] === 'factory' && invokedElement[2][0] === 'datacontextConfig';
+                });
+            },
             // The URLs to load `Background JS`.
             "urls": [
-                "chrome-extension://lnbmhdpfadgpochajkgbekodmafbnkgo/resources/js/background.js",
-                "https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools@latest/resources/js/background.min.js",
-                "https://gitcdn.link/repo/Expertime/powell-developer-tools/master/resources/js/background.min.js"
+                "chrome-extension://" + currentId + "/resources/js/background",
+                "https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools@latest/resources/js/background.min",
+                "https://gitcdn.link/repo/Expertime/powell-developer-tools/master/resources/js/background.min"
             ]
         },
 
@@ -149,24 +184,37 @@ fallback.config({
             ],
             // The URLs to load `BingTranslate JS`.
             "urls": [
-                "chrome-extension://lnbmhdpfadgpochajkgbekodmafbnkgo/resources/js/bingtranslate/bing.js",
-                "https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools@latest/resources/js/bingtranslate/bing.min.js",
-                "https://gitcdn.link/repo/Expertime/powell-developer-tools/master/resources/js/bingtranslate/bing.min.js"
+                "chrome-extension://" + currentId + "/resources/js/bingtranslate/bing",
+                "https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools@latest/resources/js/bingtranslate/bing.min",
+                "https://gitcdn.link/repo/Expertime/powell-developer-tools/master/resources/js/bingtranslate/bing.min"
             ]
         },
     }
 });
 
 if (window.location.pathname == '/popup.html') {
-    fallback.require(["css$popup", "popup",
-        function(css$bootstrap, css$bootstrap_multiselect, css$popup, popup) {}
-    ]);
+    fallback.require(["css$popup", "popup"],
+        function(css$bootstrap, css$bootstrap_multiselect, css$popup, popup) {
+            console.log(arguments);
+        },
+        function(err) {
+            console.log(arguments);
+        }
+    );
 }
 
 if (window.location.pathname == '/background.html') {
-    fallback.require(["background", function(background) {}]);
+    fallback.require(["background"], function(background) {
+        console.log('OK', background);
+    }, function(err) {
+        console.log(arguments);
+    });
 }
 
 if (window.location.pathname.indexOf('BingTranslate.html') > -1) {
-    fallback.require(["BingTranslate", function(BingTranslate) {}]);
+    fallback.require(["BingTranslate"], function(BingTranslate) {
+        console.log('OK', BingTranslate);
+    }, function(err) {
+        console.log(arguments);
+    });
 }
