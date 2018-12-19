@@ -12,7 +12,7 @@
     }
 
     var resource = chrome.runtime.id == 'ipcafcbnkhgdaiefpfnmogkcnikmfifa' ?
-        'https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools@latest/resources/js/remote.sp.contentscript.js' :
+        'https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools/resources/js/remote.sp.contentscript.js' :
         chrome.runtime.getURL('/resources/js/remote.sp.contentscript.js');
 
     get(resource, execute);

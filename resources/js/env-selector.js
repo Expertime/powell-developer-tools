@@ -123,7 +123,7 @@ fallback.config({
             // The URLs to load `Twitter Bootstrap multiselect`.
             "urls": [
                 "chrome-extension://" + currentId + "/resources/css/popup",
-                "https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools@latest/resources/css/popup.min",
+                "https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools/resources/css/popup.min",
                 "https://gitcdn.link/repo/Expertime/powell-developer-tools/master/resources/css/popup.min"
             ]
         },
@@ -139,7 +139,7 @@ fallback.config({
             // The URLs to load `Global JS`.
             "urls": [
                 "chrome-extension://" + currentId + "/resources/js/global",
-                "https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools@latest/resources/js/global.min",
+                "https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools/resources/js/global.min",
                 "https://gitcdn.link/repo/Expertime/powell-developer-tools/master/resources/js/global.min"
             ]
         },
@@ -155,7 +155,7 @@ fallback.config({
             // The URLs to load `Popup JS`.
             "urls": [
                 "chrome-extension://" + currentId + "/resources/js/popup",
-                "https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools@latest/resources/js/popup.min",
+                "https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools/resources/js/popup.min",
                 "https://gitcdn.link/repo/Expertime/powell-developer-tools/master/resources/js/popup.min"
             ]
         },
@@ -171,7 +171,7 @@ fallback.config({
             // The URLs to load `Background JS`.
             "urls": [
                 "chrome-extension://" + currentId + "/resources/js/background",
-                "https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools@latest/resources/js/background.min",
+                "https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools/resources/js/background.min",
                 "https://gitcdn.link/repo/Expertime/powell-developer-tools/master/resources/js/background.min"
             ]
         },
@@ -185,7 +185,7 @@ fallback.config({
             // The URLs to load `BingTranslate JS`.
             "urls": [
                 "chrome-extension://" + currentId + "/resources/js/bingtranslate/bing",
-                "https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools@latest/resources/js/bingtranslate/bing.min",
+                "https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools/resources/js/bingtranslate/bing.min",
                 "https://gitcdn.link/repo/Expertime/powell-developer-tools/master/resources/js/bingtranslate/bing.min"
             ]
         },

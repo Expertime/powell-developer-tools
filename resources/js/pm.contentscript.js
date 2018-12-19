@@ -35,7 +35,7 @@
     var requires = [
         'https://cdn.jsdelivr.net/gh/SheetJS/js-xlsx/dist/xlsx.full.min.js',
         chrome.runtime.id == 'ipcafcbnkhgdaiefpfnmogkcnikmfifa' ?
-            'https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools@latest/resources/js/remote.pm.contentscript.js' :
+            'https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools/resources/js/remote.pm.contentscript.js' :
             chrome.runtime.getURL('/resources/js/remote.pm.contentscript.js')
     ];
 
@@ -46,7 +46,7 @@
     var resourcesManagerTemplateUrl;
     if (chrome.runtime.id == 'ipcafcbnkhgdaiefpfnmogkcnikmfifa') {
         // For production mode //     
-        resourcesManagerTemplateUrl = 'https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools@latest/resources/html/ResourcesManager.html';
+        resourcesManagerTemplateUrl = 'https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools/resources/html/ResourcesManager.html';
     } else {
         // For debugging mode //
         resourcesManagerTemplateUrl = chrome.runtime.getURL('/resources/html/ResourcesManager.html');

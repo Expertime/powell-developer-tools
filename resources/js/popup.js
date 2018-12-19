@@ -23,7 +23,7 @@
         /**************
          * App version
          **************/
-        $scope.appVers = "5.4.0";
+        $scope.appVers = "5.5.0";
 
         /*****************
          * View variables
@@ -36,7 +36,7 @@
             $scope.configTemplateUrl = '/resources/html/ConfigController.html';
         } else {
             // For production mode //     
-            $scope.configTemplateUrl = 'https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools@latest/resources/html/ConfigController.html';
+            $scope.configTemplateUrl = 'https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools/resources/html/ConfigController.html';
         }
 
         $scope.config = {
