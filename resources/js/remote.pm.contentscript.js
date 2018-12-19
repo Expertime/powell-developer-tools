@@ -464,13 +464,13 @@
 
             $scope.exportResources = function () {
                 var selectedResources = [
-                    //             ITEM_TYPES.FIELDS,
+                    ITEM_TYPES.FIELDS,
                     ITEM_TYPES.CONTENT_TYPES,
-                    //             ITEM_TYPES.LIST_TEMPLATES,
-                    //             ITEM_TYPES.SITE_TEMPLATES,
-                    //             ITEM_TYPES.PAGES,
-                    //             ITEM_TYPES.WIDGETS,
-                    //             ITEM_TYPES.LISTS
+                    ITEM_TYPES.LIST_TEMPLATES,
+                    ITEM_TYPES.SITE_TEMPLATES,
+                    ITEM_TYPES.PAGES,
+                    ITEM_TYPES.WIDGETS,
+                    ITEM_TYPES.LISTS
                 ];
 
                 var Resources = new RESOURCES(selectedResources);
@@ -513,58 +513,58 @@
 
         angular.module('powellManager').controller(CONTROLLER_ID, resourcesManagerControllerModule);
         resourcesManagerControllerModule.$inject = ['$rootScope', '$scope', '$http'];
-        
+
         angular.module('powellManager')
-        .config(['$routeProvider', '$provide', function($routeProvider, $provide) {
-            $routeProvider
-            .when("/resources", {
-                templateUrl: 'resourcesManager.html',
-                controller: CONTROLLER_ID,
-                params: {
-                    bc: '#/resources|Resources management'
-                },
-                regexp: /\/resources\/?/i
-            });
+            .config(['$routeProvider', '$provide', function ($routeProvider, $provide) {
+                $routeProvider
+                    .when("/resources", {
+                        templateUrl: 'resourcesManager.html',
+                        controller: CONTROLLER_ID,
+                        params: {
+                            bc: '#/resources|Resources management'
+                        },
+                        regexp: /\/resources\/?/i
+                    });
 
-            $provide.decorator('sideBarDirective', [
-                '$delegate',
-                function sideBarDecorator($delegate) {
-                    var originalLinkFn = $delegate[0].link;
-                    $delegate[0].compile = function(tElem, tAttr) {
-                        var topnav = tElem.find('.main-menu');
-                        angular.element('head').append('<style>.sidebar .btn-resources:before {' +
-                            'content: "";' +
-                            'background: #039be6;' +
-                            'font-family: "icomoonManager";' +
-                            'font-style: normal;' +
-                            'font-variant: normal;' +
-                            'font-weight: normal;' +
-                            'text-transform: none;' +
-                            'text-decoration: none;' +
-                            'speak: none;' +
-                            '-webkit-font-smoothing: antialiased;' +
-                            '-moz-osx-font-smoothing: grayscale;' +
-                            'display: inline-block;' +
-                            'vertical-align: top;' +
-                            'width: 3.2rem;' +
-                            'height: 3.2rem;' +
-                            'line-height: 32px;' +
-                            'color: #fff;' +
-                            'border-radius: 50%;' +
-                            '}</style>');
-                        var resourcesNode = angular.element('<li class="first-level"><a href="#/resources" data-ng-click="nodeNavActive($event, \'resources\')" class="btn-nav btn-resources" title="Resources"><span>Resources</span></a></li>');
-                        topnav.append(resourcesNode);
-                        return originalLinkFn;
-                      };
+                $provide.decorator('sideBarDirective', [
+                    '$delegate',
+                    function sideBarDecorator($delegate) {
+                        var originalLinkFn = $delegate[0].link;
+                        $delegate[0].compile = function (tElem, tAttr) {
+                            var topnav = tElem.find('.main-menu');
+                            angular.element('head').append('<style>.sidebar .btn-resources:before {' +
+                                'content: "";' +
+                                'background: #039be6;' +
+                                'font-family: "icomoonManager";' +
+                                'font-style: normal;' +
+                                'font-variant: normal;' +
+                                'font-weight: normal;' +
+                                'text-transform: none;' +
+                                'text-decoration: none;' +
+                                'speak: none;' +
+                                '-webkit-font-smoothing: antialiased;' +
+                                '-moz-osx-font-smoothing: grayscale;' +
+                                'display: inline-block;' +
+                                'vertical-align: top;' +
+                                'width: 3.2rem;' +
+                                'height: 3.2rem;' +
+                                'line-height: 32px;' +
+                                'color: #fff;' +
+                                'border-radius: 50%;' +
+                                '}</style>');
+                            var resourcesNode = angular.element('<li class="first-level"><a href="#/resources" data-ng-click="nodeNavActive($event, \'resources\')" class="btn-nav btn-resources" title="Resources"><span>Resources</span></a></li>');
+                            topnav.append(resourcesNode);
+                            return originalLinkFn;
+                        };
 
-                      // get rid of the old link function since we return a link function in compile
-                      delete $delegate[0].link;
-                
-                      // return the $delegate
-                      return $delegate;
-                }
-              ]);
-        }]);
+                        // get rid of the old link function since we return a link function in compile
+                        delete $delegate[0].link;
+
+                        // return the $delegate
+                        return $delegate;
+                    }
+                ]);
+            }]);
 
 
         angular.bootstrap(document, ['powellManager']);
