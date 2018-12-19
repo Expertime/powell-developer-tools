@@ -484,7 +484,16 @@
                     selectedResources.forEach(function (resource) {
 
                         var worksheet = XLSX.utils.json_to_sheet(data[resource.name].items.map(function (item) {
-                            var itemResources = JSON.parse(item[resource.localizedParam]);
+                            var itemResources = [];
+                            try {
+                                itemResources = JSON.parse(item[resource.localizedParam]);
+                            } catch (exception) {
+                                itemResources.push({
+                                    Code: null,
+                                    LCID: 0,
+                                    Value: item[resource.localizedParam]
+                                });
+                            }
                             itemResources.forEach(function (localization) {
                                 itemResources[localization.LCID] = localization.Value;
                             })

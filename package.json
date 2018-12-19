@@ -1,6 +1,6 @@
 {
     "name": "powell-developer-tools",
-    "version": "5.6.0",
+    "version": "5.7.0",
     "description": "This extension gives access to the developer-specific-version of the Powell JavaScript & CSS files",
     "author": "Serge ARADJ",
     "license": "MIT",
