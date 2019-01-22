@@ -295,8 +295,8 @@
     });
 
     var spContentScriptLoader = {
+        id: 'PowellDevTools_SP_contentScript_loader',
         conditions: [
-            id: 'PowellDevTools_SP_contentScript_loader',
             new chrome.declarativeContent.PageStateMatcher({
                 pageUrl: { urlMatches: '.sharepoint.com', schemes: ['https'] }
             })
@@ -314,7 +314,7 @@
         id: 'PowellDevTools_PM_contentScript_loader',
         conditions: [
             new chrome.declarativeContent.PageStateMatcher({
-                pageUrl: { urlMatches: 'manager.powell-365.com', schemes: ['https'] }
+                pageUrl: { urlMatches: 'r7-powell365-manager.azurewebsites.net', schemes: ['https'] }
             })
         ],
         actions: [new chrome.declarativeContent.RequestContentScript({
