@@ -1,7 +1,7 @@
 /**
  * @license
  * Lodash (Custom Build) <https://lodash.com/>
- * Build: `lodash include="get,set,intersection,cloneDeep,findIndex,merge,mergeWith"`
+ * Build: `lodash include="get,set,intersection,cloneDeep,findIndex,merge,uniqWith"`
  * Copyright JS Foundation and other contributors <https://js.foundation/>
  * Released under MIT license <https://lodash.com/license>
  * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
@@ -2154,6 +2154,67 @@
   }
 
   /**
+   * The base implementation of `_.uniqBy` without support for iteratee shorthands.
+   *
+   * @private
+   * @param {Array} array The array to inspect.
+   * @param {Function} [iteratee] The iteratee invoked per element.
+   * @param {Function} [comparator] The comparator invoked per element.
+   * @returns {Array} Returns the new duplicate free array.
+   */
+  function baseUniq(array, iteratee, comparator) {
+    var index = -1,
+        includes = arrayIncludes,
+        length = array.length,
+        isCommon = true,
+        result = [],
+        seen = result;
+
+    if (comparator) {
+      isCommon = false;
+      includes = arrayIncludesWith;
+    }
+    else if (length >= LARGE_ARRAY_SIZE) {
+      var set = iteratee ? null : createSet(array);
+      if (set) {
+        return setToArray(set);
+      }
+      isCommon = false;
+      includes = cacheHas;
+      seen = new SetCache;
+    }
+    else {
+      seen = iteratee ? [] : result;
+    }
+    outer:
+    while (++index < length) {
+      var value = array[index],
+          computed = iteratee ? iteratee(value) : value;
+
+      value = (comparator || value !== 0) ? value : 0;
+      if (isCommon && computed === computed) {
+        var seenIndex = seen.length;
+        while (seenIndex--) {
+          if (seen[seenIndex] === computed) {
+            continue outer;
+          }
+        }
+        if (iteratee) {
+          seen.push(computed);
+        }
+        result.push(value);
+      }
+      else if (!includes(seen, computed, comparator)) {
+        if (seen !== result) {
+          seen.push(computed);
+        }
+        result.push(value);
+      }
+    }
+    return result;
+  }
+
+  /**
    * Casts `value` to an empty array if it's not an array like object.
    *
    * @private
@@ -2396,6 +2457,17 @@
       return object;
     };
   }
+
+  /**
+   * Creates a set object of `values`.
+   *
+   * @private
+   * @param {Array} values The values to add to the set.
+   * @returns {Object} Returns the new set.
+   */
+  var createSet = !(Set && (1 / setToArray(new Set([,-0]))[1]) == INFINITY) ? noop : function(values) {
+    return new Set(values);
+  };
 
   /**
    * A specialized version of `baseIsEqualDeep` for arrays with support for
@@ -3299,6 +3371,31 @@
       : [];
   });
 
+  /**
+   * This method is like `_.uniq` except that it accepts `comparator` which
+   * is invoked to compare elements of `array`. The order of result values is
+   * determined by the order they occur in the array.The comparator is invoked
+   * with two arguments: (arrVal, othVal).
+   *
+   * @static
+   * @memberOf _
+   * @since 4.0.0
+   * @category Array
+   * @param {Array} array The array to inspect.
+   * @param {Function} [comparator] The comparator invoked per element.
+   * @returns {Array} Returns the new duplicate free array.
+   * @example
+   *
+   * var objects = [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }, { 'x': 1, 'y': 2 }];
+   *
+   * _.uniqWith(objects, _.isEqual);
+   * // => [{ 'x': 1, 'y': 2 }, { 'x': 2, 'y': 1 }]
+   */
+  function uniqWith(array, comparator) {
+    comparator = typeof comparator == 'function' ? comparator : undefined;
+    return (array && array.length) ? baseUniq(array, undefined, comparator) : [];
+  }
+
   /*------------------------------------------------------------------------*/
 
   /**
@@ -4111,41 +4208,6 @@
   });
 
   /**
-   * This method is like `_.merge` except that it accepts `customizer` which
-   * is invoked to produce the merged values of the destination and source
-   * properties. If `customizer` returns `undefined`, merging is handled by the
-   * method instead. The `customizer` is invoked with six arguments:
-   * (objValue, srcValue, key, object, source, stack).
-   *
-   * **Note:** This method mutates `object`.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.0.0
-   * @category Object
-   * @param {Object} object The destination object.
-   * @param {...Object} sources The source objects.
-   * @param {Function} customizer The function to customize assigned values.
-   * @returns {Object} Returns `object`.
-   * @example
-   *
-   * function customizer(objValue, srcValue) {
-   *   if (_.isArray(objValue)) {
-   *     return objValue.concat(srcValue);
-   *   }
-   * }
-   *
-   * var object = { 'a': [1], 'b': [2] };
-   * var other = { 'a': [3], 'b': [4] };
-   *
-   * _.mergeWith(object, other, customizer);
-   * // => { 'a': [1, 3], 'b': [2, 4] }
-   */
-  var mergeWith = createAssigner(function(object, source, srcIndex, customizer) {
-    baseMerge(object, source, srcIndex, customizer);
-  });
-
-  /**
    * Sets the value at `path` of `object`. If a portion of `path` doesn't exist,
    * it's created. Arrays are created for missing index properties while objects
    * are created for all other missing properties. Use `_.setWith` to customize
@@ -4271,6 +4333,22 @@
   }
 
   /**
+   * This method returns `undefined`.
+   *
+   * @static
+   * @memberOf _
+   * @since 2.3.0
+   * @category Util
+   * @example
+   *
+   * _.times(2, _.noop);
+   * // => [undefined, undefined]
+   */
+  function noop() {
+    // No operation performed.
+  }
+
+  /**
    * Creates a function that returns the value at `path` of a given object.
    *
    * @static
@@ -4345,10 +4423,10 @@
   lodash.keysIn = keysIn;
   lodash.memoize = memoize;
   lodash.merge = merge;
-  lodash.mergeWith = mergeWith;
   lodash.property = property;
   lodash.set = set;
   lodash.toPlainObject = toPlainObject;
+  lodash.uniqWith = uniqWith;
 
   /*------------------------------------------------------------------------*/
 
@@ -4375,6 +4453,7 @@
   lodash.isTypedArray = isTypedArray;
   lodash.stubArray = stubArray;
   lodash.stubFalse = stubFalse;
+  lodash.noop = noop;
   lodash.toFinite = toFinite;
   lodash.toInteger = toInteger;
   lodash.toNumber = toNumber;
