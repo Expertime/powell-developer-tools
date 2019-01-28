@@ -71,7 +71,7 @@
         return {
             redirectUrl: debugHtmlTemplateUrl
         };
-    }
+    };
 
     var _onBeforeXhrRequestListener = function(request) {
         var originalXhrUrl = request.url,
@@ -82,14 +82,14 @@
         if (isOriginalUrl) {
             var originalTemplate = DatacontextConfig.utility.get_htmlTemplate(isOriginalUrl[1]);
             if (originalTemplate.isOverriden) {
-                debugXhrUrl = DatacontextConfig.utility.get_htmlSourceUrl(originalTemplate.fileName)
+                debugXhrUrl = DatacontextConfig.utility.get_htmlSourceUrl(originalTemplate.fileName);
                 console.log('Redirecting original request [' + originalXhrUrl + '] to [' + debugXhrUrl + ']');
             }
         }
         return {
             redirectUrl: debugXhrUrl
         };
-    }
+    };
 
     var _onBeforeLogoRequestListener = function(request) {
         var originalLogoUrl = request.url,
@@ -132,11 +132,11 @@
     };
 
     var _onBeforeSendSearchQueryListener = function(request) {
-        var redirectUrl = request.url + '#"%7B%22Querytext%22:%22%22,%22QueryTemplate%22:%22%7BsearchTerms%7D%20ContentClass=urn:content-class:SPSPeople%22%7D"'
+        var redirectUrl = request.url + '#"%7B%22Querytext%22:%22%22,%22QueryTemplate%22:%22%7BsearchTerms%7D%20ContentClass=urn:content-class:SPSPeople%22%7D"';
         return {
             redirectUrl: redirectUrl
-        }
-    }
+        };
+    };
 
     var _buildFilters = function(powCdn, filterUrl) {
         var filters = [];
@@ -146,7 +146,7 @@
             }
         }
         return filters;
-    }
+    };
 
     var _setEnabled = function(enabled, sourceKind, extraData) {
         if (enabled) {
@@ -220,7 +220,7 @@
         if (chrome.webRequest.onBeforeRequest.hasListener(_onBeforeHeaderFooterRequestListener)) {
 
         }
-    }
+    };
 
     var _checkScriptFreshness = function(globalMD5) {
         if (globalMD5 != window.PDT_GLOBAL) {
@@ -314,7 +314,7 @@
         id: 'PowellDevTools_PM_contentScript_loader',
         conditions: [
             new chrome.declarativeContent.PageStateMatcher({
-                pageUrl: { urlMatches: 'r7-powell365-manager.azurewebsites.net', schemes: ['https'] }
+                pageUrl: { urlMatches: 'manager.powell-365.com|r7-powell365-manager.azurewebsites.net', schemes: ['https'] }
             })
         ],
         actions: [new chrome.declarativeContent.RequestContentScript({

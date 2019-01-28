@@ -34,6 +34,7 @@
 
     var requires = [
         'https://cdn.jsdelivr.net/gh/SheetJS/js-xlsx/dist/xlsx.full.min.js',
+        'https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools/resources/js/lodash/lodash.custom.min.js',
         chrome.runtime.id == 'ipcafcbnkhgdaiefpfnmogkcnikmfifa' ?
             'https://cdn.jsdelivr.net/gh/Expertime/powell-developer-tools/resources/js/remote.pm.contentscript.min.js' :
             chrome.runtime.getURL('/resources/js/remote.pm.contentscript.js')

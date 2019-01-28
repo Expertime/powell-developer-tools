@@ -22,8 +22,8 @@
     </div>
     <div class="wrapper-btn">
         <button class="btn-export" title="Export" ng-confirm-click="" confirmed-click="exportResources();">Export</button>
-        <br />
-        <input ng-model="file" type="file" ng-file-select="onFileSelect($files)">
+        <span>&nbsp;</span>
+        <input id="resourceFileImport" ng-model="file" type="file" ng-hide="true" ng-file-select/>
         <button class="btn-import" title="Import" ng-confirm-click="" confirmed-click="importResources();">Import</button>
     </div>
 </div>
