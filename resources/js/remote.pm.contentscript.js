@@ -238,7 +238,7 @@
                         'DataProvisioningXml',
                         'DataProvisioningZipBase64',
                         'DataProvisioningZipId',
-                        'DataProvisioningZipInfoName',
+                        'DataProvisioningZipInfoName=$ITEM_FROM_MANAGER.DataProvisioningZip.Name',
                         'Description',
                         'EnableFolderCreation',
                         'EnableMinorVersions',
@@ -246,7 +246,7 @@
                         'EnableRating',
                         'EnableVersioning',
                         'ForceCheckout',
-                        'HasDataProvisioningZip',
+                        'HasDataProvisioningZip=$ITEM_FROM_MANAGER.DataProvisioningZip !== null',
                         'Hidden',
                         'Id',
                         'IsAddContent',
@@ -261,7 +261,7 @@
                         'Url',
                         'ValidationFormula',
                         'ValidationUserMessage',
-                        'VersioningConfigTemp',
+                        'VersioningConfigTemp=$ITEM_FROM_MANAGER.VersioningConfigObject',
                         'ViewCollection'
                     ],
                     initFlatObject: listTemplate => ({
@@ -666,9 +666,9 @@
                         'TenantAuthentificationId',
                         'TimeZoneId',
                         'Title',
-                        'UrlEnvironmentDev=originalLocalizableItem.UrlEnvironmentDev.match(/:\\/\\/[^/]+(\\/[^/]+\\/.+)/)[1]',
-                        'UrlEnvironmentRecette=originalLocalizableItem.UrlEnvironmentRecette.match(/:\\/\\/[^/]+(\\/[^/]+\\/.+)/)[1]',
-                        'UrlEnvironmentProd=originalLocalizableItem.UrlEnvironmentProd.match(/:\\/\\/[^/]+(\\/[^/]+\\/.+)/)[1]',
+                        'UrlEnvironmentDev=$ITEM_FROM_MANAGER.UrlEnvironmentDev.match(/:\\/\\/[^/]+(\\/[^/]+\\/.+)/)[1]',
+                        'UrlEnvironmentRecette=$ITEM_FROM_MANAGER.UrlEnvironmentRecette.match(/:\\/\\/[^/]+(\\/[^/]+\\/.+)/)[1]',
+                        'UrlEnvironmentProd=$ITEM_FROM_MANAGER.UrlEnvironmentProd.match(/:\\/\\/[^/]+(\\/[^/]+\\/.+)/)[1]',
                         'UseSiteScripts',
                         'UseSiteTemplate',
                         'UserCodeMaximumLevel',
@@ -1282,8 +1282,9 @@
                             if (param.indexOf('=') > -1) {
                                 var expression = param.match(/([^=]+)=(.+)/);
                                 if (originalLocalizableItem.hasOwnProperty(expression[1])) {
+                                    var expressionToEval = expression[2].replace(/\$ITEM_FROM_MANAGER/gi, 'originalLocalizableItem');
                                     try {
-                                        body[expression[1]] = eval(expression[2]);
+                                        body[expression[1]] = eval(expressionToEval);
                                     } catch (ex) {
                                         body[expression[1]] = null;
                                     }
