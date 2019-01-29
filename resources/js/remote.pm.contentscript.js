@@ -469,7 +469,7 @@
                                         localizedParam: widgetProperty
                                     }, resourcedWidgetProperty => resourcedWidgetProperty[widgetProperty]);
                                     widgetPropertyValue = widgetPropertyValue.map(localizedValue => {
-                                        var language = languages[localizedValue.LCID];
+                                        var language = _.find(languages, language => language.Lcid.toString() === localizedValue.LCID);
                                         localizedValue.Code = language.Code;
                                         localizedValue.Label = language.Title;
                                         return localizedValue;
@@ -1273,7 +1273,7 @@
                         if (localization && param === localizedParam ||
                             itemType.additionalLocalizedParams && itemType.additionalLocalizedParams.find(additionalParam => additionalParam.param === param) && localization[param]) {
                             body[param] = JSON.stringify(localization[param].map(localizedValue => {
-                                var language = languages[localizedValue.LCID];
+                                var language = _.find(languages, language => language.Lcid.toString() === localizedValue.LCID);
                                 localizedValue.Code = language.Code;
                                 localizedValue.Label = language.Title;
                                 return localizedValue;
@@ -1507,7 +1507,6 @@
                     }
                 };
                 internalBuildFunction(itemType.require);
-                // requireChain.unshift('ID');
                 return requireChain;
             };
 
@@ -1543,8 +1542,8 @@
                     }
                     var itemResourcesAsFlatObject = item._IsProperty ? item : itemType.initFlatObject(item);
 
-                    Object.keys(resources.availableLanguages).forEach(lcid => {
-                        itemResourcesAsFlatObject[resources.availableLanguages[lcid].Title + ' (' + lcid + ')'] = itemResources[lcid];
+                    resources.availableLanguages.forEach(language => {
+                        itemResourcesAsFlatObject[language.Title + ' (' + language.Lcid + ')'] = itemResources[language.Lcid];
                     });
                     return itemResourcesAsFlatObject;
                 }).sort(sortCallback);
@@ -1701,15 +1700,11 @@
                 _this.availableLanguages = [];
                 _this.languagesLoaded = new Promise(resolve => {
                     apiService.post(Endpoints.ResourceLanguages.get.url, null, response => {
-                        var languages = {
-                            0: {
-                                Code: null,
-                                Title: 'Default',
-                                Lcid: null
-                            }
-                        };
-                        response.data.forEach(language => {
-                            languages[language.Lcid] = language;
+                        var languages = response.data;
+                        languages.unshift({
+                            Code: null,
+                            Title: 'Default',
+                            Lcid: 0
                         });
                         _this.availableLanguages = languages;
                         resolve(languages);
