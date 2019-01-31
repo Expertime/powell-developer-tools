@@ -1439,7 +1439,7 @@
                     if (itemType.additionalLocalizedParams) {
                         itemType.additionalLocalizedParams.forEach((additionalLocalizedParams, index) => {
                             if (currentItem[additionalLocalizedParams.param]) {
-                                var currentItemProperty = itemType.initFlatObject(currentItem);
+                                var currentItemProperty = _.cloneDeep(currentItem);
                                 currentItemProperty._Parent = currentItem;
                                 currentItemProperty._IsProperty = true;
                                 if (index === itemType.additionalLocalizedParams.length - 1 &&
@@ -1540,7 +1540,7 @@
                     if (!itemResources[0] || typeof itemResources[0] !== 'string') {
                         itemResources = [item.LocalizationTitle || item.LocalizationName].concat(itemResources);
                     }
-                    var itemResourcesAsFlatObject = item._IsProperty ? item : itemType.initFlatObject(item);
+                    var itemResourcesAsFlatObject = itemType.initFlatObject(item);
 
                     resources.availableLanguages.forEach(language => {
                         itemResourcesAsFlatObject[language.Title + ' (' + language.Lcid + ')'] = itemResources[language.Lcid];
