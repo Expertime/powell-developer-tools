@@ -23,7 +23,7 @@
         /**************
          * App version
          **************/
-        $scope.appVers = "6.2.5";
+        $scope.appVers = "6.2.6";
 
         /*****************
          * View variables
@@ -137,12 +137,12 @@
                     chrome.tabs.reload(tabs[0].id, {
                         bypassCache: true
                     }, function (refreshResponse) {
-                        chrome.notifications.create(null, {
-                            type: "basic",
-                            iconUrl: "resources/img/icon128.png",
-                            title: "Powell Dev Tools",
-                            message: "Local storage, local session and browser cache cleared successfully"
-                        });
+                        // chrome.notifications.create(null, {
+                        //     type: "basic",
+                        //     iconUrl: "resources/img/icon128.png",
+                        //     title: "Powell Dev Tools",
+                        //     message: "Local storage, local session and browser cache cleared successfully"
+                        // });
                     });
                 });
             });

@@ -287,12 +287,12 @@
 
     angular.module('powellDevTools').run(['datacontextConfig', _init]);
 
-    chrome.notifications.create(null, {
-        type: "basic",
-        iconUrl: "resources/img/icon128.png",
-        title: "Powell Dev Tools",
-        message: "Plugin reloaded."
-    });
+    // chrome.notifications.create(null, {
+    //     type: "basic",
+    //     iconUrl: "resources/img/icon128.png",
+    //     title: "Powell Dev Tools",
+    //     message: "Plugin reloaded."
+    // });
 
     var spContentScriptLoader = {
         id: 'PowellDevTools_SP_contentScript_loader',
