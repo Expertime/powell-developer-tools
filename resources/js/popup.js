@@ -13,9 +13,6 @@
             'action': 'powDevTools.checkScriptFreshness',
             'globalMD5': window.PDT_GLOBAL
         });
-
-        console.log('TOTO TATA');
-
         return new ConfigController($scope, $element, $q, $sce, $timeout, $interval, datacontextUtility);
     }
 
