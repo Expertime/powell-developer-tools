@@ -14,6 +14,8 @@
             'globalMD5': window.PDT_GLOBAL
         });
 
+        console.log('TOTO');
+        
         return new ConfigController($scope, $element, $q, $sce, $timeout, $interval, datacontextUtility);
     }
 
