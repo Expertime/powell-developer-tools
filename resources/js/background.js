@@ -314,7 +314,7 @@
         id: 'PowellDevTools_PM_contentScript_loader',
         conditions: [
             new chrome.declarativeContent.PageStateMatcher({
-                pageUrl: { urlMatches: '.*manager.powell-365.com', schemes: ['https'] }
+                pageUrl: { urlMatches: 'manager.powell-365.com|r7-powell365-manager.*', schemes: ['https'] }
             })
         ],
         actions: [new chrome.declarativeContent.RequestContentScript({
