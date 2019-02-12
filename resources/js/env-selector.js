@@ -149,7 +149,7 @@ fallback.config({
             "deps": "global",
             "check": () => {
                 angular.module('powellDevTools')._invokeQueue.some((invokedElement) => {
-                    return invokedElement[1] === 'controller' && invokedElement[2][0] === 'ConfigController';
+                    return invokedElement[1] === 'register' && invokedElement[2][0] === 'ConfigController';
                 });
             },
             // The URLs to load `Popup JS`.
