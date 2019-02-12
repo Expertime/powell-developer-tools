@@ -238,7 +238,7 @@
                         'DataProvisioningXml',
                         'DataProvisioningZipBase64',
                         'DataProvisioningZipId',
-                        'DataProvisioningZipInfoName=$ITEM_FROM_MANAGER.DataProvisioningZip.Name',
+                        'DataProvisioningZipInfoName=$ITEM_FROM_MANAGER.DataProvisioningZip.Name + $ITEM_FROM_MANAGER.DataProvisioningZip.Extension',
                         'Description',
                         'EnableFolderCreation',
                         'EnableMinorVersions',
