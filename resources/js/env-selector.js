@@ -147,11 +147,10 @@ fallback.config({
         // Include `Popup JS`.
         "popup": {
             "deps": "global",
-            "check": () => {
+            "check": () => 
                 angular.module('powellDevTools')._invokeQueue.some((invokedElement) => {
                     return invokedElement[1] === 'register' && invokedElement[2][0] === 'ConfigController';
-                });
-            },
+                }),
             // The URLs to load `Popup JS`.
             "urls": [
                 "chrome-extension://" + currentId + "/resources/js/popup",
@@ -163,11 +162,10 @@ fallback.config({
         // Include `Background JS`.
         "background": {
             "deps": "global",
-            "check": () => {
-                return angular.module('powellDevTools')._invokeQueue.some((invokedElement) => {
+            "check": () => 
+                angular.module('powellDevTools')._invokeQueue.some((invokedElement) => {
                     return invokedElement[1] === 'factory' && invokedElement[2][0] === 'datacontextConfig';
-                });
-            },
+                }),
             // The URLs to load `Background JS`.
             "urls": [
                 "chrome-extension://" + currentId + "/resources/js/background",
