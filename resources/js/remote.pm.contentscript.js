@@ -725,8 +725,8 @@
                         'HasSiteLogo',
                         'Id',
                         'IsRoot',
-                        'IsRootWeb',
-                        'Level',
+                        'IsRootWeb=!$ITEM_FROM_MANAGER.ParentWebId',
+                        'Level=$ITEM_FROM_MANAGER.ParentWebId && $PARENT_ITEM_FROM_MANAGER.Webs.find(web => web.Id === $ITEM_FROM_MANAGER.ParentWebId).Level + 1 || 0',
                         'Lists',
                         'LocalizationTitle',
                         'LocalizedTitle',
@@ -1269,6 +1269,8 @@
                 var generateBody = (itemType, localization, languages, originalLocalizableItem) => {
                     var createParams = itemType.createParams;
                     var localizedParam = itemType.localizedParam;
+                    var originalItem = originalLocalizableItem.itemFromManager;
+                    var originalItemParent = originalLocalizableItem.parentItem;
                     return createParams.reduce((body, param) => {
                         if (localization && param === localizedParam ||
                             itemType.additionalLocalizedParams && itemType.additionalLocalizedParams.find(additionalParam => additionalParam.param === param) && localization[param]) {
@@ -1281,8 +1283,8 @@
                         } else {
                             if (param.indexOf('=') > -1) {
                                 var expression = param.match(/([^=]+)=(.+)/);
-                                if (originalLocalizableItem.hasOwnProperty(expression[1])) {
-                                    var expressionToEval = expression[2].replace(/\$ITEM_FROM_MANAGER/gi, 'originalLocalizableItem');
+                                if (originalItem.hasOwnProperty(expression[1])) {
+                                    var expressionToEval = expression[2].replace(/\$ITEM_FROM_MANAGER/gi, 'originalItem').replace(/\$PARENT_ITEM_FROM_MANAGER/gi, 'originalItemParent');
                                     try {
                                         body[expression[1]] = eval(expressionToEval);
                                     } catch (ex) {
@@ -1290,8 +1292,8 @@
                                     }
                                 }
                             } else {
-                                if (originalLocalizableItem.hasOwnProperty(param)) {
-                                    body[param] = originalLocalizableItem[param];
+                                if (originalItem.hasOwnProperty(param)) {
+                                    body[param] = originalItem[param];
                                 }
                             }
                         }
@@ -1301,8 +1303,8 @@
 
                 switch (itemType) {
                     case ITEM_TYPES.NAVIGATION:
-                        bodyForCreate = runThroughTree(originalLocalizableItem, ['Nodes', 'ChildrenNodes'], item => {
-                            return generateBody(itemType, localization.Nodes[item.Id], languages, item);
+                        bodyForCreate = runThroughTree(originalLocalizableItem.itemFromManager, ['Nodes', 'ChildrenNodes'], item => {
+                            return generateBody(itemType, localization.Nodes[item.Id], languages, {itemFromManager: item});
                         }, false);
                         break;
 
@@ -1590,7 +1592,7 @@
                                 try {
                                     var createItemBody;
                                     if (itemType.consolidateBeforeSave) {
-                                        createItemBody = Endpoints[itemType.name].set.body(itemFromSheet, result.itemFromManager, resources.availableLanguages);
+                                        createItemBody = Endpoints[itemType.name].set.body(itemFromSheet, result, resources.availableLanguages);
     
                                         var parentItem = result.parentItem;
                                         var parentItemChildren = parentItem[itemType.consolidateBeforeSave.storeInto] || (parentItem[itemType.consolidateBeforeSave.storeInto] = []);
@@ -1614,8 +1616,11 @@
     
                                         } else {
                                             if (Endpoints[itemType.name].set) {
-                                                createItemBody = Endpoints[itemType.name].set.body(itemFromSheet, result.itemFromManager, resources.availableLanguages);
+                                                createItemBody = Endpoints[itemType.name].set.body(itemFromSheet, result, resources.availableLanguages);
                                                 apiService.post(Endpoints[itemType.name].set.url, createItemBody, () => {
+                                                    
+                                                    // console.log(Endpoints[itemType.name].set.url, createItemBody);
+                                                
                                                     resourceUpdatedResolve({
                                                         itemFromSheet: itemFromSheet,
                                                         itemFromManager: result.itemFromManager
@@ -1644,11 +1649,14 @@
                                     parentItemsUpdated.push(new Promise(parentItemUpdatedResolve => {
                                         var createItemBody;
                                         if (resources.selectedResources.find(selectedResource => selectedResource === parentItemType)) {
-                                            createItemBody = Endpoints[parentItemType.name].set.body(item.itemFromSheet, item.itemFromManager, resources.availableLanguages);
+                                            createItemBody = Endpoints[parentItemType.name].set.body(item.itemFromSheet, item, resources.availableLanguages);
                                         } else {
-                                            createItemBody = Endpoints[parentItemType.name].set.body(null, item.itemFromManager, resources.availableLanguages);
+                                            createItemBody = Endpoints[parentItemType.name].set.body(null, item, resources.availableLanguages);
                                         }
                                         apiService.post(Endpoints[parentItemType.name].set.url, createItemBody, () => {
+                                            
+                                            // console.log(Endpoints[parentItemType.name].set.url, createItemBody);
+                                        
                                             parentItemUpdatedResolve();
                                         });
                                     }));
@@ -2049,6 +2057,7 @@
             $scope.importResources = function () {
                 var resourceFileImportInput = angular.element("#resourceFileImport");
                 resourceFileImportInput.click();
+                return true;
             };
         };
 
