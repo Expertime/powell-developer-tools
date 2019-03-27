@@ -22,7 +22,7 @@
         /**************
          * App version
          **************/
-        $scope.appVers = "6.4.2";
+        $scope.appVers = "6.4.3";
 
         /*****************
          * View variables
@@ -201,7 +201,12 @@
             'sv': '1053',
             'tr': '1055',
             'zh-CHS': '2052',
-            'lt': '1063'
+            'lt': '1063',
+            'da': '1030',
+            'hu': '1038',
+            'ro': '1048',
+            'sk': '1051',
+            'sl': '1060'
         };
 
         function encodeChars(string) {
