@@ -291,6 +291,13 @@
                         <!-- <pre>{{Bing.bingDestination}}</pre> -->
                     </div>
                 </div>
+                <div class="row">
+                    <div class="form-group-sm col-xs-12" ng-if="Bing.bingDestinationTranslateArray && !Bing.bingTranslatingIndicator">
+                        <label for="bingDestinationTranslateArray">Valeur traduite:</label>
+                        <textarea type="text" ng-model="Bing.bingDestinationTranslateArray" class="form-control" id="bingDestinationTranslateArray" />
+                        <!-- <pre>{{Bing.bingDestination}}</pre> -->
+                    </div>
+                </div>
             </div>
 
             <!-- SP Panel -->

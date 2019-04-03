@@ -22,7 +22,7 @@
         /**************
          * App version
          **************/
-        $scope.appVers = "6.4.3";
+        $scope.appVers = "6.4.4";
 
         /*****************
          * View variables
@@ -243,19 +243,28 @@
                         key: $scope.Bing.bingSourceKey
                     };
 
+                    var resultTranslateArray = {};
+
                     Object.keys(response.Data).forEach(function (key) {
                         if (Array.isArray(powLang[key])) {
                             powLang[key].forEach(function (lcid) {
                                 result['_' + lcid] = response.Data[key];
+                                resultTranslateArray[lcid] = response.Data[key];
                             });
                         } else {
                             result['_' + powLang[key]] = response.Data[key];
+                            resultTranslateArray[powLang[key]] = response.Data[key];
                         }
                     });
 
                     result = encodeChars(JSON.stringify(result, null, 1));
                     result = result.replace(/"(key|_\d+)"/g, '$1').replace(/\'/g, "\\'").replace(/(: )?"(,)?/g, "$1'$2");
                     $scope.Bing.bingDestination = result;
+
+                    resultTranslateArray = encodeChars(JSON.stringify(resultTranslateArray, null, 1));
+                    resultTranslateArray = resultTranslateArray.replace(/\'/g, "\\'").replace(/(: )?"(,)?/g, "$1'$2");
+                    $scope.Bing.bingDestinationTranslateArray = '<span translate translate-array="' + resultTranslateArray + '">' + response.Data['en'] + '</span>';
+
                 });
             }
         };
