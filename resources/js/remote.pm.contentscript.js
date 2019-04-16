@@ -116,7 +116,33 @@
                 $rootScope.loading = args.loading;
             });
 
-            var genericConsolidate = item => item;
+            var genericConsolidate = (items, itemType, itemCallback) => {
+                return items.reduce((itemsAndAdditionalParams, item) => {
+                    var itemToAdd = {
+                        Id: item.Id,
+                        _Property: itemType.localizedParam
+                    };
+                    itemToAdd[itemType.localizedParam] = item[itemType.localizedParam];
+                    if (itemType.additionalInfo) {
+                        itemType.additionalInfo.forEach(additionalInfo => {
+                            itemToAdd[additionalInfo] = item[additionalInfo];
+                        });
+                    }
+                    if (itemType.additionalLocalizedParams) {
+                        itemType.additionalLocalizedParams.forEach(additionalLocalizedParam => {
+                            itemToAdd[additionalLocalizedParam.param] = item[additionalLocalizedParam.param];
+                        });
+                    }
+                    if (itemCallback && 'function' === typeof itemCallback) {
+                        itemCallback(itemsAndAdditionalParams, itemToAdd, item);
+                    } else {
+                        itemsAndAdditionalParams.push(itemToAdd);
+                    }
+                    // manageAdditionalParams(itemType, item, itemsAndAdditionalParams);
+                    return itemsAndAdditionalParams;
+                }, []);
+            };
+
             var genericFromSheetObject = (item, itemType, itemTypeCallback) => {
                 var resourcedItem = {
                     Id: item.ID
@@ -138,6 +164,16 @@
                             resourcedItem = _.cloneDeep(resourcedItem[itemType.localizedParam]);
                             resourcedItem[0].Value = resourcedItem[0].Value.split(additionalParam.prefix)[1];
                             resourcedItem._AdditionalParamName = additionalParam.param;
+                        } else if (item[additionalParam.param]) {
+                            resourcedItem[additionalParam.param] = Object.keys(item[additionalParam.param])
+                                .filter(language => language.match(/\(\d{1}|\d{4,5}\)$/))
+                                .map(language => {
+                                    var LCID = language.match(/\((\d{1}|\d{4,5})\)$/);
+                                    return {
+                                        LCID: LCID[1],
+                                        Value: item[additionalParam.param][language]
+                                    };
+                                });
                         }
                     });
                 }
@@ -153,6 +189,13 @@
                     sheetName: 'Fields',
                     require: ['CONTENT_TYPE'],
                     localizedParam: 'DisplayName',
+                    additionalLocalizedParams: [{
+                        param: 'Description',
+                        prefix: 'DESCRIPTION: '
+                    }],
+                    additionalInfo: [
+                        'ContentTypeName'
+                    ],
                     createParams: [
                         'Id',
                         'Name',
@@ -175,19 +218,19 @@
                     ],
                     initFlatObject: field => ({
                         ID: field.Id,
-                        CONTENT_TYPE: field.ContentTypeName
+                        CONTENT_TYPE: field.ContentTypeName,
+                        FIELD_PROPERTY: field._Property
                     }),
-                    consolidate: fields => fields.reduce((result, currentField) => {
-                        var fieldAlreadyAdded = result.find(field => {
-                            return field.Id === currentField.Id;
+                    consolidate: fields => genericConsolidate(fields, ITEM_TYPES.FIELD, (fieldsAndAdditionalParams, fieldToAdd, field) => {
+                        var fieldAlreadyAdded = fieldsAndAdditionalParams.find(field => {
+                            return field.Id === fieldToAdd.Id;
                         });
                         if (fieldAlreadyAdded) {
-                            fieldAlreadyAdded.ContentTypeName += ', ' + currentField.ContentTypeName;
+                            fieldAlreadyAdded.ContentTypeName += ', ' + field.ContentTypeName;
                         } else {
-                            result.push(currentField);
+                            fieldsAndAdditionalParams.push(fieldToAdd);
                         }
-                        return result;
-                    }, []),
+                    }),
                     fromSheetObject: field => genericFromSheetObject(field, ITEM_TYPES.FIELD),
                     comparator: genericComparator
                 },
@@ -200,6 +243,10 @@
                         'FIELD'
                     ],
                     localizedParam: 'Name',
+                    additionalLocalizedParams: [{
+                        param: 'Description',
+                        prefix: 'DESCRIPTION: '
+                    }],
                     createParams: [
                         'ContentTypeId',
                         'Description',
@@ -216,9 +263,10 @@
                         'PublishingPage'
                     ],
                     initFlatObject: contentType => ({
-                        ID: contentType.Id
+                        ID: contentType.Id,
+                        CONTENT_TYPE_PROPERTY: contentType._Property
                     }),
-                    consolidate: genericConsolidate,
+                    consolidate: contentTypes => genericConsolidate(contentTypes, ITEM_TYPES.CONTENT_TYPE),
                     fromSheetObject: contentType => genericFromSheetObject(contentType, ITEM_TYPES.CONTENT_TYPE),
                     comparator: genericComparator
                 },
@@ -267,7 +315,7 @@
                     initFlatObject: listTemplate => ({
                         ID: listTemplate.Id
                     }),
-                    consolidate: genericConsolidate,
+                    consolidate: listTemplates => genericConsolidate(listTemplates, ITEM_TYPES.LIST_TEMPLATE),
                     fromSheetObject: listTemplate => genericFromSheetObject(listTemplate, ITEM_TYPES.LIST_TEMPLATE),
                     comparator: genericComparator
                 },
@@ -309,7 +357,7 @@
                     initFlatObject: siteTemplate => ({
                         ID: siteTemplate.Id
                     }),
-                    consolidate: genericConsolidate,
+                    consolidate: siteTemplates => genericConsolidate(siteTemplates, ITEM_TYPES.SITE_TEMPLATE),
                     fromSheetObject: siteTemplate => genericFromSheetObject(siteTemplate, ITEM_TYPES.SITE_TEMPLATE),
                     comparator: genericComparator
                 },
@@ -320,6 +368,9 @@
                     require: ['SITE_TEMPLATE'],
                     skipCreateIfSelected: ['WIDGET'],
                     localizedParam: 'Name',
+                    additionalInfo: [
+                        'SiteTemplateName'
+                    ],
                     createParams: [
                         'BannerFileInfo',
                         'BannerId',
@@ -330,7 +381,9 @@
                         'IsBannerManaged',
                         'IsPageTemplate',
                         'IsPublic',
+                        'ModernAssociatedPageContentTypeId',
                         'Name',
+                        'PageHeader',
                         'PageLayoutId',
                         'PreviewFileInfo',
                         'RowVersionValue',
@@ -348,7 +401,7 @@
                         ID: page.Id,
                         SITE_TEMPLATE: page.SiteTemplateName
                     }),
-                    consolidate: genericConsolidate,
+                    consolidate: pages => genericConsolidate(pages, ITEM_TYPES.PAGE),
                     fromSheetObject: page => genericFromSheetObject(page, ITEM_TYPES.PAGE),
                     comparator: genericComparator
                 },
@@ -386,7 +439,7 @@
                     initFlatObject: page => ({
                         ID: page.Id
                     }),
-                    consolidate: genericConsolidate,
+                    consolidate: pageTemplates => genericConsolidate(pageTemplates, ITEM_TYPES.PAGE_TEMPLATE),
                     fromSheetObject: pageTemplate => genericFromSheetObject(pageTemplate, ITEM_TYPES.PAGE_TEMPLATE),
                     comparator: genericComparator
                 },
@@ -433,7 +486,7 @@
                     initFlatObject: widget => ({
                         ID: widget.Id,
                         PAGE_ID: widget.PageId,
-                        WIDGET_TYPE: widget.WidgetName,
+                        WIDGET_TYPE: widget.WidgetName === 'powell-365-modern-component-client-side-solution.sppkg' ? 'Powell 365 Script Editor' : widget.WidgetName,
                         SITE_TEMPLATE: widget.SiteTemplateName,
                         PAGE_TEMPLATE: !widget.SiteTemplateName ? widget.PageName : null,
                         PAGE: widget.SiteTemplateName ? widget.PageName : null,
@@ -470,8 +523,13 @@
                                     }, resourcedWidgetProperty => resourcedWidgetProperty[widgetProperty]);
                                     widgetPropertyValue = widgetPropertyValue.map(localizedValue => {
                                         var language = _.find(languages, language => language.Lcid.toString() === localizedValue.LCID);
+                                        localizedValue.LCID = parseInt(localizedValue.LCID, 10);
                                         localizedValue.Code = language.Code;
-                                        localizedValue.Label = language.Title;
+                                        if (language.Code !== null) {
+                                            localizedValue.Label = language.Title;
+                                        } else {
+                                            localizedValue.LCID = 0;
+                                        }
                                         return localizedValue;
                                     });
                                     var localizedParam = WIDGET_TYPES[widget.WIDGET_TYPE].localizedParams.find(param => widgetProperty.match(new RegExp('^' + param.title.replace('$param', '(.+)'))));
@@ -513,6 +571,13 @@
                     sheetName: 'Lists',
                     require: ['SITE_TEMPLATE'],
                     localizedParam: 'Title',
+                    additionalLocalizedParams: [{
+                        param: 'Description',
+                        prefix: 'DESCRIPTION: '
+                    }],
+                    additionalInfo: [
+                        'SiteTemplateName'
+                    ],
                     createParams: [
                         'Id',
                         'EnableVersioning',
@@ -538,9 +603,10 @@
                     ],
                     initFlatObject: list => ({
                         ID: list.Id,
-                        SITE_TEMPLATE: list.SiteTemplateName
+                        SITE_TEMPLATE: list.SiteTemplateName,
+                        LIST_PROPERTY: list._Property
                     }),
-                    consolidate: genericConsolidate,
+                    consolidate: lists => genericConsolidate(lists, ITEM_TYPES.LIST),
                     fromSheetObject: list => genericFromSheetObject(list, ITEM_TYPES.LIST),
                     comparator: genericComparator
                 },
@@ -726,7 +792,7 @@
                         'Id',
                         'IsRoot',
                         'IsRootWeb=!$ITEM_FROM_MANAGER.ParentWebId',
-                        'Level=$ITEM_FROM_MANAGER.ParentWebId && $PARENT_ITEM_FROM_MANAGER.Webs.find(web => web.Id === $ITEM_FROM_MANAGER.ParentWebId).Level + 1 || 0',
+                        'Level=$ITEM_FROM_MANAGER.ParentWebId && (parentWeb = $PARENT_ITEM_FROM_MANAGER.Webs.find(web => web.Id === $ITEM_FROM_MANAGER.ParentWebId)) && parentWeb.Level + 1 || 0',
                         'Lists',
                         'LocalizationTitle',
                         'LocalizedTitle',
@@ -785,205 +851,206 @@
                     }),
                     comparator: (managerItem, sheetItem) => managerItem.SiteCollectionId === sheetItem.Id
                 },
-                fromSheetName: sheetName => Object.values(ITEM_TYPES).find(itemType => itemType.sheetName === sheetName)
+                fromSheetName: sheetName => Object.values(ITEM_TYPES).find(itemType => itemType.sheetName === sheetName),
+                toSheetName: itemType => Object.keys(ITEM_TYPES).find(itemTypeKey => ITEM_TYPES[itemTypeKey] === itemType)
             };
 
             var WIDGET_TYPES = {
-                // "Application without categories": {
-                //     "localizedParams": []
-                // },
-                // "BingMapWebPart": {
-                //     "localizedParams": []
-                // },
-                // "BoxEmbedded": {
-                //     "localizedParams": []
-                // },
-                // "Calendar": {
-                //     "localizedParams": []
-                // },
-                // "Clocks": {
-                //     "localizedParams": []
-                // },
-                // "ContentEmbedWebPart": {
-                //     "localizedParams": []
-                // },
-                // "ContentRollupWebPart": {
-                //     "localizedParams": []
-                // },
-                // "Delve": {
-                //     "localizedParams": []
-                // },
-                // "Discussion": {
-                //     "localizedParams": []
-                // },
-                // "DividerWebPart": {
-                //     "localizedParams": []
-                // },
-                // "DocumentEmbedWebPart": {
-                //     "localizedParams": []
-                // },
-                // "DocumentLibraryWebPart": {
-                //     "localizedParams": []
-                // },
-                // "DynamicCrm": {
-                //     "localizedParams": []
-                // },
-                // "EmbeddedVideoWebPart": {
-                //     "localizedParams": []
-                // },
-                // "EventOutlook": {
-                //     "localizedParams": []
-                // },
-                // "EventsWebPart": {
-                //     "localizedParams": []
-                // },
-                // "Excel Services": {
-                //     "localizedParams": []
-                // },
-                // "FacebookEmbedded": {
-                //     "localizedParams": []
-                // },
-                // "Favorites": {
-                //     "localizedParams": []
-                // },
-                // "Graph List View": {
-                //     "localizedParams": []
-                // },
-                // "GroupCalendarWebPart": {
-                //     "localizedParams": []
-                // },
-                // "GroupConversation": {
-                //     "localizedParams": []
-                // },
-                // "Groups": {
-                //     "localizedParams": []
-                // },
-                // "HeroWebPart": {
-                //     "localizedParams": []
-                // },
-                // "ImageGalleryWebPart": {
-                //     "localizedParams": []
-                // },
-                // "ImageWebPart": {
-                //     "localizedParams": []
-                // },
-                // "Instagram": {
-                //     "localizedParams": []
-                // },
-                // "LinkedInEmbedded": {
-                //     "localizedParams": []
-                // },
-                // "LinkPreviewWebPart": {
-                //     "localizedParams": []
-                // },
-                // "ListWebPart": {
-                //     "localizedParams": []
-                // },
-                // "Mails": {
-                //     "localizedParams": []
-                // },
-                // "MapsEmbedded": {
-                //     "localizedParams": []
-                // },
-                // "Members": {
-                //     "localizedParams": []
-                // },
-                // "Meteo": {
-                //     "localizedParams": []
-                // },
-                // "MicrosoftFormsWebPart": {
-                //     "localizedParams": []
-                // },
-                // "My Profile": {
-                //     "localizedParams": []
-                // },
-                // "NewsreelWebPart": {
-                //     "localizedParams": []
-                // },
-                // "PeopleWebPart": {
-                //     "localizedParams": []
-                // },
-                // "PinterestEmbedded": {
-                //     "localizedParams": []
-                // },
-                // "Planner": {
-                //     "localizedParams": []
-                // },
-                // "PlannerWebPart": {
-                //     "localizedParams": []
-                // },
-                // "Powell 365 Script Editor": {
-                //     "localizedParams": []
-                // },
-                // "PowerBI": {
-                //     "localizedParams": []
-                // },
-                // "PowerBIReportEmbedWebPart": {
-                //     "localizedParams": []
-                // },
-                // "QuickChartWebPart": {
-                //     "localizedParams": []
-                // },
-                // "QuickLinksWebPart": {
-                //     "localizedParams": []
-                // },
-                // "RSS": {
-                //     "localizedParams": []
-                // },
-                // "RssWebPart": {
-                //     "localizedParams": []
-                // },
-                // "ScriptEditor": {
-                //     "localizedParams": []
-                // },
-                // "SiteActivityWebPart": {
-                //     "localizedParams": []
-                // },
-                // "SitesWebPart": {
-                //     "localizedParams": []
-                // },
-                // "SpacerWebPart": {
-                //     "localizedParams": []
-                // },
-                // "Stock": {
-                //     "localizedParams": []
-                // },
-                // "StreamWebPart": {
-                //     "localizedParams": []
-                // },
-                // "Survey": {
-                //     "localizedParams": []
-                // },
-                // "TasksOutlook": {
-                //     "localizedParams": []
-                // },
-                // "TextEditorWebPart": {
-                //     "localizedParams": []
-                // },
-                // "TwitterEmbedded": {
-                //     "localizedParams": []
-                // },
-                // "TwitterWebPart": {
-                //     "localizedParams": []
-                // },
-                // "Video": {
-                //     "localizedParams": []
-                // },
-                // "Vimeo": {
-                //     "localizedParams": []
-                // },
-                // "WeatherWebPart": {
-                //     "localizedParams": []
-                // },
-                // "Yammer": {
-                //     "localizedParams": []
-                // },
-                // "YammerEmbedWebPart": {
-                //     "localizedParams": []
-                // },
-                // "Youtube": {
-                //     "localizedParams": []
-                // },
+                /*"Application without categories": {
+                    "localizedParams": []
+                },
+                "BingMapWebPart": {
+                    "localizedParams": []
+                },
+                "BoxEmbedded": {
+                    "localizedParams": []
+                },
+                "Calendar": {
+                    "localizedParams": []
+                },
+                "Clocks": {
+                    "localizedParams": []
+                },
+                "ContentEmbedWebPart": {
+                    "localizedParams": []
+                },
+                "ContentRollupWebPart": {
+                    "localizedParams": []
+                },
+                "Delve": {
+                    "localizedParams": []
+                },
+                "Discussion": {
+                    "localizedParams": []
+                },
+                "DividerWebPart": {
+                    "localizedParams": []
+                },
+                "DocumentEmbedWebPart": {
+                    "localizedParams": []
+                },
+                "DocumentLibraryWebPart": {
+                    "localizedParams": []
+                },
+                "DynamicCrm": {
+                    "localizedParams": []
+                },
+                "EmbeddedVideoWebPart": {
+                    "localizedParams": []
+                },
+                "EventOutlook": {
+                    "localizedParams": []
+                },
+                "EventsWebPart": {
+                    "localizedParams": []
+                },
+                "Excel Services": {
+                    "localizedParams": []
+                },
+                "FacebookEmbedded": {
+                    "localizedParams": []
+                },
+                "Favorites": {
+                    "localizedParams": []
+                },
+                "Graph List View": {
+                    "localizedParams": []
+                },
+                "GroupCalendarWebPart": {
+                    "localizedParams": []
+                },
+                "GroupConversation": {
+                    "localizedParams": []
+                },
+                "Groups": {
+                    "localizedParams": []
+                },
+                "HeroWebPart": {
+                    "localizedParams": []
+                },
+                "ImageGalleryWebPart": {
+                    "localizedParams": []
+                },
+                "ImageWebPart": {
+                    "localizedParams": []
+                },
+                "Instagram": {
+                    "localizedParams": []
+                },
+                "LinkedInEmbedded": {
+                    "localizedParams": []
+                },
+                "LinkPreviewWebPart": {
+                    "localizedParams": []
+                },
+                "ListWebPart": {
+                    "localizedParams": []
+                },
+                "Mails": {
+                    "localizedParams": []
+                },
+                "MapsEmbedded": {
+                    "localizedParams": []
+                },
+                "Members": {
+                    "localizedParams": []
+                },
+                "Meteo": {
+                    "localizedParams": []
+                },
+                "MicrosoftFormsWebPart": {
+                    "localizedParams": []
+                },
+                "My Profile": {
+                    "localizedParams": []
+                },
+                "NewsreelWebPart": {
+                    "localizedParams": []
+                },
+                "PeopleWebPart": {
+                    "localizedParams": []
+                },
+                "PinterestEmbedded": {
+                    "localizedParams": []
+                },
+                "Planner": {
+                    "localizedParams": []
+                },
+                "PlannerWebPart": {
+                    "localizedParams": []
+                },
+                "Powell 365 Script Editor": {
+                    "localizedParams": []
+                },
+                "PowerBI": {
+                    "localizedParams": []
+                },
+                "PowerBIReportEmbedWebPart": {
+                    "localizedParams": []
+                },
+                "QuickChartWebPart": {
+                    "localizedParams": []
+                },
+                "QuickLinksWebPart": {
+                    "localizedParams": []
+                },
+                "RSS": {
+                    "localizedParams": []
+                },
+                "RssWebPart": {
+                    "localizedParams": []
+                },
+                "ScriptEditor": {
+                    "localizedParams": []
+                },
+                "SiteActivityWebPart": {
+                    "localizedParams": []
+                },
+                "SitesWebPart": {
+                    "localizedParams": []
+                },
+                "SpacerWebPart": {
+                    "localizedParams": []
+                },
+                "Stock": {
+                    "localizedParams": []
+                },
+                "StreamWebPart": {
+                    "localizedParams": []
+                },
+                "Survey": {
+                    "localizedParams": []
+                },
+                "TasksOutlook": {
+                    "localizedParams": []
+                },
+                "TextEditorWebPart": {
+                    "localizedParams": []
+                },
+                "TwitterEmbedded": {
+                    "localizedParams": []
+                },
+                "TwitterWebPart": {
+                    "localizedParams": []
+                },
+                "Video": {
+                    "localizedParams": []
+                },
+                "Vimeo": {
+                    "localizedParams": []
+                },
+                "WeatherWebPart": {
+                    "localizedParams": []
+                },
+                "Yammer": {
+                    "localizedParams": []
+                },
+                "YammerEmbedWebPart": {
+                    "localizedParams": []
+                },
+                "Youtube": {
+                    "localizedParams": []
+                },*/
                 "ContentSearch": {
                     "localizedParams": [{
                             title: '"No results" message',
@@ -1253,13 +1320,15 @@
 
             var tryParseResource = function (item, localizedParam) {
                 try {
-                    return JSON.parse(item[localizedParam]);
+                    var resources = {};
+                    JSON.parse(item[localizedParam]).forEach(resource => resources[resource.LCID] = resource);
+                    return resources;
                 } catch (exception) {
-                    return [{
+                    return { 0: {
                         Code: null,
                         LCID: 0,
                         Value: item[localizedParam]
-                    }];
+                    }};
                 }
             };
 
@@ -1277,7 +1346,11 @@
                             body[param] = JSON.stringify(localization[param].map(localizedValue => {
                                 var language = _.find(languages, language => language.Lcid.toString() === localizedValue.LCID);
                                 localizedValue.Code = language.Code;
-                                localizedValue.Label = language.Title;
+                                if (language.Code !== null) {
+                                    localizedValue.Label = language.Title;
+                                } else {
+                                    localizedValue.LCID = 0;
+                                }
                                 return localizedValue;
                             }));
                         } else {
@@ -1320,6 +1393,27 @@
                         break;
                 }
                 return bodyForCreate;
+            };
+
+            var manageAdditionalParams = function (itemType, currentItem, items, childrenProperties) {
+                if (itemType.additionalLocalizedParams) {
+                    itemType.additionalLocalizedParams.forEach((additionalLocalizedParam, index) => {
+                        if (currentItem[additionalLocalizedParam.param]) {
+                            var currentItemProperty = _.cloneDeep(currentItem);
+                            currentItemProperty._Parent = currentItem;
+                            currentItemProperty._IsProperty = true;
+                            if (index === itemType.additionalLocalizedParams.length - 1 &&
+                                (!currentItem[findOwnProperty(childrenProperties, currentItem)] ||
+                                    currentItem[findOwnProperty(childrenProperties, currentItem)].length === 0)) {
+                                currentItemProperty._LastChild = true;
+                            }
+                            currentItemProperty._Property = additionalLocalizedParam.param;
+                            currentItemProperty._PropertyRenderPrefix = additionalLocalizedParam.prefix;
+                            currentItemProperty[itemType.localizedParam] = currentItem[additionalLocalizedParam.param];
+                            items.push(currentItemProperty);
+                        }
+                    });
+                }
             };
 
             var flattenWidgetConfig = function (widget) {
@@ -1438,23 +1532,6 @@
                     }
                     itemCallback(currentItem, parentItem, rootItem);
                     flattenItems.push(currentItem);
-                    if (itemType.additionalLocalizedParams) {
-                        itemType.additionalLocalizedParams.forEach((additionalLocalizedParams, index) => {
-                            if (currentItem[additionalLocalizedParams.param]) {
-                                var currentItemProperty = _.cloneDeep(currentItem);
-                                currentItemProperty._Parent = currentItem;
-                                currentItemProperty._IsProperty = true;
-                                if (index === itemType.additionalLocalizedParams.length - 1 &&
-                                    (!currentItem[findOwnProperty(childrenProperties, currentItem)] ||
-                                        currentItem[findOwnProperty(childrenProperties, currentItem)].length === 0)) {
-                                    currentItemProperty._LastChild = true;
-                                }
-                                currentItemProperty._PropertyRenderPrefix = additionalLocalizedParams.prefix;
-                                currentItemProperty[itemType.localizedParam] = currentItem[additionalLocalizedParams.param];
-                                flattenItems.push(currentItemProperty);
-                            }
-                        });
-                    }
                 }, includeRoot);
 
                 return flattenItems;
@@ -1486,10 +1563,10 @@
                     case ITEM_TYPES.PAGE_TEMPLATE :
                     case ITEM_TYPES.SITE_TEMPLATE :
                     case ITEM_TYPES.PAGE :
-                    case ITEM_TYPES.LIST :
                         requireChain.push('Default (0)');
-                        break;
-
+                    break;
+                    
+                    case ITEM_TYPES.LIST :
                     case ITEM_TYPES.WIDGET :
                     case ITEM_TYPES.NAVIGATION :
                     case ITEM_TYPES.SITE :
@@ -1526,18 +1603,20 @@
                     });
                 }
 
-                var resourceItems = itemType.consolidate(resources[itemType.name].items);
-
+                var resourceItems = itemType.consolidate(resources[itemType.name].items)
+                    .sort(sortCallback)
+                    .reduce((resourceItemsAndAdditionalParams, item) => {
+                        resourceItemsAndAdditionalParams.push(item);
+                        manageAdditionalParams(itemType, item, resourceItemsAndAdditionalParams);
+                        return resourceItemsAndAdditionalParams;
+                    }, []);
                 return resourceItems.map(item => {
                     var itemResources = tryParseResource(item, itemType.localizedParam);
-                    if (itemType === ITEM_TYPES.NAVIGATION) {
+                    if (itemType === ITEM_TYPES.NAVIGATION || itemType === ITEM_TYPES.SITE) {
                         renderAsTree(item, itemResources, [0, 'Value']);
                     }
-                    if (itemType === ITEM_TYPES.SITE) {
-                        renderAsTree(item, itemResources, [0, 'Value']);
-                    }
-                    itemResources.forEach(localization => {
-                        itemResources[localization.LCID] = localization.Value;
+                    Object.keys(itemResources).forEach(lcid => {
+                        itemResources[lcid] = itemResources[lcid].Value;
                     });
                     if (!itemResources[0] || typeof itemResources[0] !== 'string') {
                         itemResources = [item.LocalizationTitle || item.LocalizationName].concat(itemResources);
@@ -1548,7 +1627,7 @@
                         itemResourcesAsFlatObject[language.Title + ' (' + language.Lcid + ')'] = itemResources[language.Lcid];
                     });
                     return itemResourcesAsFlatObject;
-                }).sort(sortCallback);
+                });
             };
 
             var importResource = function (worksheet, resources, itemType) {
@@ -1576,9 +1655,19 @@
                                 return widgets;
                             }, {}));
                             break;
-    
+                        
                         default:
-                            itemsFromSheet = worksheet;
+                            itemsFromSheet = Object.values(worksheet.reduce((items, item) => {
+                                items[item.ID] = items[item.ID] || item;
+                                if (itemType.additionalLocalizedParams) {
+                                    itemType.additionalLocalizedParams.forEach(additionalLocalizedParam => {
+                                        if (item[ITEM_TYPES.toSheetName(itemType) + '_PROPERTY'] === additionalLocalizedParam.param) {
+                                            items[item.ID][item[ITEM_TYPES.toSheetName(itemType) + '_PROPERTY']] = item;
+                                        }
+                                    });
+                                }
+                                return items;
+                            }, {}));
                             break;
                     }
     
