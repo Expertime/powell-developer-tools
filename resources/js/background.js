@@ -317,7 +317,7 @@
                 pageUrl: { 
                     urlMatches: 
                         // 'powell365-manager-km.azurewebsites.net',
-                        'manager.powell-365.com|r7-powell365-manager.*',
+                        /*'manager.powell-365.com|*/'r7-powell365-manager.*',
                     schemes: ['https'] 
                 }
             })
