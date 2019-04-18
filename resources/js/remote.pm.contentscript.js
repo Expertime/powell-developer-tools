@@ -2172,7 +2172,7 @@
                     function sideBarDecorator($delegate) {
                         var originalLinkFn = $delegate[0].link;
                         $delegate[0].compile = function (tElem, tAttr) {
-                            var topnav = tElem.find('.main-menu');
+                            var topnav = tElem.find('.main-menu .group-first-level:last-child .group-list-container');
                             angular.element('head').append('<style>.sidebar .first-level.active .btn-resources {' +
                                 'border-bottom-color: #5842a7;' +
                                 '} .sidebar .btn-resources:before {' +
