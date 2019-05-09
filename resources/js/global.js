@@ -85,6 +85,14 @@
         _setLocalStorageValue('defaultJsRepoState', useDefault);
     };
 
+    DatacontextUtility.prototype.get_defaultLocalJsRepoState = function() {
+        return _getLocalStorageValue('defaultLocalJsRepoState') === "true";
+    };
+
+    DatacontextUtility.prototype.set_defaultLocalJsRepoState = function(useDefault) {
+        _setLocalStorageValue('defaultLocalJsRepoState', useDefault);
+    };
+
     DatacontextUtility.prototype.get_defaultJsTenantState = function() {
         return _getLocalStorageValue('defaultJsTenantState') === "true";
     };
@@ -371,6 +379,8 @@
             debugJsUrl.push('scripts');
             debugJsUrl.push('powell' + _this.get_sourceMode());
             debugJsUrl = debugJsUrl.join('/');
+        } else if (_this.get_defaultLocalJsRepoState()) {
+            debugJsUrl = 'https://localhost:55555/javascripts/powell.js';
         } else {
             debugJsUrl = _this.get_repoJsURL();
         }

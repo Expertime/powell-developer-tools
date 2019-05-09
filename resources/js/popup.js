@@ -22,7 +22,7 @@
         /**************
          * App version
          **************/
-        $scope.appVers = "6.4.61";
+        $scope.appVers = "6.4.70";
 
         /*****************
          * View variables
@@ -41,6 +41,7 @@
         $scope.config = {
             repoJsURL: datacontextUtility.get_repoJsURL(),
             defaultJsRepoState: datacontextUtility.get_defaultJsRepoState(),
+            defaultLocalJsRepoState: datacontextUtility.get_defaultLocalJsRepoState(),
             repoCssURL: datacontextUtility.get_repoCssURL(),
             defaultCssRepoState: datacontextUtility.get_defaultCssRepoState(),
             defautCssOnCdnState: datacontextUtility.get_defautCssOnCdnState(),
