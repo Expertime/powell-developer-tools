@@ -2125,7 +2125,9 @@
                         Resources.languagesLoaded.then(languages => {
                             var resourcesImported = []
                             selectedResources.forEach(itemType => {
-                                resourcesImported.push(importResource(XLSX.utils.sheet_to_json(workbook.Sheets[itemType.sheetName]), Resources, itemType));
+                                if (itemType) {
+                                    resourcesImported.push(importResource(XLSX.utils.sheet_to_json(workbook.Sheets[itemType.sheetName]), Resources, itemType));
+                                }
                             });
                             Resources.fileReadEndResolve();
                             Promise.all(resourcesImported).then(() => {

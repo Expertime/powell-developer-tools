@@ -316,8 +316,7 @@
             new chrome.declarativeContent.PageStateMatcher({
                 pageUrl: { 
                     urlMatches: 
-                        // 'powell365-manager-km.azurewebsites.net',
-                        /*'manager.powell-365.com|*/'r7-powell365-manager.*',
+                        'powell365-manager-km.*|manager.powell-365.com|r7-powell365-manager.*',
                     schemes: ['https'] 
                 }
             })
