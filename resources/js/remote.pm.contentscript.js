@@ -1384,8 +1384,8 @@
                     case ITEM_TYPES.WIDGET:
                     case ITEM_TYPES.WIDGET_IN_PAGE_TEMPLATE:
                         bodyForCreate = generateBody(itemType, localization, languages, originalLocalizableItem);
-                        if (originalLocalizableItem.Config && localization.Config) {
-                            bodyForCreate.Config = JSON.stringify(_.merge(JSON.parse(originalLocalizableItem.Config), localization.Config));
+                        if (originalLocalizableItem.itemFromManager.Config && localization.Config) {
+                            bodyForCreate.Config = JSON.stringify(_.merge(JSON.parse(originalLocalizableItem.itemFromManager.Config), localization.Config));
                         }
                         break;
                     default:

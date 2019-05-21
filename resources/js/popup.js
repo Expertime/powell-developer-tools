@@ -22,7 +22,7 @@
         /**************
          * App version
          **************/
-        $scope.appVers = "6.4.71";
+        $scope.appVers = "6.4.72";
 
         /*****************
          * View variables
