@@ -2010,6 +2010,10 @@
                                     }));
                                     break;
 
+                                case ITEM_TYPES.PAGE_TEMPLATE:
+                                    _this.items = _this.items.concat(response.data.filter(pageTemplate => pageTemplate.PageTemplateIsFromCurrentTenant));
+                                    break;
+
                                 case ITEM_TYPES.WIDGET:
                                 case ITEM_TYPES.WIDGET_IN_PAGE_TEMPLATE:
                                     _this.items = _this.items.concat(response.data.WebParts.map(webPart => {
