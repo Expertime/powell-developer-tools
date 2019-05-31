@@ -703,7 +703,7 @@
                     localizedParam: null,
                     createParams: [
                         'AllowFileSharingForGuestUsers',
-                        'AlternateLanguagesAll',
+                        'AlternateLanguagesAll=$ITEM_FROM_MANAGER.AlternateLanguages',
                         'Description',
                         'EnableDeploymentStatus',
                         'EnvironmentDevProjectConfig',
@@ -717,7 +717,8 @@
                         'ImportTerms',
                         'IsLocalTerms',
                         'IsTemplate',
-                        'LanguagesAll',
+                        'LabelsJson',
+                        'LanguagesAll=$ITEM_FROM_MANAGER.Languages',
                         'LocalPathForBranding',
                         'ModelSiteCollectionId',
                         'Owner',
