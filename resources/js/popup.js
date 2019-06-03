@@ -22,7 +22,7 @@
         /**************
          * App version
          **************/
-        $scope.appVers = "6.4.82";
+        $scope.appVers = "6.4.83";
 
         /*****************
          * View variables
@@ -263,10 +263,10 @@
                     $scope.Bing.bingDestination = result;
 
                     resultTranslateArray = JSON.stringify(resultTranslateArray, null, 1);
-                    resultTranslateArray = resultTranslateArray.replace(/\'/g, "\\'").replace(/(: )?"(,)?/g, "$1'$2");
+                    resultTranslateArray = resultTranslateArray.replace(/\'/g, "\\'");//.replace(/(: )?"(,)?/g, "$1'$2");
                     // var tempSpan = angular.element('<span translate>' + response.Data['en'] + '</span>');
                     // tempSpan.attr('translate-array', JSON.parse(resultTranslateArray))
-                    $scope.Bing.bingDestinationTranslateArray = '<span translate translate-array="' + resultTranslateArray + '">' + response.Data['en'] + '</span>';
+                    $scope.Bing.bingDestinationTranslateArray = "<span translate translate-array='" + resultTranslateArray + "'>" + response.Data['en'] + "</span>";
                 });
             }
         };
