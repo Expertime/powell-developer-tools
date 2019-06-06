@@ -308,6 +308,15 @@
         _setLocalStorageValue('xhrOrigin', xhrOrigin);
     };
 
+    /* Translate Panel */
+    DatacontextUtility.prototype.get_encodeBingTranslation = function() {
+        return _getLocalStorageValue('encodeBingTranslation') === "true";
+    };
+
+    DatacontextUtility.prototype.set_encodeBingTranslation = function(useDefault) {
+        _setLocalStorageValue('encodeBingTranslation', useDefault);
+    };
+
     /* Common */
     DatacontextUtility.prototype.isEnabled = function(sourceKind) {
         return _getLocalStorageValue(sourceKind + '_enabled') === "true";

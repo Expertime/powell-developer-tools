@@ -22,7 +22,7 @@
         /**************
          * App version
          **************/
-        $scope.appVers = "6.4.83";
+        $scope.appVers = "6.4.90";
 
         /*****************
          * View variables
@@ -64,7 +64,8 @@
             cdnJsMode: datacontextUtility.get_cdnJsMode(),
             cdnCssMode: datacontextUtility.get_cdnCssMode(),
             cdnHtmlMode: datacontextUtility.get_cdnHtmlMode(),
-            xhrOrigin: datacontextUtility.get_xhrOrigin()
+            xhrOrigin: datacontextUtility.get_xhrOrigin(),
+            encodeBingTranslation: datacontextUtility.get_encodeBingTranslation()
         };
 
         $scope.enableJsEmulation = datacontextUtility.isEnabled('js');
@@ -210,10 +211,10 @@
             'sl': '1060'
         };
 
-        function encodeChars(string) {
-            return string.replace(/[ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽž]/g, function (m) {
+        $scope.encodeChars = function(string) {
+            return $scope.config.encodeBingTranslation ? string.replace(/[ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽž]/g, function (m) {
                 return (m === '"' || m === '\\') ? " " : "\\x" + m.charCodeAt(0).toString(16).toUpperCase();
-            });
+            }) : string;
         }
 
         $scope.Bing = {
@@ -258,17 +259,15 @@
                         }
                     });
 
-                    result = encodeChars(JSON.stringify(result, null, 1));
+                    result = JSON.stringify(result, null, 1);
                     result = result.replace(/"(key|_\d+)"/g, '$1').replace(/\'/g, "\\'").replace(/(: )?"(,)?/g, "$1'$2");
                     $scope.Bing.bingDestination = result;
 
                     resultTranslateArray = JSON.stringify(resultTranslateArray, null, 1);
-                    resultTranslateArray = resultTranslateArray.replace(/\'/g, "\\'");//.replace(/(: )?"(,)?/g, "$1'$2");
-                    // var tempSpan = angular.element('<span translate>' + response.Data['en'] + '</span>');
-                    // tempSpan.attr('translate-array', JSON.parse(resultTranslateArray))
+                    resultTranslateArray = resultTranslateArray.replace(/\'/g, "&apos;");
                     $scope.Bing.bingDestinationTranslateArray = "<span translate translate-array='" + resultTranslateArray + "'>" + response.Data['en'] + "</span>";
                 });
             }
         };
-    }
+    };
 })(window, window.angular, window.jQuery, window.chrome);
