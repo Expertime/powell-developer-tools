@@ -2027,7 +2027,7 @@
                                     break;
 
                                 case ITEM_TYPES.SITE:
-                                    _this.items = _this.items.concat(response.data.filter(site => !site.IsRoot).map(site => {
+                                    _this.items = _this.items.concat(response.data/*.filter(site => !site.IsRoot)*/.map(site => {
                                         site.SiteCollectionName = requiredParentItem.Title;
                                         site.SiteCollectionId = requiredParentItem.Id;
                                         return site;
