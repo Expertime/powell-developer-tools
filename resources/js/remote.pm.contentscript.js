@@ -2184,7 +2184,7 @@
                                 'border-bottom-color: #5842a7;' +
                                 '} .sidebar .btn-resources:before {' +
                                 'content: "";' +
-                                'background: #039be6;' +
+                                'font-size: 2rem;' +
                                 'font-family: "icomoonManager";' +
                                 'font-style: normal;' +
                                 'font-variant: normal;' +
@@ -2199,7 +2199,7 @@
                                 'width: 3.2rem;' +
                                 'height: 3.2rem;' +
                                 'line-height: 32px;' +
-                                'color: #fff;' +
+                                'color: #222;' +
                                 'border-radius: 50%;' +
                                 '}</style>');
                             var resourcesNode = angular.element('<li class="first-level"><a href="#/resources" data-ng-click="nodeNavActive($event, \'resources\')" class="btn-nav btn-resources" title="Resources"><span>Resources</span></a></li>');
