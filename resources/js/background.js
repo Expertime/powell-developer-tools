@@ -13,7 +13,7 @@
     var _onBeforeJsRequestListener = function(request) {
         var originalJsUrl = request.url,
             debugJsUrl = request.url,
-            regIsOriginalUrl = /(cdn.powell-365.com|powell365-cdn.azureedge.net)\/scripts\/(?:powell(?:\/debug)?\?siteCollectionUrl=|Premium)/i,
+            regIsOriginalUrl = /(cdn.powell-365.com|powell365-cdn.azureedge.net)\/scripts\/(?:powell(?:\/debug)?\?siteCollectionUrl=|Premium|appmobile)/i,
             regIsCdnPremium = /powell365-cdn.azureedge.net/i,
             regIsReplacedUrl = /#powellDevTools=1/;
 
@@ -70,6 +70,22 @@
         if (debugHtmlTemplateUrl == originalHtmlTemplateUrl) return;
         return {
             redirectUrl: debugHtmlTemplateUrl
+        };
+    };
+
+    var _onBeforeCdnRequestListener = function(request) {
+        var originalCdnUrl = request.url,
+            debugCdnUrl = request.url,
+            regIsOriginalUrl = /(?:cdn.powell-365.com|powell365-cdn.azureedge.net)\/(.*)(?<!\.\w*)$/i,
+            regIsReplacedUrl = /#powellDevTools=1/;
+
+        var isOriginalUrl = !regIsReplacedUrl.exec(originalCdnUrl) && regIsOriginalUrl.exec(originalCdnUrl);
+        if (isOriginalUrl) {
+            debugCdnUrl = DatacontextConfig.utility.get_cdnSourceUrl(isOriginalUrl[1]) + '#powellDevTools=1';
+            console.log('Redirecting original request [' + originalCdnUrl + '] to [' + debugCdnUrl + ']');
+        }
+        return {
+            redirectUrl: debugCdnUrl
         };
     };
 
@@ -157,6 +173,7 @@
             var headerFooterHtmlTemplateUrl = ["Common/*/*/*//HtmlTemplates/*"];
             var htmlTemplateUrl = ["Common/*/*/*//layouts/*.html", "Common/*/*/*//Templates/*/*.html", "Common//Templates/*/*.html"];
             var wildcard = "*://*/*";
+            // var noHtmlFiles = ["regexp:https://.*powell.*/.*(?<!html)"];
 
             var filters = {};
             var opt_extraInfoSpec = ['blocking'];
@@ -181,6 +198,11 @@
                     filters.types = ['xmlhttprequest'];
                     chrome.webRequest.onBeforeRequest.addListener(_onBeforeHeaderFooterRequestListener, filters, opt_extraInfoSpec);
                     break;
+                case 'cdn': 
+                    filters.types = ['xmlhttprequest'];
+                    filters.urls = _buildFilters(powCdn, '*');
+                    chrome.webRequest.onBeforeRequest.addListener(_onBeforeCdnRequestListener, filters, opt_extraInfoSpec);
+                    break;
                 case 'html':
                     filters.urls = _buildFilters(powCdn, htmlTemplateUrl);
                     filters.types = ['xmlhttprequest'];
@@ -204,6 +226,9 @@
                 case 'css':
                     chrome.webRequest.onBeforeRequest.removeListener(_onBeforeCssRequestListener);
                     chrome.webRequest.onBeforeRequest.removeListener(_onBeforeLogoRequestListener);
+                    break;
+                case 'cdn':
+                    chrome.webRequest.onBeforeSendHeaders.removeListener(_onBeforeCdnRequestListener);
                     break;
                 case 'xhr':
                     chrome.webRequest.onBeforeSendHeaders.removeListener(_onBeforeSendHeadersListener);
@@ -230,7 +255,7 @@
     };
 
     var _updateIcon = function() {
-        var currentState = DatacontextConfig.utility.enabledFourState();
+        var currentState = DatacontextConfig.utility.enabledState();
         var color = (DatacontextConfig.icons[currentState] || DatacontextConfig.icons['all']).color;
         var text = DatacontextConfig.icons[currentState] && DatacontextConfig.icons[currentState].text || currentState;
         var icon = (DatacontextConfig.icons[currentState] || DatacontextConfig.icons['all']).icon;
@@ -265,6 +290,7 @@
         DatacontextConfig.icons = {
             js: { color: '#EFBE19', text: 'js', icon: 'resources/img/icon19.png' },
             css: { color: '#2FA9DA', text: 'css', icon: 'resources/img/icon19.png' },
+            cdn: { color: '#2c19ef', text: 'cdn', icon: 'resources/img/icon19.png' },
             html: { color: '#cd62f3', text: 'html', icon: 'resources/img/icon19.png' },
             xhr: { color: '#2af32d', text: 'xhr', icon: 'resources/img/icon19.png' },
             all: { color: '#F3672A', text: 'all', icon: 'resources/img/icon19.png' },

@@ -30,6 +30,15 @@
                 <label for="cssSwitch"></label>
             </div>
         </li>
+        <li class="pull-left" ng-class='isPaneActive("cdn")' id="navCdn">
+            <a data-target="#cdn" data-toggle="tab" href ng-click="setActivePane('cdn')">
+                <h5>CDN</h5>
+            </a>
+            <div class="switch">
+                <input ng-model="enableCdnEmulation" ng-click="switchChanged('cdn');" id="cdnSwitch" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="checkbox" data-sourcekind="cdn">
+                <label for="cdnSwitch"></label>
+            </div>
+        </li>
         <li class="pull-left" ng-class='isPaneActive("html")' id="navHtml">
             <a data-target="#html" data-toggle="tab" href ng-click="setActivePane('html')">
                 <h5>HTML</h5>
@@ -226,6 +235,63 @@
                 </div>
             </div>
 
+            <!-- CDN Panel -->
+            <div class="tab-pane panel" id="js" ng-class='isPaneActive("cdn")'>
+                <div class="row">
+                    <div class="form-group-sm col-xs-12">
+                        <label for="cdnURL">URL du CDN</label>
+                        <input type="text" ng-model="config.cdnURL" ng-disabled="config.cdnState !== 'customCdnURL'" class="form-control" id="cdnURL" placeholder="D&eacute;faut : https://cdn.powell-365.com/" aria-describedby="cdnURLhelpBlock">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group-sm col-xs-7">
+                        <div class="row">
+                            <h3 for="xhrOriginhelpBlock">
+                                <span class="picto-warning">Fonctionnalité expérimentale!</span>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="form-group-sm col-xs-5">
+                        <div class="row">
+                            <div class="checkbox">
+                                <div class="switch pull-right">
+                                    <span class="form-control-static">Custom URL</span> &nbsp;
+                                    <input id="customCdnURLSwitch" ng-model="config.cdnState" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="radio" name="cndUrl" value="customCdnURL" data-sourcekind="js">
+                                    <label for="customCdnURLSwitch" class="pull-right"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="checkbox">
+                                <div class="switch pull-right">
+                                    <span class="form-control-static">URL Locale par défaut</span> &nbsp;
+                                    <input id="defaultLocalCdnURLSwitch" ng-model="config.cdnState" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="radio" name="cndUrl" value="defaultLocalCdnURL" data-sourcekind="js">
+                                    <label for="defaultLocalCdnURLSwitch" class="pull-right"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="checkbox">
+                                <div class="switch pull-right">
+                                    <span class="form-control-static">Classic CDN</span> &nbsp;
+                                    <input id="classicCdnURLSwitch" ng-model="config.cdnState" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="radio" name="cndUrl" value="classicCdnURL" data-sourcekind="js">
+                                    <label for="classicCdnURLSwitch" class="pull-right"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="checkbox">
+                                <div class="switch pull-right">
+                                    <span class="form-control-static">Premium CDN</span> &nbsp;
+                                    <input id="premiumCdnURLSwitch" ng-model="config.cdnState" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="radio" name="cndUrl" value="premiumCdnURL" data-sourcekind="js">
+                                    <label for="premiumCdnURLSwitch" class="pull-right"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- HTML Panel -->
             <div class="tab-pane panel" id="html" ng-class='isPaneActive("html")'>
                 <div class="row">
@@ -355,6 +421,11 @@
                     <label>Sources CSS :</label>
                     <span>{{emulationSources.css}}</span>
             </div>
+            <div class="form-group-sm" ng-if="enableCdnEmulation && isPaneActive('cdn')">
+                    <p id="ftpCssUrl" class="form-control-static">
+                        <label>CDN :</label>
+                        <span>{{emulationSources.cdn}}</span>
+                </div>
             <div class="form-group-sm" ng-if="enableHtmlEmulation && isPaneActive('html')">
                 <p id="ftpHtmlUrl" class="form-control-static">
                     <label>Sources HTML :</label>

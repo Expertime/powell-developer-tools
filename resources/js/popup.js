@@ -22,7 +22,7 @@
         /**************
          * App version
          **************/
-        $scope.appVers = "6.4.92";
+        $scope.appVers = "6.4.93";
 
         /*****************
          * View variables
@@ -65,11 +65,14 @@
             cdnCssMode: datacontextUtility.get_cdnCssMode(),
             cdnHtmlMode: datacontextUtility.get_cdnHtmlMode(),
             xhrOrigin: datacontextUtility.get_xhrOrigin(),
-            encodeBingTranslation: datacontextUtility.get_encodeBingTranslation()
+            encodeBingTranslation: datacontextUtility.get_encodeBingTranslation(),
+            cdnURL: datacontextUtility.get_cdnURL(),
+            cdnState: datacontextUtility.get_cdnState()
         };
 
         $scope.enableJsEmulation = datacontextUtility.isEnabled('js');
         $scope.enableCssEmulation = datacontextUtility.isEnabled('css');
+        $scope.enableCdnEmulation = datacontextUtility.isEnabled('cdn');
         $scope.enableHtmlEmulation = datacontextUtility.isEnabled('html');
         $scope.enableXhrEmulation = datacontextUtility.isEnabled('xhr');
         $scope.environments = datacontextUtility.ENVIRONMENTS;
@@ -94,7 +97,8 @@
             $scope.emulationSources = {
                 css: datacontextUtility.get_cssSourceUrl('*.css', false),
                 js: datacontextUtility.get_jsSourceUrl(),
-                html: datacontextUtility.get_htmlSourceUrl('[layouts|templates]/*.html')
+                html: datacontextUtility.get_htmlSourceUrl('[layouts|templates]/*.html'),
+                cdn: datacontextUtility.get_cdnSourceUrl('*')
             };
         });
 

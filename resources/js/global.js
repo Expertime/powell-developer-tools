@@ -55,6 +55,7 @@
         _this.ENABLEDSTATES = [
             'js',
             'css',
+            'cdn',
             'html',
             'xhr'
         ];
@@ -237,6 +238,23 @@
         _setLocalStorageValue('useFooterState', useFooter);
     };
 
+    /* CDN Panel */
+    DatacontextUtility.prototype.get_cdnURL = function() {
+        return _getLocalStorageValue('cdnURL') || '';
+    };
+
+    DatacontextUtility.prototype.set_cdnURL = function(url) {
+        _setLocalStorageValue('cdnURL', url);
+    };
+
+    DatacontextUtility.prototype.get_cdnState = function() {
+        return _getLocalStorageValue('cdnState') || 'customCdnURL';
+    };
+
+    DatacontextUtility.prototype.set_cdnState = function(useDefault) {
+        _setLocalStorageValue('cdnState', useDefault);
+    };
+
     /* HTML Panel */
     DatacontextUtility.prototype.get_repoHtmlURL = function() {
         return _getLocalStorageValue('repoHtmlURL') || '';
@@ -331,7 +349,7 @@
         return _this.isEnabled('js') || _this.isEnabled('css') || _this.isEnabled('xhr');
     };
 
-    DatacontextUtility.prototype.enabledFourState = function() {
+    DatacontextUtility.prototype.enabledState = function() {
         var _this = this;
         var enabledState = _this.ENABLEDSTATES.map(function(state) {
             return {
@@ -395,6 +413,29 @@
         }
 
         return debugJsUrl.replace(/([^:]\/)\/+/g, "$1");
+    };
+
+    DatacontextUtility.prototype.get_cdnSourceUrl = function(path) {
+        var _this = this;
+        var cdnUrl = [];
+        switch (_this.get_cdnState()) {
+            case 'customCdnURL':
+                cdnUrl.push(_this.get_cdnURL());
+                break;
+            case 'defaultLocalCdnURL':
+                cdnUrl.push('https://localhost:44300');
+                break;
+            case 'classicCdnURL' :
+                cdnUrl.push(_this.CDN_BASE_URL.replace('[CDNMODE]', '').replace('[CDNPREMMODE]', _this.get_cdnPremMode(false)));
+                break;
+            case 'premiumCdnURL':
+                cdnUrl.push(_this.CDN_BASE_URL.replace('[CDNMODE]', '').replace('[CDNPREMMODE]', _this.get_cdnPremMode(true)));
+                break;
+        }
+        cdnUrl.push(path);
+        cdnUrl = cdnUrl.join('/');
+        
+        return cdnUrl.replace(/([^:]\/)\/+/g, "$1");
     };
 
     DatacontextUtility.prototype.get_cssSourceUrl = function(cssFileName, isPremium) {
