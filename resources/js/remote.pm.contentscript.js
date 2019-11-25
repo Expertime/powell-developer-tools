@@ -759,11 +759,11 @@
                     fromSheetObject: siteCollection => {
                         var indexedNodes = [];
                         siteCollection.Webs.forEach(site => {
-                            indexedNodes[site.ID] = genericFromSheetObject(site, ITEM_TYPES.SITE, resourcedSite => {
+                            indexedNodes[site.ID] = genericFromSheetObject(site, ITEM_TYPES.SITE_STRUCTURE, resourcedSite => {
                                 resourcedSite.SiteCollectionId = site.SITE_COLLECTION_ID;
-                                if (resourcedSite[ITEM_TYPES.SITE.localizedParam][0]) {
-                                    resourcedSite[ITEM_TYPES.SITE.localizedParam][0].Value =
-                                        resourcedSite[ITEM_TYPES.SITE.localizedParam][0].Value.replace(/((\||└| )[─ ]{3})+ /, '');
+                                if (resourcedSite[ITEM_TYPES.SITE_STRUCTURE.localizedParam][0]) {
+                                    resourcedSite[ITEM_TYPES.SITE_STRUCTURE.localizedParam][0].Value =
+                                        resourcedSite[ITEM_TYPES.SITE_STRUCTURE.localizedParam][0].Value.replace(/((\||└| )[─ ]{3})+ /, '');
                                 }
                                 return resourcedSite;
                             });
@@ -773,16 +773,53 @@
                     },
                     comparator: genericComparator
                 },
-                'SITE': {
+                'SITE_STRUCTURE': {
                     order: 11,
+                    name: 'SitesStructures',
+                    require: ['SITE_COLLECTION'],
+                    // consolidateBeforeSave: {
+                    //     parentItemType: 'SITE_COLLECTION',
+                    //     storeInto: 'Webs'
+                    // },
+                    localizedParam: 'Title',
+                    createParams: [],
+                    initFlatObject: site => ({
+                        ID: site.Id,
+                        SITE_COLLECTION_ID: site.SiteCollectionId,
+                        SITE_COLLECTION: site.SiteCollectionName
+                    }),
+                    consolidate: sites => {
+                        return sites.reduce((sitesFlat, siteWithChildren) => {
+                            return sitesFlat.concat(flattenTree(siteWithChildren, 'ChildrenWebs', site => {
+                                site.SiteCollectionName = siteWithChildren.SiteCollectionName;
+                                site.SiteCollectionId = siteWithChildren.SiteCollectionId;
+                            }, true, ITEM_TYPES.SITE_STRUCTURE));
+                        }, []);
+                    },
+                    fromSheetObject: site => genericFromSheetObject(site, ITEM_TYPES.SITE_STRUCTURE, resourcedSite => {
+                        resourcedSite.SiteCollectionId = site.SITE_COLLECTION_ID;
+                        if (resourcedSite[ITEM_TYPES.SITE_STRUCTURE.localizedParam][0]) {
+                            resourcedSite[ITEM_TYPES.SITE_STRUCTURE.localizedParam][0].Value =
+                                resourcedSite[ITEM_TYPES.SITE_STRUCTURE.localizedParam][0].Value.replace(/((\||└| )[─ ]{3})+ /, '');
+                        }
+                        return resourcedSite;
+                    }),
+                    comparator: (managerItem, sheetItem) => managerItem.SiteCollectionId === sheetItem.Id
+                },
+                'SITE': {
+                    order: 12,
                     name: 'Sites',
                     sheetName: 'Sites',
-                    require: ['SITE_COLLECTION'],
+                    require: ['SITE_STRUCTURE'],
                     consolidateBeforeSave: {
                         parentItemType: 'SITE_COLLECTION',
                         storeInto: 'Webs'
                     },
                     localizedParam: 'Title',
+                    // additionalLocalizedParams: [{
+                    //     param: 'NavigationQuickLaunch',
+                    //     prefix: '🔗'
+                    // }],
                     createParams: [
                         'ChildrenWebs',
                         'Description',
@@ -834,9 +871,10 @@
                         SITE_COLLECTION_ID: site.SiteCollectionId,
                         SITE_COLLECTION: site.SiteCollectionName
                     }),
-                    consolidate: sites => {
+                    consolidate: /*sites => genericConsolidate(sites, ITEM_TYPES.SITE),*/
+                    sites => {
                         return sites.reduce((sitesFlat, siteWithChildren) => {
-                            return sitesFlat.concat(flattenTree(siteWithChildren, 'ChildrenWebs', site => {
+                            return sitesFlat.concat(flattenTree(siteWithChildren, ['NavigationQuickLaunch', 'ChildrenNodes'], site => {
                                 site.SiteCollectionName = siteWithChildren.SiteCollectionName;
                                 site.SiteCollectionId = siteWithChildren.SiteCollectionId;
                             }, true, ITEM_TYPES.SITE));
@@ -1293,11 +1331,30 @@
                         body: (localization, originalSiteCollection, languages) => localizableItemSetBody(localization, originalSiteCollection, languages, ITEM_TYPES.SITE_COLLECTION)
                     }
                 },
-                Sites: {
+                SitesStructures: {
                     get: {
                         url: '/api/subweb/LoadBySiteCollection',
                         body: id => ({
                             Id: id
+                        })
+                    },
+                    getBySheetItem: {
+                        url: '/api/subweb/LoadById',
+                        body: (id, siteCollectionId) => ({
+                            Id: id,
+                            SiteCollectionId: siteCollectionId
+                        })
+                    },
+                    set: {
+                        body: (localization, originalSite, languages) => localizableItemSetBody(localization, originalSite, languages, ITEM_TYPES.SITE_STRUCTURE)
+                    }
+                },
+                Sites: {
+                    get: {
+                        url: '/api/subweb/LoadById',
+                        body: (id, siteCollectionId) => ({
+                            Id: id,
+                            SiteCollectionId: siteCollectionId
                         })
                     },
                     getBySheetItem: {
@@ -1506,6 +1563,16 @@
                 }
                 var childrenArray = item[findOwnProperty(childrenProperties, item)];
                 if (childrenArray) {
+                    if (!Array.isArray(childrenArray)) {
+                        try {
+                            childrenArray = JSON.parse(childrenArray);
+                            if (!Array.isArray(childrenArray)) {
+                                childrenArray = Object.values(childrenArray);
+                            }
+                        } catch (ex) {
+                            childrenArray = childrenArray.split('\n');
+                        }
+                    }
                     childrenArray.forEach((childItem, index, children) => {
                         var isLastChild = false;
                         if (index === children.length - 1) {
@@ -1565,11 +1632,12 @@
                     case ITEM_TYPES.SITE_TEMPLATE :
                     case ITEM_TYPES.PAGE :
                         requireChain.push('Default (0)');
-                    break;
+                        break;
                     
                     case ITEM_TYPES.LIST :
                     case ITEM_TYPES.WIDGET :
                     case ITEM_TYPES.NAVIGATION :
+                    case ITEM_TYPES.SITE_STRUCTURE :
                     case ITEM_TYPES.SITE :
 
                         break;
@@ -1605,7 +1673,7 @@
                 }
 
                 var resourceItems = itemType.consolidate(resources[itemType.name].items)
-                    .sort(sortCallback)
+                    
                     .reduce((resourceItemsAndAdditionalParams, item) => {
                         resourceItemsAndAdditionalParams.push(item);
                         manageAdditionalParams(itemType, item, resourceItemsAndAdditionalParams);
@@ -1628,7 +1696,7 @@
                         itemResourcesAsFlatObject[language.Title + ' (' + language.Lcid + ')'] = itemResources[language.Lcid];
                     });
                     return itemResourcesAsFlatObject;
-                });
+                }).sort(sortCallback);
             };
 
             var importResource = function (worksheet, resources, itemType) {
@@ -1863,7 +1931,7 @@
 
                                         break;
 
-                                    case ITEM_TYPES.SITE:
+                                    case ITEM_TYPES.SITE_STRUCTURE:
                                         var parentResourceItems = new Models.ResourceItemsCollection(ITEM_TYPES.SITE_COLLECTION, _this);
                                         parentResourceItems.addBySheetItem(sheetItem, 'SiteCollectionId').then(parentSiteCollection => {
                                             resourceItems.addBySheetItem(sheetItem, 'Id', 'SiteCollectionId').then(site => {
@@ -1961,10 +2029,13 @@
                             case ITEM_TYPES.WIDGET:
                             case ITEM_TYPES.WIDGET_IN_PAGE_TEMPLATE:
                             case ITEM_TYPES.FIELD:
-                            case ITEM_TYPES.SITE:
+                            case ITEM_TYPES.SITE_STRUCTURE:
                                 body = Endpoints[_this.itemType.name].get.body(requiredParentItem.Id);
                                 break;
 
+                            case ITEM_TYPES.SITE:
+                                body = Endpoints[_this.itemType.name].get.body(requiredParentItem.Id, requiredParentItem.SiteCollectionId);
+                                break;
                             default:
                                 break;
                         }
@@ -2026,12 +2097,19 @@
                                     }));
                                     break;
 
-                                case ITEM_TYPES.SITE:
+                                case ITEM_TYPES.SITE_STRUCTURE:
                                     _this.items = _this.items.concat(response.data/*.filter(site => !site.IsRoot)*/.map(site => {
                                         site.SiteCollectionName = requiredParentItem.Title;
                                         site.SiteCollectionId = requiredParentItem.Id;
                                         return site;
                                     }));
+                                    break;
+
+                                case ITEM_TYPES.SITE:
+                                    var site = response.data;
+                                    site.SiteCollectionName = requiredParentItem.SiteCollectionName;
+                                    site.SiteCollectionId = requiredParentItem.SiteCollectionId;
+                                    _this.items.push(site);
                                     break;
 
                                 default:
@@ -2071,7 +2149,17 @@
                         if (requiredItemTypes.length > 0) {
                             requiredItemTypes.forEach(requiredItemType => {
                                 requiredItemType.items.forEach(requiredItem => {
-                                    forEachablePromises.push(_this.getResourcesForItemType(requiredItem));
+                                    switch(_this.itemType) {
+                                        case ITEM_TYPES.SITE:
+                                            runThroughTree(requiredItem, ['ChildrenWebs'], web => {
+                                                web.SiteCollectionId = requiredItem.SiteCollectionId;
+                                                web.SiteCollectionName = requiredItem.SiteCollectionName;
+                                                forEachablePromises.push(_this.getResourcesForItemType(web));
+                                            }, true);
+                                            break;
+                                        default:
+                                            forEachablePromises.push(_this.getResourcesForItemType(requiredItem));
+                                    }
                                 });
                             });
                         } else {
@@ -2089,7 +2177,7 @@
                     loading: true
                 });
                 var selectedResources = Object.values(ITEM_TYPES).filter(itemType => itemType.hasOwnProperty('sheetName'));
-
+                // selectedResources = [ITEM_TYPES.SITE];
                 var Resources = new Models.Resources(selectedResources);
                 Resources.parseFromManager();
 
@@ -2128,7 +2216,7 @@
                         var Resources = new Models.Resources(selectedResources, true);
 
                         Resources.languagesLoaded.then(languages => {
-                            var resourcesImported = []
+                            var resourcesImported = [];
                             selectedResources.forEach(itemType => {
                                 if (itemType) {
                                     resourcesImported.push(importResource(XLSX.utils.sheet_to_json(workbook.Sheets[itemType.sheetName]), Resources, itemType));
