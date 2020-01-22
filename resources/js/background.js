@@ -13,7 +13,7 @@
     var _onBeforeJsRequestListener = function(request) {
         var originalJsUrl = request.url,
             debugJsUrl = request.url,
-            regIsOriginalUrl = /(cdn.powell-365.com|powell365-cdn.azureedge.net)\/scripts\/(?:powell(?:\/debug)?\?siteCollectionUrl=|Premium|appmobile)/i,
+            regIsOriginalUrl = /(cdn.powell-365.com|powell365-cdn.azureedge.net|cdntest.powell-software.com)\/scripts\/(?:powell(?:\/debug)?\?siteCollectionUrl=|Premium|appmobile)/i,
             regIsCdnPremium = /powell365-cdn.azureedge.net/i,
             regIsReplacedUrl = /#powellDevTools=1/;
 
@@ -36,7 +36,7 @@
             regIsCdnPremium = /powell365-cdn.azureedge.net/i,
             regFileName = /[^/\\&\?]+\.\w{3,4}(?=([\?&].*$|$))/;
         if (DatacontextConfig.utility.get_defautCssOnCdnState()) {
-            regIsOriginalUrl = /(?:cdn.powell-365.com|powell365-cdn.azureedge.net)\/styles\//i;
+            regIsOriginalUrl = /(?:cdn.powell-365.com|powell365-cdn.azureedge.net|cdntest.powell-software.com)\/styles\//i;
         } else {
             regIsOriginalUrl = DatacontextConfig.utility.get_defaultCssURL();
         }
@@ -76,7 +76,7 @@
     var _onBeforeCdnRequestListener = function(request) {
         var originalCdnUrl = request.url,
             debugCdnUrl = request.url,
-            regIsOriginalUrl = /(?:cdn.powell-365.com|powell365-cdn.azureedge.net)\/(.*)(?<!\.\w*)$/i,
+            regIsOriginalUrl = /(?:cdn.powell-365.com|powell365-cdn.azureedge.net|cdntest.powell-software.com)\/(.*)(?<!\.\w*)$/i,
             regIsReplacedUrl = /#powellDevTools=1/;
 
         var isOriginalUrl = !regIsReplacedUrl.exec(originalCdnUrl) && regIsOriginalUrl.exec(originalCdnUrl);
@@ -92,7 +92,7 @@
     var _onBeforeXhrRequestListener = function(request) {
         var originalXhrUrl = request.url,
             debugXhrUrl = request.url,
-            regIsOriginalUrl = /(?:cdn.powell-365.com|powell365-cdn.azureedge.net)\/+(?:(?:\w|\S)+\/+)+(\S+\.html)/i;
+            regIsOriginalUrl = /(?:cdn.powell-365.com|powell365-cdn.azureedge.net|cdntest.powell-software.com)\/+(?:(?:\w|\S)+\/+)+(\S+\.html)/i;
 
         var isOriginalUrl = regIsOriginalUrl.exec(originalXhrUrl);
         if (isOriginalUrl) {
@@ -110,7 +110,7 @@
     var _onBeforeLogoRequestListener = function(request) {
         var originalLogoUrl = request.url,
             debugLogoUrl = request.url,
-            regIsOriginalUrl = /(?:cdn.powell-365.com|powell365-cdn.azureedge.net)\/styles.*\/logo-my-portal\.png/i,
+            regIsOriginalUrl = /(?:cdn.powell-365.com|powell365-cdn.azureedge.net|cdntest.powell-software.com)\/styles.*\/logo-my-portal\.png/i,
             regIsCdnPremium = /powell365-cdn.azureedge.net/i,
             logoFileName = 'logo-my-portal.png';
         if (regIsOriginalUrl.exec(originalLogoUrl) !== null) {
