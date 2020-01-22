@@ -166,7 +166,7 @@
 
     var _setEnabled = function(enabled, sourceKind, extraData) {
         if (enabled) {
-            var powCdn = ["*://r7-cdn.powell-365.com/", "*://cdn.powell-365.com/", "*://r7-powell365-cdn.azureedge.net/", "*://powell365-cdn.azureedge.net/"];
+            var powCdn = ["*://cdntest.powell-software.com/", "*://cdn.powell-365.com/", "*://r7-powell365-cdn.azureedge.net/", "*://powell365-cdn.azureedge.net/"];
             var logoUrl = ["styles/Premium/*/*/*/images/logo-my-portal.png"];
             var cssUrl = ["styles/Premium/*/*/*/powell.css"];
             var jsUrl = ["scripts/Premium/*/*/*/powell", "scripts/appmobile/*/*/powell"];

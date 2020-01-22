@@ -558,7 +558,7 @@
     };
 
     DatacontextUtility.prototype.get_bingTranslationResource = function() {
-        return DatacontextUtility.$resource('https://r7-cdn.powell-365.com/translate', {}, {
+        return DatacontextUtility.$resource('https://cdntest.powell-software.com/translate', {}, {
             post: {
                 method: 'POST',
                 params: {},

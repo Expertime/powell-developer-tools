@@ -22,7 +22,7 @@
         /**************
          * App version
          **************/
-        $scope.appVers = "6.4.95";
+        $scope.appVers = "6.4.96";
 
         /*****************
          * View variables
@@ -222,7 +222,7 @@
             return $scope.config.encodeBingTranslation ? string.replace(/[ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽž]/g, function (m) {
                 return (m === '"' || m === '\\') ? " " : "\\x" + m.charCodeAt(0).toString(16).toUpperCase();
             }) : string;
-        }
+        };
 
         $scope.Bing = {
             bingSource: '',
