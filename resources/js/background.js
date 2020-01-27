@@ -15,13 +15,13 @@
             debugJsUrl = request.url,
             regIsOriginalUrl = /(cdn.powell-365.com|powell365-cdn.azureedge.net|cdntest.powell-software.com)\/scripts\/(?:powell(?:\/debug)?\?siteCollectionUrl=|Premium|appmobile)/i,
             regIsCdnPremium = /powell365-cdn.azureedge.net/i,
-            regIsReplacedUrl = /#powellDevTools=1/;
+            regIsReplacedUrl = /\?pdtOriginalJs=.+/;
 
         var isOriginalUrl = !regIsReplacedUrl.exec(originalJsUrl) && regIsOriginalUrl.exec(originalJsUrl);
 
         if (isOriginalUrl) {
             var isCdnPremium = regIsCdnPremium.exec(originalJsUrl) != null;
-            debugJsUrl = DatacontextConfig.utility.get_jsSourceUrl(isCdnPremium) + '#powellDevTools=1';
+            debugJsUrl = DatacontextConfig.utility.get_jsSourceUrl(isCdnPremium) + '?pdtOriginalJs=' + encodeURIComponent(request.url);
             console.log('Redirecting original request [' + originalJsUrl + '] to [' + debugJsUrl + ']');
         }
         return {

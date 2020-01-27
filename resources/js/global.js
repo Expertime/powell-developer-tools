@@ -558,7 +558,7 @@
     };
 
     DatacontextUtility.prototype.get_bingTranslationResource = function() {
-        return DatacontextUtility.$resource('https://cdntest.powell-software.com/translate', {}, {
+        return DatacontextUtility.$resource('https://localhost:44300/translate', {}, {
             post: {
                 method: 'POST',
                 params: {},
