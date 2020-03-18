@@ -336,25 +336,25 @@
         })]
     };
 
-    var pmContentScriptLoader = {
-        id: 'PowellDevTools_PM_contentScript_loader',
-        conditions: [
-            new chrome.declarativeContent.PageStateMatcher({
-                pageUrl: { 
-                    urlMatches: 
-                        'powell365-manager-km.*|manager.powell-365.com|r7-powell365-manager.*',
-                    schemes: ['https'] 
-                }
-            })
-        ],
-        actions: [new chrome.declarativeContent.RequestContentScript({
-            js: [
-                chrome.runtime.id == 'ipcafcbnkhgdaiefpfnmogkcnikmfifa' ?
-                '/resources/js/pm.contentscript.min.js' :
-                '/resources/js/pm.contentscript.js'
-            ]
-        })]
-    };
+    // var pmContentScriptLoader = {
+    //     id: 'PowellDevTools_PM_contentScript_loader',
+    //     conditions: [
+    //         new chrome.declarativeContent.PageStateMatcher({
+    //             pageUrl: { 
+    //                 urlMatches: 
+    //                     'powell365-manager-km.*|manager.powell-365.com|r7-powell365-manager.*',
+    //                 schemes: ['https'] 
+    //             }
+    //         })
+    //     ],
+    //     actions: [new chrome.declarativeContent.RequestContentScript({
+    //         js: [
+    //             chrome.runtime.id == 'ipcafcbnkhgdaiefpfnmogkcnikmfifa' ?
+    //             '/resources/js/pm.contentscript.min.js' :
+    //             '/resources/js/pm.contentscript.js'
+    //         ]
+    //     })]
+    // };
 
     function doReplaceRules(details) {
         chrome.declarativeContent.onPageChanged.getRules(undefined, function(rules) {
@@ -364,7 +364,7 @@
             chrome.declarativeContent.onPageChanged.getRules(undefined, function(rules) {
                 console.log('after remove', JSON.stringify(rules));
             });
-            chrome.declarativeContent.onPageChanged.addRules([spContentScriptLoader, pmContentScriptLoader], function(rules) {
+            chrome.declarativeContent.onPageChanged.addRules([spContentScriptLoader/*, pmContentScriptLoader*/], function(rules) {
                 chrome.declarativeContent.onPageChanged.getRules(undefined, function(rules) {
                     console.log('after add', JSON.stringify(rules));
                 });
