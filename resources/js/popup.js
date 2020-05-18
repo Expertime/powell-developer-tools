@@ -22,7 +22,7 @@
         /**************
          * App version
          **************/
-        $scope.appVers = "6.4.101";
+        $scope.appVers = "6.4.102";
 
         /*****************
          * View variables
@@ -257,17 +257,20 @@
                     Object.keys(response.Data).forEach(function (key) {
                         if (Array.isArray(powLang[key])) {
                             powLang[key].forEach(function (lcid) {
-                                result['_' + lcid] = response.Data[key];
+                                result[lcid] = response.Data[key];
                                 resultTranslateArray[lcid] = response.Data[key];
                             });
                         } else {
-                            result['_' + powLang[key]] = response.Data[key];
+                            result[powLang[key]] = response.Data[key];
                             resultTranslateArray[powLang[key]] = response.Data[key];
                         }
                     });
 
-                    result = JSON.stringify(result, null, 1);
-                    result = result.replace(/"(key|_\d+)"/g, '$1').replace(/\'/g, "\\'").replace(/(: )?"(,)?/g, "$1'$2");
+                    var jsonKeys = Object.keys(result);
+                    jsonKeys.unshift(jsonKeys.pop());
+
+                    result = JSON.stringify(result, jsonKeys, 4);
+                    result = result.replace(/\'/g, "\\'");
                     $scope.Bing.bingDestination = result;
 
                     resultTranslateArray = JSON.stringify(resultTranslateArray, null, 1);

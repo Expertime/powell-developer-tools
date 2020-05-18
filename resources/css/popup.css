@@ -167,3 +167,7 @@ ul#nav #navHtml {
     background-position: center;
     background-image: url("../img/warning.png");
 }
+
+pre#bingDestination, pre#bingDestinationTranslateArray {
+    height: 70px;
+}

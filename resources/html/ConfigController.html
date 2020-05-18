@@ -364,8 +364,7 @@
                 <div class="row">
                     <div class="form-group-sm col-xs-12" ng-if="Bing.bingDestination && !Bing.bingTranslatingIndicator">
                         <label for="bingDestination">Valeur traduite:</label>
-                        <input type="text" ng-value="encodeChars(Bing.bingDestination)" class="form-control" id="bingDestination">
-                        <!-- <pre>{{encodeChars(Bing.bingDestination)}}</pre> -->
+                        <pre class="form-control" id="bingDestination">{{encodeChars(Bing.bingDestination)}}</pre>
                     </div>
                     <div class="form-group-sm col-xs-12" ng-if="Bing.bingDestination && !Bing.bingTranslatingIndicator">
                         <div class="checkbox">
@@ -380,7 +379,7 @@
                 <div class="row">
                     <div class="form-group-sm col-xs-12" ng-if="Bing.bingDestinationTranslateArray && !Bing.bingTranslatingIndicator">
                         <label for="bingDestinationTranslateArray">Valeur traduite:</label>
-                        <textarea type="text" ng-model="Bing.bingDestinationTranslateArray" class="form-control" id="bingDestinationTranslateArray" />
+                        <pre class="form-control" id="bingDestinationTranslateArray">{{Bing.bingDestinationTranslateArray}}</pre>
                     </div>
                 </div>
             </div>
