@@ -169,7 +169,7 @@
             var powCdn = ["*://cdntest.powell-software.com/", "*://cdnedgetest.powell-software.com/", "*://cdn.powell-365.com/", "*://r7-powell365-cdn.azureedge.net/", "*://powell365-cdn.azureedge.net/"];
             var logoUrl = ["styles/Premium/*/*/*/images/logo-my-portal.png"];
             var cssUrl = ["styles/Premium/*/*/*/powell.css"];
-            var jsUrl = ["scripts/Premium/*/*/*/powell", "scripts/appmobile/*/*/powell"];
+            var jsUrl = ["scripts/Premium/*/*/*/powell*", "scripts/appmobile/*/*/powell"];
             var headerFooterHtmlTemplateUrl = ["Common/*/*/*//HtmlTemplates/*"];
             var htmlTemplateUrl = ["Common/*/*/*//layouts/*.html", "Common/*/*/*//Templates/*/*.html", "Common//Templates/*/*.html"];
             var wildcard = "*://*/*";
