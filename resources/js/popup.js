@@ -22,7 +22,7 @@
         /**************
          * App version
          **************/
-        $scope.appVers = "6.4.103";
+        $scope.appVers = "6.4.104";
 
         /*****************
          * View variables
@@ -189,34 +189,6 @@
                 }
             }
         };
-        
-        var powLang = {
-            'fr': '1036',       
-            'en': '1033',
-            'zh-CHS': '2052',
-            'it': '1040',
-            'es': '3082',
-            'lt': '1063',
-            'bg': '1026',
-            'cs': '1029',
-            'da': '1030',
-            'de': '1031',
-            'el': '1032',
-            'hr': '1050',
-            'hu': '1038',
-            'nl': '1043',
-            'pl': '1045',
-            'pt': [
-                '1046',
-                '2070'
-            ],
-            'ro': '1048',
-            'ru': '1049',
-            'sk': '1051',
-            'sv': '1053',
-            'tr': '1055',
-            'sl': '1060'
-        };
 
         $scope.encodeChars = function(string) {
             return $scope.config.encodeBingTranslation ? string.replace(/[ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽž]/g, function (m) {
@@ -229,13 +201,21 @@
             bingDestination: '',
             bingTranslatingIndicator: '',
             btnTranslateTitle: 'Traduire',
-            translateBing: function () {
+            translateBing: async function () {
                 $scope.Bing.btnTranslateTitle = 'Traduction';
                 var interval = 0
                 var loader = $interval(function () {
                     interval++;
                     $scope.Bing.bingTranslatingIndicator = '.'.repeat(interval % 3 + 1);
                 }, 500);
+
+                var powLang = await (await fetch("https://api.scriptrapps.io/projects/powell.developper.tools/getLangs", {
+                    "headers": {
+                        "authorization": "Bearer UkFBRDY0NzU5MzpzY3JpcHRyOjQwQjgwQTY5RjYxNzZEN0RDQzk2Rjc3NUZDOTA0MjJG",
+                        "content-type": "application/json"
+                    },
+                    "method": "GET"
+                })).json();
 
                 var bingQuery = {
                     Input: $scope.Bing.bingSourcePhrase,
