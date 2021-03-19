@@ -22,7 +22,7 @@
         /**************
          * App version
          **************/
-        $scope.appVers = "6.4.104";
+        $scope.appVers = "6.4.105";
 
         /*****************
          * View variables
@@ -61,6 +61,7 @@
             defaultHtmlRepoState: datacontextUtility.get_defaultHtmlRepoState(),
             htmlVersion: datacontextUtility.get_htmlVersion(),
             sourceMode: datacontextUtility.get_sourceMode(),
+            branch: datacontextUtility.get_branch(),
             cdnJsMode: datacontextUtility.get_cdnJsMode(),
             cdnCssMode: datacontextUtility.get_cdnCssMode(),
             cdnHtmlMode: datacontextUtility.get_cdnHtmlMode(),
@@ -78,6 +79,22 @@
         $scope.environments = datacontextUtility.ENVIRONMENTS;
         $scope.sourceModes = datacontextUtility.SOURCEMODES;
         $scope.cdnModes = datacontextUtility.CDNMODES;
+
+        $scope.branches = [];
+
+        let branchesPromise = fetch("https://powtesteuwgenstg.blob.core.windows.net/cdn/branches/branches.json", {
+            headers: { "content-type": "application/json"},
+            method: "GET"
+        });
+
+        branchesPromise.then(async (response) => {
+            if (response.ok) {
+                let json = await response.json();
+
+                $scope.branches = json.branches;
+                $scope.$apply();
+            }
+        });
 
         $scope.$watchCollection('config', function (newValues) {
             for (var value in newValues) {
@@ -189,7 +206,7 @@
                 }
             }
         };
-
+        
         $scope.encodeChars = function(string) {
             return $scope.config.encodeBingTranslation ? string.replace(/[ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽž]/g, function (m) {
                 return (m === '"' || m === '\\') ? " " : "\\x" + m.charCodeAt(0).toString(16).toUpperCase();

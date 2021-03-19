@@ -79,42 +79,50 @@
         <div class="tab-content col-xs-12">
             <!-- JS Panel -->
             <div class="tab-pane panel" id="js" ng-class='isPaneActive("js")'>
-                <div class="row">
+                <!-- <div class="row">
                     <div class="form-group-sm col-xs-12">
-                        <label for="repoJsURL">URL du repository JavaScript:</label>
-                        <input type="text" ng-model="config.repoJsURL" ng-disabled="config.defaultJsRepoState || config.defaultLocalJsRepoState" class="form-control" id="repoJsURL" placeholder="D&eacute;faut : https://cdn.powell-365.com/" aria-describedby="repoJsURLhelpBlock">
+                        <label for="repoJsURL">Nom de la branche à servir :</label>
+                        <input type="text" ng-model="config.repoJsURL" ng-disabled="config.defaultLocalJsRepoState" class="form-control" id="repoJsURL" placeholder="D&eacute;faut : testing" aria-describedby="repoJsURLhelpBlock">
                     </div>
-                </div>
+                </div> -->
                 <div class="row">
-                    <div class="form-group-sm col-xs-6">
-                        <label for="cdnJsMode">CDN mode:</label>
-                        <select id="cdnJsMode" class="form-control input-small" ng-disabled="!config.defaultJsRepoState || config.defaultLocalJsRepoState" ng-model="config.cdnJsMode" ng-options="id as value for (value, id) in cdnModes"></select>
-                    </div>
-                    <div class="form-group-sm col-xs-6">
-                        <div class="row">
-                            <div class="checkbox">
-                                <div class="switch pull-right">
-                                    <span class="form-control-static">Utiliser le CDN</span> &nbsp;
-                                    <input id="defaultRepoJsURLSwitch" ng-model="config.defaultJsRepoState" ng-change="config.defaultJsRepoState && (config.defaultLocalJsRepoState = false)" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="checkbox" data-sourcekind="js">
-                                    <label for="defaultRepoJsURLSwitch" class="pull-right"></label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="checkbox">
-                                <div class="switch pull-right">
-                                    <span class="form-control-static">Utiliser l'URL locale par défaut</span> &nbsp;
-                                    <input id="defaultLocalRepoJsURLSwitch" ng-model="config.defaultLocalJsRepoState" ng-change="config.defaultLocalJsRepoState && (config.defaultJsRepoState = false)" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="checkbox" data-sourcekind="js">
-                                    <label for="defaultLocalRepoJsURLSwitch" class="pull-right"></label>
-                                </div>
-                            </div>
+                    <div class="checkbox">
+                        <div class="switch pull-right">
+                            <span class="form-control-static">Utiliser l'URL locale par défaut</span> &nbsp;
+                            <input id="defaultLocalRepoJsURLSwitch" ng-model="config.defaultLocalJsRepoState" ng-change="config.defaultLocalJsRepoState && (config.defaultJsRepoState = false)" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="checkbox" data-sourcekind="js">
+                            <label for="defaultLocalRepoJsURLSwitch" class="pull-right"></label>
                         </div>
                     </div>
                 </div>
+
                 <div class="row">
+                    <div class="checkbox">
+                        <div class="switch pull-right">
+                            <span class="form-control-static">Utiliser le CDN</span> &nbsp;
+                            <input id="defaultRepoJsURLSwitch" ng-model="config.defaultJsRepoState" ng-change="config.defaultJsRepoState && (config.defaultLocalJsRepoState = false)" class="cmn-horizontal cmn-toggle cmn-toggle-round" type="checkbox" data-sourcekind="js">
+                            <label for="defaultRepoJsURLSwitch" class="pull-right"></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" ng-if="config.defaultJsRepoState">
                     <div class="form-group-sm col-xs-6">
-                        <label for="sourceMode">Source mode:</label>
-                        <select id="sourceMode" class="form-control input-small" ng-disabled="!config.defaultJsRepoState" ng-model="config.sourceMode" ng-options="id as value for (value, id) in sourceModes"></select>
+                        <label for="cdnJsMode">Environnement:</label>
+                        <select id="cdnJsMode" class="form-control input-small" ng-disabled="!config.defaultJsRepoState" ng-model="config.cdnJsMode" ng-options="id as value for (value, id) in cdnModes"></select>
+                    </div>
+                </div>
+                <div class="row" ng-if="config.defaultJsRepoState">
+                    <div class="form-group-sm col-xs-6">
+                        <label for="branch">Branche à tester:</label>
+                        <select id="branch" class="form-control input-small" ng-disabled="!config.defaultJsRepoState" ng-model="config.branch" ng-options="branch.name for branch in branches">
+                            <option value="">-- Sélectionner une branche --</option>
+                        </select>    
+                    </div>
+                </div>
+                <div class="row" ng-if="config.defaultJsRepoState && config.branch && config.branch.pullrequest.description">
+                    <div class="form-group-sm col-xs-12">
+                        <label for="description">Description:</label>
+                        <p>{{config.branch.pullrequest.description}}</p>
                     </div>
                 </div>
             </div>
@@ -124,7 +132,7 @@
                 <div class="row">
                     <div class="form-group-sm col-xs-12">
                         <label for="repoCssURL">URL du repository CSS:</label>
-                        <input type="text" ng-model="config.repoCssURL" ng-disabled="config.defaultCssRepoState" class="form-control" id="repoCssURL" placeholder="D&eacute;faut : https://cdn.powell-365.com/" aria-describedby="repoCssURLhelpBlock">
+                        <input type="text" ng-model="config.repoCssURL" ng-disabled="config.defaultCssRepoState" class="form-control" id="repoCssURL" placeholder="D&eacute;faut : https://cdnassetstest.powell-software.com/" aria-describedby="repoCssURLhelpBlock">
                     </div>
                 </div>
                 <div class="row">
@@ -240,7 +248,7 @@
                 <div class="row">
                     <div class="form-group-sm col-xs-12">
                         <label for="cdnURL">URL du CDN</label>
-                        <input type="text" ng-model="config.cdnURL" ng-disabled="config.cdnState !== 'customCdnURL'" class="form-control" id="cdnURL" placeholder="D&eacute;faut : https://cdn.powell-365.com/" aria-describedby="cdnURLhelpBlock">
+                        <input type="text" ng-model="config.cdnURL" ng-disabled="config.cdnState !== 'customCdnURL'" class="form-control" id="cdnURL" placeholder="D&eacute;faut : https://cdnassetstest.powell-software.com" aria-describedby="cdnURLhelpBlock">
                     </div>
                 </div>
                 <div class="row">
@@ -297,7 +305,7 @@
                 <div class="row">
                     <div class="form-group-sm col-xs-12">
                         <label for="repoHtmlURL">URL du repository HTML:</label>
-                        <input type="text" ng-model="config.repoHtmlURL" ng-disabled="config.defaultHtmlRepoState" class="form-control" id="repoHtmlURL" placeholder="D&eacute;faut : https://cdn.powell-365.com/" aria-describedby="repoHtmlURLhelpBlock">
+                        <input type="text" ng-model="config.repoHtmlURL" ng-disabled="config.defaultHtmlRepoState" class="form-control" id="repoHtmlURL" placeholder="D&eacute;faut : https://cdnassetstest.powell-software.com/" aria-describedby="repoHtmlURLhelpBlock">
                     </div>
                 </div>
                 <div class="row">
@@ -410,7 +418,7 @@
         </div>
 
         <div class="panel col-xs-12">
-            <div class="form-group-sm" ng-if="enableJsEmulation && isPaneActive('js')">
+            <div class="form-group-sm" ng-if="enableJsEmulation && isPaneActive('js') && emulationSources.js">
                 <p id="ftpJsUrl" class="form-control-static">
                     <label>Sources JS :</label>
                     <span>{{emulationSources.js}}</span>
