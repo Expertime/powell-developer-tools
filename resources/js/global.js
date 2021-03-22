@@ -33,7 +33,11 @@
         DatacontextUtility.$q = $q;
         DatacontextUtility.$resource = $resource;
 
-        _this.CDN_BASE_URL = 'https://[CDNMODE][CDNPREMMODE]';
+        _this.CDN_BASE_URL = 'https://cdnassetstest.powell-software.com';
+        _this.CDN_URL = {
+            'PROD': 'https://cdnassets.powell-software.com',
+            'REC': 'https://cdnassetstest.powell-software.com',
+        };
         _this.DEFAULT_TENANT = 'Default';
         _this.ENVIRONMENTS = {
             'PROD': '1',
@@ -49,7 +53,7 @@
             'REC': 'r7-',
         };
         _this.CDNPREMMODE = {
-            'BASIC': 'cdn.powell-365.com',
+            'BASIC': 'cdnassetstest.powell-software.com',
             'PREM': 'powell365-cdn.azureedge.net'
         };
         _this.ENABLEDSTATES = [
@@ -108,6 +112,16 @@
 
     DatacontextUtility.prototype.set_sourceMode = function(id) {
         _setLocalStorageValue('sourceMode', id);
+    };
+
+    DatacontextUtility.prototype.get_branch = function() {
+        let value = _getLocalStorageValue('branch') || '';
+
+        return value ? JSON.parse(value) : '';
+    };
+
+    DatacontextUtility.prototype.set_branch = function(id) {        
+        _setLocalStorageValue('branch', JSON.stringify(id || ''));
     };
 
     DatacontextUtility.prototype.get_cdnJsMode = function() {
@@ -401,15 +415,18 @@
     DatacontextUtility.prototype.get_jsSourceUrl = function(isPremium) {
         var _this = this;
         var debugJsUrl = [];
-        if (_this.get_defaultJsRepoState()) {
-            debugJsUrl.push(_this.CDN_BASE_URL.replace('[CDNMODE]', _this.get_cdnJsMode()).replace('[CDNPREMMODE]', _this.get_cdnPremMode(false)));
-            debugJsUrl.push('scripts');
-            debugJsUrl.push('powell' + _this.get_sourceMode());
+        if (_this.get_defaultJsRepoState() && _this.get_branch()) {
+            // debugJsUrl.push(_this.CDN_BASE_URL.replace('[CDNMODE]', _this.get_cdnJsMode()).replace('[CDNPREMMODE]', _this.get_cdnPremMode(false)));
+            debugJsUrl.push(_this.get_cdnJsMode() === _this.CDNMODES.PROD ? _this.CDN_URL.PROD : _this.CDN_URL.REC);
+            debugJsUrl.push('cdn','branches');
+            let branch = _this.get_branch();
+            debugJsUrl.push(`${branch.name}_${branch.pullrequest.id}`);
+            debugJsUrl.push('core.min.js');
             debugJsUrl = debugJsUrl.join('/');
         } else if (_this.get_defaultLocalJsRepoState()) {
-            debugJsUrl = 'https://localhost:55555/javascripts/powell.js';
+            debugJsUrl = 'https://localhost:55555/javascripts/powell.js';        
         } else {
-            debugJsUrl = _this.get_repoJsURL();
+            debugJsUrl = '';
         }
 
         return debugJsUrl.replace(/([^:]\/)\/+/g, "$1");
@@ -492,7 +509,7 @@
         var useFooter = _this.get_useFooterState();
         var regHtmlTemplateId = /htmltemplates\/\d+$/i;
         var htmlTemplateId = originalHtmlTemplateUrl.match(regHtmlTemplateId)[0];
-        var cdnUrl = originalHtmlTemplateUrl.match(/.*cdn.powell-365.com/)[0];
+        var cdnUrl = originalHtmlTemplateUrl.match(/.*cdnassetstest.powell-software.com/)[0];
 
         if (useHeader || useFooter) {
             originalHtmlTemplateUrl = originalHtmlTemplateUrl.replace(cdnUrl, _this.CDN_BASE_URL.replace('[CDNMODE]', _this.get_cdnCssMode()).replace('[CDNPREMMODE]', _this.get_cdnPremMode(false)));
